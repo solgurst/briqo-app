@@ -29,7 +29,7 @@
   --eo:cubic-bezier(.22,1,.36,1);
 }
 
-body{font-family:'DM Sans',sans-serif;background:linear-gradient(135deg,#D4DCF0,#C8D5E8);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px 16px}
+body{font-family:'Plus Jakarta Sans', -apple-system, sans-serif;background:linear-gradient(135deg,#D4DCF0,#C8D5E8);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px 16px}
 
 /* ── LAYOUT ── */
 .wrap{display:flex;gap:24px;align-items:flex-start}
@@ -269,55 +269,85 @@ h1,h2,h3,h4{font-family:'Plus Jakarta Sans',sans-serif;color:var(--t1)}
 .st{font-size:17px;font-weight:700;color:var(--t1);font-family:'Plus Jakarta Sans',sans-serif}
 .sa{font-size:13px;font-weight:600;color:var(--orange);cursor:pointer}
 
-/* ── MASTER BRIX ACCESSORY SYSTEM ── */
-.brix-svg .acc-headphones,
-.brix-svg .acc-shoes,
-.brix-svg .acc-doctor-coat,
-.brix-svg .acc-thinking-hat,
-.brix-svg .acc-pencil,
-.brix-svg .acc-clipboard,
-.brix-svg .acc-stethoscope,
-.brix-svg .acc-heartbreak {
-  display: none !important;
-  opacity: 0;
-  transition: opacity 0.3s ease;
+/* ── MASTER BRIX 3D SYSTEM & ACCESSORIES ── */
+.brix-container {
+  position: relative;
+  display: inline-block;
+}
+.brix-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.brix-acc-overlay {
+  position: absolute;
+  pointer-events: none;
+  z-index: 10;
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.acc-sunglasses {
+  top: 28%;
+  left: 20%;
+  width: 60%;
+  height: auto;
+}
+.acc-crown {
+  top: -12%;
+  left: 20%;
+  width: 60%;
+  height: auto;
+}
+.acc-wizard {
+  top: -28%;
+  left: 10%;
+  width: 80%;
+  height: auto;
+}
+.acc-viking {
+  top: -15%;
+  left: 8%;
+  width: 84%;
+  height: auto;
 }
 
-.brix-svg.music .acc-headphones { display: block !important; opacity: 1; }
-.brix-svg.walk .acc-shoes { display: block !important; opacity: 1; }
-.brix-svg.doctor .acc-doctor-coat, 
-.brix-svg.doctor .acc-clipboard, 
-.brix-svg.doctor .acc-stethoscope { display: block !important; opacity: 1; }
-.brix-svg.focus .acc-thinking-hat, 
-.brix-svg.focus .acc-pencil { display: block !important; opacity: 1; }
-.brix-svg.sensitive .acc-heartbreak { display: block !important; opacity: 1; }
-
-.brix-svg.float { animation: brixFloat 4s ease-in-out infinite; }
-@keyframes brixFloat {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-8px) rotate(1deg); }
+/* Animations */
+.brix-img.float {
+  animation: float 4s ease-in-out infinite;
 }
-.brix-svg.walk { animation: brixWalk 0.5s ease-in-out infinite alternate; transform-origin: bottom center; }
-@keyframes brixWalk {
+.brix-img.walk {
+  animation: walkAnim 0.5s ease-in-out infinite alternate;
+}
+.brix-img.music {
+  animation: musicAnim 1.5s ease-in-out infinite alternate;
+}
+.brix-img.focus {
+  animation: focusAnim 3s ease-in-out infinite;
+}
+.brix-img.sensitive {
+  animation: sensitiveAnim 2.5s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(-0.5deg); }
+  50% { transform: translateY(-6px) rotate(0.5deg); }
+}
+@keyframes walkAnim {
   0% { transform: translateY(0) scaleY(1); }
-  100% { transform: translateY(-10px) scaleY(0.96); }
+  100% { transform: translateY(-5px) scaleY(0.97); }
 }
-.brix-svg.music { animation: brixMusic 2s ease-in-out infinite alternate; transform-origin: bottom center; }
-@keyframes brixMusic {
-  0% { transform: rotate(-4deg) scale(1.02); }
-  100% { transform: rotate(4deg) scale(1.02); }
+@keyframes musicAnim {
+  0% { transform: rotate(-2deg); }
+  100% { transform: rotate(2deg); }
 }
-.brix-svg.focus { animation: brixFocus 3s ease-in-out infinite; transform-origin: center center; }
-@keyframes brixFocus {
-  0%, 100% { transform: scale(1) rotate(0deg); }
-  50% { transform: scale(1.04) rotate(1deg); }
+@keyframes focusAnim {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.03); }
 }
-.brix-svg.doctor { animation: brixDoctor 4.5s ease-in-out infinite; }
-@keyframes brixDoctor {
+@keyframes sensitiveAnim {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
+  50% { transform: translateY(-3px); }
 }
-
 /* ── MEMORY MATCH GAME ── */
 .mcard {
   perspective: 1000px;
@@ -461,62 +491,9 @@ h1,h2,h3,h4{font-family:'Plus Jakarta Sans',sans-serif;color:var(--t1)}
   <div class="ob-hero">
     <div class="ob-glow">
       <!-- BRIX v4: Sticker-style cute octopus -->
-      <svg width="185" height="185" viewBox="0 0 200 230" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 8px 24px rgba(255,107,53,.3))">
-        <!-- Ground shadow -->
-        <ellipse cx="100" cy="220" rx="48" ry="6" fill="rgba(0,0,0,.08)"/>
-        <!-- 6 short chubby legs -->
-        <path d="M60 150 Q46 170 52 190" stroke="#E8621E" stroke-width="18" stroke-linecap="round"/>
-        <path d="M74 156 Q66 176 68 194" stroke="#E8621E" stroke-width="16" stroke-linecap="round"/>
-        <path d="M88 160 Q84 180 86 196" stroke="#E8621E" stroke-width="15" stroke-linecap="round"/>
-        <path d="M112 160 Q116 180 114 196" stroke="#E8621E" stroke-width="15" stroke-linecap="round"/>
-        <path d="M126 156 Q134 176 132 194" stroke="#E8621E" stroke-width="16" stroke-linecap="round"/>
-        <path d="M140 150 Q154 170 148 190" stroke="#E8621E" stroke-width="18" stroke-linecap="round"/>
-        <!-- Teal tips -->
-        <circle cx="52" cy="190" r="8" fill="#26C6DA"/>
-        <circle cx="68" cy="194" r="7" fill="#26C6DA"/>
-        <circle cx="86" cy="196" r="7" fill="#26C6DA"/>
-        <circle cx="114" cy="196" r="7" fill="#26C6DA"/>
-        <circle cx="132" cy="194" r="7" fill="#26C6DA"/>
-        <circle cx="148" cy="190" r="8" fill="#26C6DA"/>
-        <!-- Left arm -->
-        <path d="M38 95 Q18 78 22 55" stroke="#E8621E" stroke-width="16" stroke-linecap="round"/>
-        <circle cx="22" cy="55" r="7" fill="#26C6DA"/>
-        <!-- Right arm (waving) -->
-        <path d="M162 95 Q182 78 178 55" stroke="#E8621E" stroke-width="16" stroke-linecap="round" style="animation:tentWave 2.2s ease-in-out infinite;transform-origin:162px 95px"/>
-        <circle cx="178" cy="55" r="7" fill="#26C6DA"/>
-        <!-- Big round body -->
-        <circle cx="100" cy="90" r="68" fill="#FF6B35"/>
-        <!-- Glossy highlight -->
-        <ellipse cx="76" cy="52" rx="20" ry="12" fill="rgba(255,255,255,.25)" transform="rotate(-20,76,52)"/>
-        <!-- Brown wire-frame glasses -->
-        <circle cx="80" cy="85" r="17" fill="rgba(255,255,255,.9)" stroke="#8B5E3C" stroke-width="3"/>
-        <circle cx="120" cy="85" r="17" fill="rgba(255,255,255,.9)" stroke="#8B5E3C" stroke-width="3"/>
-        <path d="M97 84 Q100 81 103 84" stroke="#8B5E3C" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-        <path d="M63 83 Q54 80 48 84" stroke="#8B5E3C" stroke-width="2.5" stroke-linecap="round"/>
-        <path d="M137 83 Q146 80 152 84" stroke="#8B5E3C" stroke-width="2.5" stroke-linecap="round"/>
-        <!-- Eyes -->
-        <circle cx="80" cy="86" r="10" fill="#1a1a2e"/>
-        <circle cx="84" cy="81" r="4" fill="white"/>
-        <circle cx="78" cy="90" r="2" fill="white" opacity=".5"/>
-        <circle cx="120" cy="86" r="10" fill="#1a1a2e"/>
-        <circle cx="124" cy="81" r="4" fill="white"/>
-        <circle cx="118" cy="90" r="2" fill="white" opacity=".5"/>
-        <!-- Cheek blush lines -->
-        <line x1="52" y1="96" x2="56" y2="104" stroke="#FF8570" stroke-width="2" stroke-linecap="round" opacity=".6"/>
-        <line x1="56" y1="96" x2="60" y2="104" stroke="#FF8570" stroke-width="2" stroke-linecap="round" opacity=".6"/>
-        <line x1="60" y1="96" x2="64" y2="104" stroke="#FF8570" stroke-width="2" stroke-linecap="round" opacity=".6"/>
-        <line x1="140" y1="96" x2="136" y2="104" stroke="#FF8570" stroke-width="2" stroke-linecap="round" opacity=".6"/>
-        <line x1="144" y1="96" x2="140" y2="104" stroke="#FF8570" stroke-width="2" stroke-linecap="round" opacity=".6"/>
-        <line x1="148" y1="96" x2="144" y2="104" stroke="#FF8570" stroke-width="2" stroke-linecap="round" opacity=".6"/>
-        <!-- Open smile -->
-        <path d="M82 108 Q100 122 118 108" stroke="#2d2d2d" stroke-width="3" stroke-linecap="round" fill="none"/>
-        <ellipse cx="100" cy="114" rx="10" ry="6" fill="#c0392b" opacity=".6"/>
-        <!-- Sparkles -->
-        <path d="M172 32 L174 24 L176 32 L184 34 L176 36 L174 44 L172 36 L164 34Z" fill="#FFD23F"/>
-        <path d="M18 52 L19.5 46 L21 52 L27 53.5 L21 55 L19.5 61 L18 55 L12 53.5Z" fill="#FFD23F" opacity=".7"/>
-        <circle cx="188" cy="68" r="4" fill="#26C6DA" opacity=".6"/>
-        <circle cx="14" cy="78" r="3" fill="#FF6B35" opacity=".4"/>
-      </svg>
+      <div class="brix-container" style="width: 185px; height: 185px; position: relative;">
+      <img id="brix-onboarding-avatar" src="assets/brix/brix_default.png" class="brix-img float" style="width: 100%; height: 100%; object-fit: contain;" />
+    </div>
     </div>
     <div class="ob-dots"><div class="dot on"></div><div class="dot"></div><div class="dot"></div></div>
   </div>
@@ -542,42 +519,10 @@ h1,h2,h3,h4{font-family:'Plus Jakarta Sans',sans-serif;color:var(--t1)}
     <div class="greet-row">
       <div class="greet-l">
         <!-- Mini Brix -->
-        <svg width="46" height="46" viewBox="0 0 130 140" fill="none" style="cursor:pointer;filter:drop-shadow(0 3px 8px rgba(255,107,53,.25))" onclick="wiggleBrix(this)">
-          <!-- Legs (short, chubby) -->
-          <path d="M38 100 Q30 112 34 126" stroke="#E8621E" stroke-width="10" stroke-linecap="round"/>
-          <path d="M48 104 Q44 116 46 128" stroke="#E8621E" stroke-width="9" stroke-linecap="round"/>
-          <path d="M58 106 Q56 118 58 130" stroke="#E8621E" stroke-width="9" stroke-linecap="round"/>
-          <path d="M72 106 Q74 118 72 130" stroke="#E8621E" stroke-width="9" stroke-linecap="round"/>
-          <path d="M82 104 Q86 116 84 128" stroke="#E8621E" stroke-width="9" stroke-linecap="round"/>
-          <path d="M92 100 Q100 112 96 126" stroke="#E8621E" stroke-width="10" stroke-linecap="round"/>
-          <!-- Teal tips -->
-          <circle cx="34" cy="126" r="5" fill="#26C6DA"/><circle cx="46" cy="128" r="4" fill="#26C6DA"/>
-          <circle cx="58" cy="130" r="4" fill="#26C6DA"/><circle cx="72" cy="130" r="4" fill="#26C6DA"/>
-          <circle cx="84" cy="128" r="4" fill="#26C6DA"/><circle cx="96" cy="126" r="5" fill="#26C6DA"/>
-          <!-- Arms -->
-          <path d="M26 58 Q14 46 16 32" stroke="#E8621E" stroke-width="9" stroke-linecap="round"/>
-          <circle cx="16" cy="32" r="4" fill="#26C6DA"/>
-          <path d="M104 58 Q116 46 114 32" stroke="#E8621E" stroke-width="9" stroke-linecap="round" style="animation:tentWave 2.2s ease-in-out infinite;transform-origin:104px 58px"/>
-          <circle cx="114" cy="32" r="4" fill="#26C6DA"/>
-          <!-- Round body -->
-          <circle cx="65" cy="58" r="42" fill="#FF6B35"/>
-          <!-- Highlight -->
-          <ellipse cx="50" cy="36" rx="14" ry="8" fill="rgba(255,255,255,.22)" transform="rotate(-18,50,36)"/>
-          <!-- Glasses -->
-          <circle cx="52" cy="55" r="11" fill="rgba(255,255,255,.88)" stroke="#8B5E3C" stroke-width="2"/>
-          <circle cx="78" cy="55" r="11" fill="rgba(255,255,255,.88)" stroke="#8B5E3C" stroke-width="2"/>
-          <path d="M63 54 Q65 52 67 54" stroke="#8B5E3C" stroke-width="1.8" stroke-linecap="round" fill="none"/>
-          <!-- Eyes -->
-          <circle cx="52" cy="56" r="6" fill="#1a1a2e"/><circle cx="55" cy="52" r="2.5" fill="white"/>
-          <circle cx="78" cy="56" r="6" fill="#1a1a2e"/><circle cx="81" cy="52" r="2.5" fill="white"/>
-          <!-- Cheek blush lines -->
-          <line x1="34" y1="62" x2="36" y2="68" stroke="#FF8570" stroke-width="1.5" stroke-linecap="round" opacity=".5"/>
-          <line x1="37" y1="62" x2="39" y2="68" stroke="#FF8570" stroke-width="1.5" stroke-linecap="round" opacity=".5"/>
-          <line x1="94" y1="62" x2="92" y2="68" stroke="#FF8570" stroke-width="1.5" stroke-linecap="round" opacity=".5"/>
-          <line x1="91" y1="62" x2="89" y2="68" stroke="#FF8570" stroke-width="1.5" stroke-linecap="round" opacity=".5"/>
-          <!-- Smile -->
-          <path d="M54 70 Q65 78 76 70" stroke="#2d2d2d" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-        </svg>
+        <div class="brix-container" style="width: 46px; height: 46px; position: relative; cursor: pointer;" onclick="wiggleBrix(this)">
+          <img id="brix-header-avatar" src="assets/brix/brix_default.png" class="brix-img" style="width: 100%; height: 100%; object-fit: contain;" />
+          <img id="brix-header-acc" src="" class="brix-acc-overlay" style="display: none; position: absolute;" />
+        </div>
         <div>
           <div class="greet-name">Günaydın, Savaş! ☀️</div>
           <div class="greet-sub">Bugün nasıl hissediyorsun?</div>
@@ -687,117 +632,10 @@ h1,h2,h3,h4{font-family:'Plus Jakarta Sans',sans-serif;color:var(--t1)}
     <div class="brix-chat" id="brix-chat" style="display: flex; gap: 14px; align-items: flex-start; padding: 16px; background: white; border-radius: 24px; border: 1.5px solid var(--border); box-shadow: var(--sh2); margin-bottom: 16px;">
       <!-- Brix mascot visual on the left -->
       <div style="width: 76px; height: 76px; flex-shrink: 0; position: relative;">
-                <svg id="brix-coach-avatar" class="brix-svg float" width="76" height="76" viewBox="0 0 200 230" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 4px 12px rgba(255,107,53,.25))">
-          <!-- Ground shadow -->
-          <ellipse cx="100" cy="220" rx="48" ry="6" fill="rgba(0,0,0,.08)"/>
-
-          <!-- 6 short chubby bottom legs -->
-          <path d="M60 150 Q46 170 52 190" stroke="#E8621E" stroke-width="18" stroke-linecap="round"/>
-          <path d="M74 156 Q66 176 68 194" stroke="#E8621E" stroke-width="16" stroke-linecap="round"/>
-          <path d="M88 160 Q84 180 86 196" stroke="#E8621E" stroke-width="15" stroke-linecap="round"/>
-          <path d="M112 160 Q116 180 114 196" stroke="#E8621E" stroke-width="15" stroke-linecap="round"/>
-          <path d="M126 156 Q134 176 132 194" stroke="#E8621E" stroke-width="16" stroke-linecap="round"/>
-          <path d="M140 150 Q154 170 148 190" stroke="#E8621E" stroke-width="18" stroke-linecap="round"/>
-
-          <!-- Teal tips on legs -->
-          <circle cx="52" cy="190" r="8" fill="#26C6DA"/>
-          <circle cx="68" cy="194" r="7" fill="#26C6DA"/>
-          <circle cx="86" cy="196" r="7" fill="#26C6DA"/>
-          <circle cx="114" cy="196" r="7" fill="#26C6DA"/>
-          <circle cx="132" cy="194" r="7" fill="#26C6DA"/>
-          <circle cx="148" cy="190" r="8" fill="#26C6DA"/>
-
-          <!-- Sneakers (acc-shoes) -->
-          <g class="acc-shoes">
-            <ellipse cx="52" cy="190" rx="14" ry="8" fill="#f5f5f5" stroke="#333" stroke-width="1.5"/>
-            <rect x="44" y="186" width="16" height="4" rx="2" fill="white"/>
-            <ellipse cx="148" cy="190" rx="14" ry="8" fill="#f5f5f5" stroke="#333" stroke-width="1.5"/>
-            <rect x="140" y="186" width="16" height="4" rx="2" fill="white"/>
-          </g>
-          <!-- Left arm -->
-          <path d="M38 95 Q18 78 22 55" stroke="#E8621E" stroke-width="16" stroke-linecap="round"/>
-          <circle cx="22" cy="55" r="7" fill="#26C6DA"/>
-
-          <!-- Right arm (waving) -->
-          <path d="M162 95 Q182 78 178 55" stroke="#E8621E" stroke-width="16" stroke-linecap="round" style="animation:tentWave 2.2s ease-in-out infinite;transform-origin:162px 95px"/>
-          <circle cx="178" cy="55" r="7" fill="#26C6DA"/>
-
-          <!-- Big round body (nearly circular!) -->
-          <circle cx="100" cy="90" r="68" fill="#FF6B35"/>
-
-          <!-- Doctor coat (acc-doctor-coat) -->
-          <path class="acc-doctor-coat" d="M42 128 Q100 145 158 128 L162 158 Q100 168 38 158 Z" fill="white" stroke="#333" stroke-width="2"/>
-          <path class="acc-doctor-coat" d="M85 128 L100 146 L115 128" fill="none" stroke="#333" stroke-width="2"/>
-          <circle class="acc-doctor-coat" cx="100" cy="148" r="2.5" fill="#888"/>
-          <circle class="acc-doctor-coat" cx="100" cy="155" r="2.5" fill="#888"/>
-          <!-- Stethoscope (acc-stethoscope) -->
-          <path class="acc-stethoscope" d="M70 124 Q100 140 130 124" fill="none" stroke="#888" stroke-width="2.5"/>
-          <circle class="acc-stethoscope" cx="100" cy="138" r="4.5" fill="#333"/>
-          <!-- Clipboard (acc-clipboard) — held by right arm -->
-          <g class="acc-clipboard">
-            <rect x="148" y="80" width="26" height="32" rx="3" fill="white" stroke="#333" stroke-width="1.8"/>
-            <rect x="155" y="76" width="11" height="7" rx="2" fill="#333"/>
-            <line x1="152" y1="94" x2="170" y2="94" stroke="#ccc" stroke-width="1.2"/>
-            <line x1="152" y1="100" x2="170" y2="100" stroke="#ccc" stroke-width="1.2"/>
-          </g>
-          <!-- Headphones (acc-headphones) -->
-          <path class="acc-headphones" d="M48 62 A 54 54 0 0 1 152 62" stroke="#26C6DA" stroke-width="6" fill="none" stroke-linecap="round"/>
-          <ellipse class="acc-headphones" cx="44" cy="82" rx="9" ry="16" fill="#26C6DA" stroke="#1a1a2e" stroke-width="2"/>
-          <ellipse class="acc-headphones" cx="156" cy="82" rx="9" ry="16" fill="#26C6DA" stroke="#1a1a2e" stroke-width="2"/>
-          <!-- Baseball cap (acc-thinking-hat) -->
-          <g class="acc-thinking-hat">
-            <ellipse cx="100" cy="30" rx="52" ry="10" fill="#1a1a2e"/>
-            <path d="M50 30 Q100 -12 150 30" fill="#1a1a2e"/>
-            <circle cx="100" cy="18" r="5" fill="#FF6B35"/>
-            <path d="M150 30 Q168 34 174 42" stroke="#1a1a2e" stroke-width="7" stroke-linecap="round"/>
-          </g>
-          <!-- Pencil (acc-pencil) -->
-          <g class="acc-pencil" transform="translate(158,44) rotate(-30)">
-            <rect x="0" y="0" width="22" height="8" rx="2" fill="#FFD23F" stroke="#333" stroke-width="1.2"/>
-            <polygon points="22,0 28,4 22,8" fill="#FFA500" stroke="#333" stroke-width="1.2"/>
-            <polygon points="25,2 28,4 25,6" fill="#333"/>
-            <rect x="-4" y="0" width="4" height="8" rx="1" fill="#FF8C5A" stroke="#333" stroke-width="1.2"/>
-          </g>
-          <!-- Glossy highlight on top-left -->
-          <ellipse cx="76" cy="52" rx="20" ry="12" fill="rgba(255,255,255,.25)" transform="rotate(-20,76,52)"/>
-
-          <!-- Round glasses -->
-          <circle cx="80" cy="85" r="17" fill="rgba(255,255,255,.9)" stroke="#8B5E3C" stroke-width="3"/>
-          <circle cx="120" cy="85" r="17" fill="rgba(255,255,255,.9)" stroke="#8B5E3C" stroke-width="3"/>
-          <!-- Bridge -->
-          <path d="M97 84 Q100 81 103 84" stroke="#8B5E3C" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-          <!-- Temples -->
-          <path d="M63 83 Q54 80 48 84" stroke="#8B5E3C" stroke-width="2.5" stroke-linecap="round"/>
-          <path d="M137 83 Q146 80 152 84" stroke="#8B5E3C" stroke-width="2.5" stroke-linecap="round"/>
-
-          <!-- Heartbreak accessory (acc-heartbreak) -->
-          <g class="acc-heartbreak">
-            <path d="M152 40 C149 36 143 36 140 40 L152 52 L164 40 C161 36 155 36 152 40 Z" fill="#EF4444"/>
-            <line x1="152" y1="40" x2="152" y2="52" stroke="white" stroke-width="1.5"/>
-          </g>
-
-          <!-- Eyes group -->
-          <g id="brix-eyes-group">
-            <circle cx="80" cy="86" r="10" fill="#1a1a2e"/>
-            <circle cx="84" cy="81" r="4" fill="white"/>
-            <circle cx="78" cy="90" r="2" fill="white" opacity=".5"/>
-            <circle cx="120" cy="86" r="10" fill="#1a1a2e"/>
-            <circle cx="124" cy="81" r="4" fill="white"/>
-            <circle cx="118" cy="90" r="2" fill="white" opacity=".5"/>
-          </g>
-
-          <!-- Cheek blush (diagonal lines like reference) -->
-          <line x1="52" y1="96" x2="56" y2="104" stroke="#FF8570" stroke-width="2" stroke-linecap="round" opacity=".6"/>
-          <line x1="56" y1="96" x2="60" y2="104" stroke="#FF8570" stroke-width="2" stroke-linecap="round" opacity=".6"/>
-          <line x1="60" y1="96" x2="64" y2="104" stroke="#FF8570" stroke-width="2" stroke-linecap="round" opacity=".6"/>
-          <line x1="140" y1="96" x2="136" y2="104" stroke="#FF8570" stroke-width="2" stroke-linecap="round" opacity=".6"/>
-          <line x1="144" y1="96" x2="140" y2="104" stroke="#FF8570" stroke-width="2" stroke-linecap="round" opacity=".6"/>
-          <line x1="148" y1="96" x2="144" y2="104" stroke="#FF8570" stroke-width="2" stroke-linecap="round" opacity=".6"/>
-
-          <!-- Open smile -->
-          <path id="brix-smile" d="M82 108 Q100 122 118 108" stroke="#2d2d2d" stroke-width="3" stroke-linecap="round" fill="none"/>
-          <ellipse id="brix-mouth-open" cx="100" cy="114" rx="10" ry="6" fill="#c0392b" opacity=".6"/>
-        </svg>
+                <div class="brix-container" style="width: 76px; height: 76px; position: relative; flex-shrink: 0;">
+          <img id="brix-coach-avatar" src="assets/brix/brix_default.png" class="brix-img float" style="width: 100%; height: 100%; object-fit: contain;" />
+          <img id="brix-coach-acc" src="" class="brix-acc-overlay" style="display: none; position: absolute;" />
+        </div>
       </div>
       <!-- Speech bubble layout next to it -->
       <div style="flex: 1; display: flex; flex-direction: column;">
@@ -1857,101 +1695,10 @@ h1,h2,h3,h4{font-family:'Plus Jakarta Sans',sans-serif;color:var(--t1)}
     
     <!-- Focused Brix SVG -->
     <div style="width: 130px; height: 130px; margin: 20px 0; position: relative;">
-            <svg id="brix-pomodoro-avatar" class="brix-svg focus" width="130" height="130" viewBox="0 0 200 230" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 4px 12px rgba(255,107,53,.25))">
-          <!-- Ground shadow -->
-          <ellipse cx="100" cy="220" rx="48" ry="6" fill="rgba(0,0,0,.08)"/>
-
-          <!-- 6 short chubby bottom legs -->
-          <path d="M60 150 Q46 170 52 190" stroke="#E8621E" stroke-width="18" stroke-linecap="round"/>
-          <path d="M74 156 Q66 176 68 194" stroke="#E8621E" stroke-width="16" stroke-linecap="round"/>
-          <path d="M88 160 Q84 180 86 196" stroke="#E8621E" stroke-width="15" stroke-linecap="round"/>
-          <path d="M112 160 Q116 180 114 196" stroke="#E8621E" stroke-width="15" stroke-linecap="round"/>
-          <path d="M126 156 Q134 176 132 194" stroke="#E8621E" stroke-width="16" stroke-linecap="round"/>
-          <path d="M140 150 Q154 170 148 190" stroke="#E8621E" stroke-width="18" stroke-linecap="round"/>
-
-          <!-- Teal tips on legs -->
-          <circle cx="52" cy="190" r="8" fill="#26C6DA"/>
-          <circle cx="68" cy="194" r="7" fill="#26C6DA"/>
-          <circle cx="86" cy="196" r="7" fill="#26C6DA"/>
-          <circle cx="114" cy="196" r="7" fill="#26C6DA"/>
-          <circle cx="132" cy="194" r="7" fill="#26C6DA"/>
-          <circle cx="148" cy="190" r="8" fill="#26C6DA"/>
-
-          <!-- Left arm -->
-          <path d="M38 95 Q18 78 22 55" stroke="#E8621E" stroke-width="16" stroke-linecap="round"/>
-          <circle cx="22" cy="55" r="7" fill="#26C6DA"/>
-
-          <!-- Right arm (waving) -->
-          <path d="M162 95 Q182 78 178 55" stroke="#E8621E" stroke-width="16" stroke-linecap="round" style="animation:tentWave 2.2s ease-in-out infinite;transform-origin:162px 95px"/>
-          <circle cx="178" cy="55" r="7" fill="#26C6DA"/>
-
-          <!-- Big round body (nearly circular!) -->
-          <circle cx="100" cy="90" r="68" fill="#FF6B35"/>
-
-          <!-- Doctor coat (acc-doctor-coat) -->
-          <path class="acc-doctor-coat" d="M42 128 Q100 145 158 128 L162 158 Q100 168 38 158 Z" fill="white" stroke="#333" stroke-width="2"/>
-          <path class="acc-doctor-coat" d="M85 128 L100 146 L115 128" fill="none" stroke="#333" stroke-width="2"/>
-          <circle class="acc-doctor-coat" cx="100" cy="148" r="2.5" fill="#888"/>
-          <circle class="acc-doctor-coat" cx="100" cy="155" r="2.5" fill="#888"/>
-          <!-- Stethoscope (acc-stethoscope) -->
-          <path class="acc-stethoscope" d="M70 124 Q100 140 130 124" fill="none" stroke="#888" stroke-width="2.5"/>
-          <circle class="acc-stethoscope" cx="100" cy="138" r="4.5" fill="#333"/>
-          <!-- Clipboard (acc-clipboard) — held by right arm -->
-          <g class="acc-clipboard">
-            <rect x="148" y="80" width="26" height="32" rx="3" fill="white" stroke="#333" stroke-width="1.8"/>
-            <rect x="155" y="76" width="11" height="7" rx="2" fill="#333"/>
-            <line x1="152" y1="94" x2="170" y2="94" stroke="#ccc" stroke-width="1.2"/>
-            <line x1="152" y1="100" x2="170" y2="100" stroke="#ccc" stroke-width="1.2"/>
-          </g>
-          <!-- Headphones (acc-headphones) -->
-          <path class="acc-headphones" d="M48 62 A 54 54 0 0 1 152 62" stroke="#26C6DA" stroke-width="6" fill="none" stroke-linecap="round"/>
-          <ellipse class="acc-headphones" cx="44" cy="82" rx="9" ry="16" fill="#26C6DA" stroke="#1a1a2e" stroke-width="2"/>
-          <ellipse class="acc-headphones" cx="156" cy="82" rx="9" ry="16" fill="#26C6DA" stroke="#1a1a2e" stroke-width="2"/>
-          <!-- Baseball cap (acc-thinking-hat) -->
-          <g class="acc-thinking-hat">
-            <ellipse cx="100" cy="30" rx="52" ry="10" fill="#1a1a2e"/>
-            <path d="M50 30 Q100 -12 150 30" fill="#1a1a2e"/>
-            <circle cx="100" cy="18" r="5" fill="#FF6B35"/>
-            <path d="M150 30 Q168 34 174 42" stroke="#1a1a2e" stroke-width="7" stroke-linecap="round"/>
-          </g>
-          <!-- Pencil (acc-pencil) -->
-          <g class="acc-pencil" transform="translate(158,44) rotate(-30)">
-            <rect x="0" y="0" width="22" height="8" rx="2" fill="#FFD23F" stroke="#333" stroke-width="1.2"/>
-            <polygon points="22,0 28,4 22,8" fill="#FFA500" stroke="#333" stroke-width="1.2"/>
-            <polygon points="25,2 28,4 25,6" fill="#333"/>
-            <rect x="-4" y="0" width="4" height="8" rx="1" fill="#FF8C5A" stroke="#333" stroke-width="1.2"/>
-          </g>
-          <!-- Glossy highlight on top-left -->
-          <ellipse cx="76" cy="52" rx="20" ry="12" fill="rgba(255,255,255,.25)" transform="rotate(-20,76,52)"/>
-
-          <!-- Round glasses -->
-          <circle cx="80" cy="85" r="17" fill="rgba(255,255,255,.9)" stroke="#8B5E3C" stroke-width="3"/>
-          <circle cx="120" cy="85" r="17" fill="rgba(255,255,255,.9)" stroke="#8B5E3C" stroke-width="3"/>
-          <!-- Bridge -->
-          <path d="M97 84 Q100 81 103 84" stroke="#8B5E3C" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-          <!-- Temples -->
-          <path d="M63 83 Q54 80 48 84" stroke="#8B5E3C" stroke-width="2.5" stroke-linecap="round"/>
-          <path d="M137 83 Q146 80 152 84" stroke="#8B5E3C" stroke-width="2.5" stroke-linecap="round"/>
-
-          <!-- Eyes (big, cute, centered in glasses) -->
-          <circle cx="80" cy="86" r="10" fill="#1a1a2e"/>
-          <circle cx="84" cy="81" r="4" fill="white"/>
-          <circle cx="78" cy="90" r="2" fill="white" opacity=".5"/>
-          <circle cx="120" cy="86" r="10" fill="#1a1a2e"/>
-          <circle cx="124" cy="81" r="4" fill="white"/>
-          <circle cx="118" cy="90" r="2" fill="white" opacity=".5"/>
-
-          <!-- Cheek blush (diagonal lines like reference) -->
-          <line x1="52" y1="96" x2="56" y2="104" stroke="#FF8570" stroke-width="2" stroke-linecap="round" opacity=".6"/>
-          <line x1="56" y1="96" x2="60" y2="104" stroke="#FF8570" stroke-width="2" stroke-linecap="round" opacity=".6"/>
-          <line x1="60" y1="96" x2="64" y2="104" stroke="#FF8570" stroke-width="2" stroke-linecap="round" opacity=".6"/>
-          <line x1="140" y1="96" x2="136" y2="104" stroke="#FF8570" stroke-width="2" stroke-linecap="round" opacity=".6"/>
-          <line x1="144" y1="96" x2="140" y2="104" stroke="#FF8570" stroke-width="2" stroke-linecap="round" opacity=".6"/>
-          <line x1="148" y1="96" x2="144" y2="104" stroke="#FF8570" stroke-width="2" stroke-linecap="round" opacity=".6"/>
-
-          <!-- Calm smile -->
-          <path d="M86 108 Q100 118 114 108" stroke="#2d2d2d" stroke-width="3" stroke-linecap="round" fill="none"/>
-        </svg>
+            <div class="brix-container" style="width: 130px; height: 130px; position: relative; margin: 20px 0;">
+      <img id="brix-pomodoro-avatar" src="assets/brix/brix_focus.png" class="brix-img focus" style="width: 100%; height: 100%; object-fit: contain;" />
+      <img id="brix-pomodoro-acc" src="" class="brix-acc-overlay" style="display: none; position: absolute;" />
+    </div>
     </div>
 
     <!-- Countdown Timer -->
@@ -3796,19 +3543,32 @@ function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
 }
 
 function setBrixState(state) {
-  const b = document.getElementById('brix-coach-avatar');
-  if (!b) return;
-  b.className = 'brix-svg';
-  if (state === 'walk') {
-    b.classList.add('walk');
-  } else if (state === 'music') {
-    b.classList.add('music');
-  } else if (state === 'focus') {
-    b.classList.add('focus');
-  } else if (state === 'doctor') {
-    b.classList.add('doctor');
-  } else {
-    b.classList.add('float');
+  const stateFiles = {
+    focus: 'assets/brix/brix_focus.png',
+    music: 'assets/brix/brix_music.png',
+    walk: 'assets/brix/brix_walk.png',
+    doctor: 'assets/brix/brix_doctor.png',
+    sensitive: 'assets/brix/brix_sensitive.png',
+    float: 'assets/brix/brix_default.png',
+    default: 'assets/brix/brix_default.png'
+  };
+
+  const coachImg = document.getElementById('brix-coach-avatar');
+  const pomodoroImg = document.getElementById('brix-pomodoro-avatar');
+  const headerImg = document.getElementById('brix-header-avatar');
+
+  const file = stateFiles[state] || stateFiles['default'];
+
+  if (coachImg) {
+    coachImg.src = file;
+    coachImg.className = 'brix-img ' + (state === 'float' ? 'float' : state);
+  }
+  if (pomodoroImg) {
+    pomodoroImg.src = file;
+    pomodoroImg.className = 'brix-img ' + (state === 'float' ? 'float' : state);
+  }
+  if (headerImg) {
+    headerImg.src = file;
   }
 }
 
@@ -4391,34 +4151,8 @@ function openActivity(type) {
   clearInterval(activityInterval);
   interactive.innerHTML = '';
   
-  let brixSvgHtml = `
-    <svg width="100" height="100" viewBox="0 0 200 230" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 4px 12px rgba(255,107,53,.2))">
-      <ellipse cx="100" cy="220" rx="48" ry="6" fill="rgba(0,0,0,.08)"/>
-      <path d="M60 150 Q46 170 52 190" stroke="#E8621E" stroke-width="18" stroke-linecap="round"/>
-      <path d="M74 156 Q66 176 68 194" stroke="#E8621E" stroke-width="16" stroke-linecap="round"/>
-      <path d="M88 160 Q84 180 86 196" stroke="#E8621E" stroke-width="15" stroke-linecap="round"/>
-      <path d="M112 160 Q116 180 114 196" stroke="#E8621E" stroke-width="15" stroke-linecap="round"/>
-      <path d="M126 156 Q134 176 132 194" stroke="#E8621E" stroke-width="16" stroke-linecap="round"/>
-      <path d="M140 150 Q154 170 148 190" stroke="#E8621E" stroke-width="18" stroke-linecap="round"/>
-      <circle cx="52" cy="190" r="8" fill="#26C6DA"/><circle cx="68" cy="194" r="7" fill="#26C6DA"/>
-      <circle cx="86" cy="196" r="7" fill="#26C6DA"/><circle cx="114" cy="196" r="7" fill="#26C6DA"/>
-      <circle cx="132" cy="194" r="7" fill="#26C6DA"/><circle cx="148" cy="190" r="8" fill="#26C6DA"/>
-      <path d="M38 95 Q18 78 22 55" stroke="#E8621E" stroke-width="16" stroke-linecap="round"/>
-      <circle cx="22" cy="55" r="7" fill="#26C6DA"/>
-      <path d="M162 95 Q182 78 178 55" stroke="#E8621E" stroke-width="16" stroke-linecap="round"/>
-      <circle cx="178" cy="55" r="7" fill="#26C6DA"/>
-      <circle id="overlay-brix-body" cx="100" cy="90" r="68" fill="#FF6B35"/>
-      <ellipse cx="76" cy="52" rx="20" ry="12" fill="rgba(255,255,255,.25)" transform="rotate(-20,76,52)"/>
-      <circle cx="80" cy="85" r="17" fill="rgba(255,255,255,.9)" stroke="#8B5E3C" stroke-width="3"/>
-      <circle cx="120" cy="85" r="17" fill="rgba(255,255,255,.9)" stroke="#8B5E3C" stroke-width="3"/>
-      <path d="M97 84 Q100 81 103 84" stroke="#8B5E3C" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-      <path d="M63 83 Q54 80 48 84" stroke="#8B5E3C" stroke-width="2.5" stroke-linecap="round"/>
-      <path d="M137 83 Q146 80 152 84" stroke="#8B5E3C" stroke-width="2.5" stroke-linecap="round"/>
-      <circle cx="80" cy="86" r="10" fill="#1a1a2e"/><circle cx="84" cy="81" r="4" fill="white"/>
-      <circle cx="120" cy="86" r="10" fill="#1a1a2e"/><circle cx="124" cy="81" r="4" fill="white"/>
-      <line x1="52" y1="96" x2="56" y2="104" stroke="#FF8570" stroke-width="2" stroke-linecap="round" opacity=".6"/>
-      <line x1="140" y1="96" x2="136" y2="104" stroke="#FF8570" stroke-width="2" stroke-linecap="round" opacity=".6"/>
-  `;
+  let imgSrc = 'assets/brix/brix_default.png';
+  let brixClass = 'brix-img float';
   
   if (type === 'breathing') {
     title.innerText = 'Derin Nefes Egzersizi 🌬️';
@@ -4434,12 +4168,8 @@ function openActivity(type) {
       </div>
     `;
     
-    // Add headphones to mascot
-    brixSvgHtml += `
-      <path d="M48 62 A 54 54 0 0 1 152 62" stroke="#26C6DA" stroke-width="6" fill="none" stroke-linecap="round"/>
-      <ellipse cx="44" cy="82" rx="9" ry="16" fill="#26C6DA" stroke="#1a1a2e" stroke-width="2"/>
-      <ellipse cx="156" cy="82" rx="9" ry="16" fill="#26C6DA" stroke="#1a1a2e" stroke-width="2"/>
-    `;
+    imgSrc = 'assets/brix/brix_music.png';
+    brixClass = 'brix-img music';
     
     let seconds = 60;
     let cycle = 0;
@@ -4459,19 +4189,19 @@ function openActivity(type) {
       
       cycle = (cycle + 1) % 8;
       const ring = document.getElementById('breathing-ring');
-      const body = document.getElementById('overlay-brix-body');
+      const brixImgEl = document.getElementById('overlay-brix-img');
       
       if (ring) {
         if (cycle === 0) {
           ring.style.transform = 'scale(1.35)';
           ring.style.background = 'rgba(38,198,218,0.25)';
           ring.innerText = 'Nefes Al';
-          if (body) body.setAttribute('r', '74');
+          if (brixImgEl) brixImgEl.style.transform = 'scale(1.1)';
         } else if (cycle === 4) {
           ring.style.transform = 'scale(1.0)';
           ring.style.background = 'rgba(38,198,218,0.1)';
           ring.innerText = 'Nefes Ver';
-          if (body) body.setAttribute('r', '64');
+          if (brixImgEl) brixImgEl.style.transform = 'scale(0.9)';
         }
       }
       
@@ -4518,12 +4248,7 @@ function openActivity(type) {
       </div>
     `;
     
-    // Sleeping mask to mascot
-    brixSvgHtml += `
-      <rect x="55" y="72" width="90" height="28" rx="14" fill="#1a1a2e"/>
-      <path d="M75 86 Q80 92 85 86" stroke="white" stroke-width="2" fill="none"/>
-      <path d="M115 86 Q120 92 125 86" stroke="white" stroke-width="2" fill="none"/>
-    `;
+    imgSrc = 'assets/brix/brix_sensitive.png';
     
     let seconds = 600;
     activityInterval = setInterval(() => {
@@ -4563,13 +4288,8 @@ function openActivity(type) {
       </div>
     `;
     
-    // Sneakers on mascot
-    brixSvgHtml += `
-      <ellipse cx="52" cy="190" rx="14" ry="8" fill="#f5f5f5" stroke="#333" stroke-width="1.5"/>
-      <rect x="44" y="186" width="16" height="4" rx="2" fill="white"/>
-      <ellipse cx="148" cy="190" rx="14" ry="8" fill="#f5f5f5" stroke="#333" stroke-width="1.5"/>
-      <rect x="140" y="186" width="16" height="4" rx="2" fill="white"/>
-    `;
+    imgSrc = 'assets/brix/brix_walk.png';
+    brixClass = 'brix-img walk';
     
     actionBtn.onclick = function() {
       currentStretchStep++;
@@ -4621,12 +4341,7 @@ function openActivity(type) {
       </div>
     `;
     
-    // Sleeping mask on mascot
-    brixSvgHtml += `
-      <rect x="55" y="72" width="90" height="28" rx="14" fill="#26C6DA" stroke="#1a1a2e" stroke-width="2"/>
-      <path d="M75 86 Q80 92 85 86" stroke="white" stroke-width="2" fill="none"/>
-      <path d="M115 86 Q120 92 125 86" stroke="white" stroke-width="2" fill="none"/>
-    `;
+    imgSrc = 'assets/brix/brix_sensitive.png';
     
     let seconds = 20;
     activityInterval = setInterval(() => {
@@ -4651,12 +4366,11 @@ function openActivity(type) {
     }, 1000);
   }
   
-  brixSvgHtml += `
-      <path d="M82 108 Q100 122 118 108" stroke="#2d2d2d" stroke-width="3" stroke-linecap="round" fill="none"/>
-      <ellipse cx="100" cy="114" rx="10" ry="6" fill="#c0392b" opacity=".6"/>
-    </svg>
+  mascot.innerHTML = `
+    <div class="brix-container" style="width: 100px; height: 100px; position: relative; margin: 0 auto;">
+       <img id="overlay-brix-img" src="${imgSrc}" class="${brixClass}" style="width: 100%; height: 100%; object-fit: contain; transition: transform 0.3s ease-in-out;" />
+    </div>
   `;
-  mascot.innerHTML = brixSvgHtml;
 }
 
 function closeActivityOverlay() {
@@ -5664,43 +5378,34 @@ function unequipAccessory(id) {
 }
 
 function applyMascotAccessories() {
-  const accessoryTemplates = {
-    sunglasses: `<g class="shop-acc shop-sunglasses">
-      <rect x="62" y="74" width="34" height="18" rx="5" fill="#1e293b" stroke="#000" stroke-width="2"/>
-      <rect x="104" y="74" width="34" height="18" rx="5" fill="#1e293b" stroke="#000" stroke-width="2"/>
-      <rect x="94" y="78" width="12" height="4" fill="#000"/>
-      <rect x="66" y="77" width="8" height="3" rx="1" fill="#fff" opacity="0.6"/>
-      <rect x="108" y="77" width="8" height="3" rx="1" fill="#fff" opacity="0.6"/>
-    </g>`,
-    crown: `<g class="shop-acc shop-crown">
-      <path d="M60 40 L70 18 L100 32 L130 18 L140 40 Z" fill="#fbbf24" stroke="#d97706" stroke-width="2" stroke-linejoin="round"/>
-      <circle cx="70" cy="18" r="4" fill="#ef4444" stroke="#b91c1c" stroke-width="1"/>
-      <circle cx="100" cy="32" r="4" fill="#3b82f6" stroke="#1d4ed8" stroke-width="1"/>
-      <circle cx="130" cy="18" r="4" fill="#10b981" stroke="#047857" stroke-width="1"/>
-      <rect x="60" y="34" width="80" height="6" fill="#f59e0b" stroke="#d97706" stroke-width="2"/>
-    </g>`,
-    wizard: `<g class="shop-acc shop-wizard">
-      <path d="M54 36 L100 -8 L146 36 Z" fill="#6d28d9" stroke="#4c1d95" stroke-width="2" stroke-linejoin="round"/>
-      <ellipse cx="100" cy="36" rx="56" ry="8" fill="#5b21b6" stroke="#4c1d95" stroke-width="2"/>
-      <polygon points="98,14 100,8 102,14 98,11 102,11" fill="#fbbf24"/>
-      <polygon points="86,24 88,18 90,24 86,21 90,21" fill="#fbbf24"/>
-      <polygon points="110,24 112,18 114,24 110,21 114,21" fill="#fbbf24"/>
-    </g>`,
-    horns: `<g class="shop-acc shop-horns">
-      <path d="M64 28 Q44 6 36 18 Q50 34 66 32 Z" fill="#f3f4f6" stroke="#9ca3af" stroke-width="2" stroke-linejoin="round"/>
-      <path d="M136 28 Q156 6 164 18 Q150 34 134 32 Z" fill="#f3f4f6" stroke="#9ca3af" stroke-width="2" stroke-linejoin="round"/>
-      <path d="M62 30 Q100 20 138 30" fill="none" stroke="#4b5563" stroke-width="6" stroke-linecap="round"/>
-    </g>`
+  const acc = window.equippedAccessory; // 'sunglasses', 'crown', 'wizard', 'horns'
+  const accessoryFiles = {
+    sunglasses: 'assets/brix/acc_sunglasses.png',
+    crown: 'assets/brix/acc_crown.png',
+    wizard: 'assets/brix/acc_wizard.png',
+    horns: 'assets/brix/acc_viking.png'
   };
-  
-  document.querySelectorAll('svg.brix-svg').forEach(svg => {
-    svg.querySelectorAll('.shop-acc').forEach(el => el.remove());
-    
-    if (window.equippedAccessory && accessoryTemplates[window.equippedAccessory]) {
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(`<svg xmlns="http://www.w3.org/2000/svg">${accessoryTemplates[window.equippedAccessory]}</svg>`, 'image/svg+xml');
-      const node = document.importNode(doc.documentElement.firstChild, true);
-      svg.appendChild(node);
+
+  const coachAcc = document.getElementById('brix-coach-acc');
+  const pomodoroAcc = document.getElementById('brix-pomodoro-acc');
+  const headerAcc = document.getElementById('brix-header-acc');
+
+  const accElements = [
+    { el: coachAcc },
+    { el: pomodoroAcc },
+    { el: headerAcc }
+  ];
+
+  accElements.forEach(item => {
+    if (item.el) {
+      if (acc && accessoryFiles[acc]) {
+        item.el.src = accessoryFiles[acc];
+        item.el.style.display = 'block';
+        item.el.className = 'brix-acc-overlay ' + (acc === 'horns' ? 'acc-viking' : 'acc-' + acc);
+      } else {
+        item.el.style.display = 'none';
+        item.el.src = '';
+      }
     }
   });
 }
