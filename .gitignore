@@ -1,0 +1,8 @@
+node_modules/
+.gradle/
+local.properties
+.idea/
+.DS_Store
+*.log
+temp_js.js
+generate_icons.py
