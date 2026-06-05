@@ -451,6 +451,390 @@ h1,h2,h3,h4{font-family:'Plus Jakarta Sans',sans-serif;color:var(--t1)}
 .fidget-bubble:active {
   transform: scale(0.85);
 }
+
+/* =========================================
+   V2.1 CLAYMORPHIC & GLASSMORPHIC OVERRIDES
+   ========================================= */
+
+/* Global variable updates */
+:root {
+  --sh1: 0 8px 16px rgba(15,23,41,.03), inset 0 2px 4px rgba(255,255,255,0.8);
+  --sh2: 0 12px 24px rgba(15,23,41,.06), inset 0 2px 4px rgba(255,255,255,0.8);
+  --sh3: 0 20px 40px rgba(15,23,41,.12), inset 0 2px 4px rgba(255,255,255,0.8);
+  --clay-sh-orange: 0 6px 0 #E8621E, 0 12px 24px rgba(255,107,53,0.3);
+  --clay-sh-teal: 0 6px 0 #00ACC1, 0 12px 24px rgba(38,198,218,0.25);
+  --clay-sh-card: 0 8px 20px rgba(15,23,41,0.04), inset 0 4px 0 #ffffff, inset 0 -4px 0 #F1F5F9;
+}
+
+/* Premium Body backdrop with glowing mesh effects */
+body {
+  background: radial-gradient(circle at 15% 20%, rgba(255, 107, 53, 0.15) 0%, transparent 40%),
+              radial-gradient(circle at 85% 80%, rgba(38, 198, 218, 0.15) 0%, transparent 40%),
+              #0f172a !important;
+  overflow: hidden;
+}
+
+/* Simulated iPhone frame updates (Titanium bezel + Dynamic Island) */
+.phone {
+  border-radius: 56px !important;
+  box-shadow: 
+    0 40px 100px rgba(0,0,0,0.5), 
+    0 0 0 12px #1e293b, 
+    0 0 0 15px #334155, 
+    inset 0 2px 4px rgba(255,255,255,0.2) !important;
+  transition: all 0.3s var(--eo);
+}
+
+.notch {
+  top: 12px !important;
+  width: 110px !important;
+  height: 28px !important;
+  background: #000000 !important;
+  border-radius: 20px !important;
+  box-shadow: inset 0 1px 2px rgba(255,255,255,0.1), 0 2px 4px rgba(0,0,0,0.2) !important;
+}
+
+.notch::after {
+  width: 8px !important;
+  height: 8px !important;
+  background: #111827 !important;
+  border-radius: 50% !important;
+  top: 50% !important;
+  left: 18px !important;
+  transform: translateY(-50%) !important;
+  box-shadow: inset 0 1px 2px black !important;
+}
+
+/* Dynamic Island hidden status bar text adjustment */
+.sb {
+  height: 52px !important;
+}
+
+/* Floating Glassmorphic Bottom Navigation Bar */
+.bnav {
+  position: absolute !important;
+  bottom: 16px !important;
+  left: 16px !important;
+  right: 16px !important;
+  height: 68px !important;
+  background: rgba(255, 255, 255, 0.82) !important;
+  backdrop-filter: blur(24px) !important;
+  -webkit-backdrop-filter: blur(24px) !important;
+  border: 2px solid rgba(255, 255, 255, 0.6) !important;
+  border-radius: 24px !important;
+  box-shadow: 0 12px 30px rgba(15, 23, 41, 0.08) !important;
+  padding: 0 6px !important;
+  box-sizing: border-box !important;
+}
+
+.niw {
+  padding: 8px 16px !important;
+  border-radius: 16px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.ni.on .niw {
+  background: linear-gradient(135deg, var(--orange), var(--o2)) !important;
+  box-shadow: 0 6px 15px rgba(255, 107, 53, 0.25) !important;
+}
+
+.ni.on svg {
+  color: white !important;
+}
+
+.ni.on .nl {
+  color: var(--orange) !important;
+  font-weight: 800 !important;
+}
+
+.nl {
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-weight: 600 !important;
+}
+
+/* Claymorphic Buttons */
+.btn {
+  border: 3px solid rgba(255, 255, 255, 0.25) !important;
+  border-radius: 20px !important;
+  padding: 14px 24px !important;
+  font-weight: 800 !important;
+  box-shadow: var(--clay-sh-orange) !important;
+  transform: translateY(-2px) !important;
+  transition: all 0.15s var(--sp) !important;
+}
+
+.btn:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 8px 0 #E8621E, 0 16px 32px rgba(255,107,53,0.45) !important;
+}
+
+.btn:active {
+  transform: translateY(2px) !important;
+  box-shadow: 0 1px 0 #E8621E, 0 4px 8px rgba(255,107,53,0.2) !important;
+}
+
+/* Button variants for JS rendering and inline overrides */
+.btn.teal, .btn[style*="var(--teal)"] {
+  background: linear-gradient(135deg, var(--teal), #00ACC1) !important;
+  box-shadow: var(--clay-sh-teal) !important;
+}
+.btn.teal:hover, .btn[style*="var(--teal)"]:hover {
+  box-shadow: 0 8px 0 #00ACC1, 0 16px 32px rgba(38,198,218,0.4) !important;
+}
+.btn.teal:active, .btn[style*="var(--teal)"]:active {
+  box-shadow: 0 1px 0 #00ACC1, 0 4px 8px rgba(38,198,218,0.2) !important;
+}
+
+.btn.grey, .btn[style*="var(--border)"] {
+  background: #E2E8F0 !important;
+  color: var(--t2) !important;
+  border-color: rgba(255,255,255,0.4) !important;
+  box-shadow: 0 4px 0 #CBD5E1, 0 8px 16px rgba(15,23,41,0.04) !important;
+}
+.btn.grey:hover, .btn[style*="var(--border)"]:hover {
+  box-shadow: 0 6px 0 #CBD5E1, 0 12px 20px rgba(15,23,41,0.06) !important;
+}
+.btn.grey:active, .btn[style*="var(--border)"]:active {
+  box-shadow: 0 1px 0 #CBD5E1, 0 2px 4px rgba(15,23,41,0.03) !important;
+}
+
+/* Claymorphic Cards */
+.card {
+  border-radius: 24px !important;
+  padding: 18px !important;
+  box-shadow: var(--clay-sh-card) !important;
+  border: 3px solid #F1F5F9 !important;
+  transition: all 0.25s var(--sp);
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(15, 23, 41, 0.06), inset 0 4px 0 #ffffff, inset 0 -4px 0 #F1F5F9 !important;
+  border-color: #E2E8F0 !important;
+}
+
+/* Streak card updates */
+.streak {
+  border: 3px solid #FAD3C2 !important;
+  box-shadow: 0 8px 20px rgba(255,107,53,0.05), inset 0 4px 0 #ffffff !important;
+}
+
+/* Task Cards */
+.tc {
+  border-radius: 20px !important;
+  padding: 14px 16px !important;
+  box-shadow: var(--clay-sh-card) !important;
+  border: 3px solid #F1F5F9 !important;
+  margin-bottom: 10px !important;
+}
+
+.tc:hover {
+  transform: translateX(4px) translateY(-1px) !important;
+  box-shadow: 0 10px 20px rgba(15, 23, 41, 0.05), inset 0 4px 0 #ffffff !important;
+}
+
+.tc:active {
+  transform: scale(0.98) !important;
+}
+
+/* Task Checkbox */
+.chk {
+  width: 26px !important;
+  height: 26px !important;
+  border-radius: 10px !important;
+  border: 3px solid #E2E8F0 !important;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.03) !important;
+}
+
+.chk:hover {
+  border-color: var(--green) !important;
+  background: var(--gl) !important;
+  transform: scale(1.08) !important;
+}
+
+.chk.done {
+  background: var(--green) !important;
+  border-color: var(--green) !important;
+  box-shadow: 0 4px 10px rgba(34, 197, 94, 0.25) !important;
+}
+
+/* Tactile Mood Pills */
+.mp {
+  padding: 12px 4px !important;
+  border-radius: 20px !important;
+  font-weight: 800 !important;
+  border: 3px solid #E2E8F0 !important;
+  background: #F8FAFC !important;
+  box-shadow: 0 4px 0 #CBD5E1 !important;
+  transform: translateY(-2px) !important;
+}
+
+.mp:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 6px 0 #CBD5E1 !important;
+}
+
+.mp.on {
+  border-color: var(--orange) !important;
+  background: var(--ol) !important;
+  box-shadow: 0 4px 0 #E8621E, 0 8px 20px rgba(255,107,53,0.18) !important;
+  transform: translateY(-4px) !important;
+}
+
+.mp:active {
+  transform: translateY(2px) !important;
+  box-shadow: 0 0 0 transparent !important;
+}
+
+/* Memory Cards */
+.mcard-inner {
+  border-radius: 20px !important;
+  box-shadow: 0 6px 12px rgba(15,23,41,0.06) !important;
+  transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+.mcard-front, .mcard-back {
+  border-radius: 20px !important;
+}
+
+.mcard-front {
+  background: linear-gradient(135deg, var(--orange), var(--o2)) !important;
+  border: 3px solid #ffffff !important;
+  font-size: 26px !important;
+  font-weight: 900 !important;
+  box-shadow: inset 0 4px 8px rgba(255,255,255,0.4), 0 4px 0 #E8621E !important;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.15) !important;
+}
+
+.mcard-back {
+  border: 3px solid #F1F5F9 !important;
+  box-shadow: inset 0 2px 6px rgba(0,0,0,0.03), 0 4px 0 #E2E8F0 !important;
+}
+
+.mcard.matched .mcard-back {
+  border-color: var(--green) !important;
+  box-shadow: inset 0 2px 6px rgba(0,0,0,0.02), 0 4px 0 #16A34A !important;
+}
+
+/* Games screen Category cards */
+.gc {
+  border-radius: 22px !important;
+  box-shadow: var(--clay-sh-card) !important;
+  border: 3px solid #F1F5F9 !important;
+}
+
+.gc:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 10px 24px rgba(15, 23, 41, 0.05), inset 0 4px 0 #ffffff !important;
+  border-color: #E2E8F0 !important;
+}
+
+.gc:active {
+  transform: scale(.95) translateY(2px) !important;
+  box-shadow: 0 2px 4px rgba(15,23,41,0.02) !important;
+}
+
+/* Pomodoro 3D Clay Dial */
+.pomodoro-dial {
+  width: 210px;
+  height: 210px;
+  border-radius: 50%;
+  background: white;
+  border: 8px solid #FFF0EB;
+  box-shadow: 
+    0 12px 30px rgba(255, 107, 53, 0.08),
+    inset 0 4px 12px rgba(0, 0, 0, 0.04),
+    inset 0 -4px 12px rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px auto;
+  position: relative;
+}
+
+.pomodoro-dial .brix-container {
+  width: 130px;
+  height: 130px;
+  margin: 0 !important;
+}
+
+/* Dynamic Glassmorphic Modals / Overlays backdrop and containers */
+[id$="-overlay"], [id$="-modal"] {
+  background: rgba(15, 23, 42, 0.45) !important;
+  backdrop-filter: blur(14px) !important;
+  -webkit-backdrop-filter: blur(14px) !important;
+}
+
+[id$="-overlay"] .card, [id$="-modal"] .card {
+  border-radius: 32px !important;
+  border: 4px solid #F1F5F9 !important;
+  box-shadow: 0 20px 48px rgba(15, 23, 41, 0.18), inset 0 4px 0 #ffffff, inset 0 -4px 0 #F1F5F9 !important;
+}
+
+/* Modal Close Buttons */
+[id$="-overlay"] .card > div[onclick^="close"], 
+[id$="-modal"] .card > div[onclick^="close"],
+#overlay-close-btn {
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 50% !important;
+  background: #F1F5F9 !important;
+  border: 2px solid #E2E8F0 !important;
+  color: var(--t2) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 12px !important;
+  font-weight: 800 !important;
+  transition: all 0.2s var(--sp) !important;
+  box-shadow: 0 2px 4px rgba(15,23,41,0.05) !important;
+}
+
+[id$="-overlay"] .card > div[onclick^="close"]:hover, 
+[id$="-modal"] .card > div[onclick^="close"]:hover,
+#overlay-close-btn:hover {
+  transform: scale(1.1) !important;
+  background: #E2E8F0 !important;
+  color: var(--t1) !important;
+}
+
+[id$="-overlay"] .card > div[onclick^="close"]:active, 
+[id$="-modal"] .card > div[onclick^="close"]:active,
+#overlay-close-btn:active {
+  transform: scale(0.9) !important;
+}
+
+/* ── RESPONSIVE MOBILE DEVICE SUPPORT ── */
+@media (max-width: 480px) {
+  body {
+    padding: 0 !important;
+    background: var(--bg) !important;
+  }
+  .phone {
+    width: 100vw !important;
+    height: 100vh !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+  .notch {
+    display: none !important;
+  }
+  .sb {
+    padding-top: env(safe-area-inset-top, 24px) !important;
+    height: calc(52px + env(safe-area-inset-top, 24px)) !important;
+  }
+  .bnav {
+    bottom: max(16px, env(safe-area-inset-bottom, 16px)) !important;
+    left: 12px !important;
+    right: 12px !important;
+    height: 64px !important;
+  }
+  .area {
+    padding-bottom: calc(100px + env(safe-area-inset-bottom, 16px)) !important;
+  }
+}
 </style>
 </head>
 <body>
@@ -1694,11 +2078,11 @@ h1,h2,h3,h4{font-family:'Plus Jakarta Sans',sans-serif;color:var(--t1)}
   <div class="area" style="padding: 24px 16px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; height: calc(100% - 130px); background: transparent;">
     
     <!-- Focused Brix SVG -->
-    <div style="width: 130px; height: 130px; margin: 20px 0; position: relative;">
-            <div class="brix-container" style="width: 130px; height: 130px; position: relative; margin: 20px 0;">
-      <img id="brix-pomodoro-avatar" src="assets/brix/brix_focus.png" class="brix-img focus" style="width: 100%; height: 100%; object-fit: contain;" />
-      <img id="brix-pomodoro-acc" src="" class="brix-acc-overlay" style="display: none; position: absolute;" />
-    </div>
+    <div class="pomodoro-dial">
+      <div class="brix-container">
+        <img id="brix-pomodoro-avatar" src="assets/brix/brix_focus.png" class="brix-img focus" />
+        <img id="brix-pomodoro-acc" src="" class="brix-acc-overlay" style="display: none; position: absolute;" />
+      </div>
     </div>
 
     <!-- Countdown Timer -->
