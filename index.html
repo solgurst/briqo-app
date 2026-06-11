@@ -13,16 +13,424 @@
 <link rel="apple-touch-icon" href="icon-192.png"/>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"/>
 <style>
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0F1729;--orange:#FF6B35;--o2:#FF8C5A;--ol:#FFF0EB;--o3:#FFF8F5;
+  --teal:#26C6DA;--tl:#E0FBFD;--yellow:#FFD23F;--yl:#FFFBEB;
+  --green:#22C55E;--gl:#DCFCE7;--pink:#F472B6;--pl:#FCE7F3;
+  --purple:#A855F7;--pul:#F3E8FF;--red:#EF4444;--rl:#FEE2E2;
+  --white:#fff;--bg:#F8FAFC;--sur:#fff;
+  --border:#E2E8F0;--b2:#F1F5F9;
+  --t1:#0F1729;--t2:#64748B;--t3:#94A3B8;--t4:#CBD5E1;
+  --sh1:0 1px 4px rgba(15,23,41,.06),0 1px 2px rgba(15,23,41,.04);
+  --sh2:0 4px 20px rgba(15,23,41,.08),0 2px 8px rgba(15,23,41,.04);
+  --sh3:0 12px 48px rgba(15,23,41,.14),0 4px 16px rgba(15,23,41,.06);
+  --sp:cubic-bezier(.34,1.56,.64,1);
+  --eo:cubic-bezier(.22,1,.36,1);
 }
 
+body{font-family:'DM Sans',sans-serif;background:linear-gradient(135deg,#D4DCF0,#C8D5E8);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px 16px}
+
+/* ── LAYOUT ── */
+.wrap{display:flex;gap:24px;align-items:flex-start}
+
+/* ── PHONE ── */
+.phone{width:390px;height:844px;background:var(--bg);border-radius:52px;overflow:hidden;
+  box-shadow:0 40px 100px rgba(0,0,0,.3),0 0 0 11px #15152e,0 0 0 14px #25254a,inset 0 1px 0 rgba(255,255,255,.1);
+  position:relative;display:flex;flex-direction:column;flex-shrink:0}
+.notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:120px;height:34px;background:#15152e;border-radius:0 0 22px 22px;z-index:200}
+.notch::after{content:'';position:absolute;width:12px;height:12px;background:#1a1a35;border-radius:50%;top:50%;left:50%;transform:translate(-50%,-50%);box-shadow:0 0 0 3px #0d0d20}
+
+/* ── SCREENS ── */
+.scr{position:absolute;inset:0;display:none;flex-direction:column;background:var(--bg);overflow:hidden}
+.scr.on{display:flex;animation:scrIn .38s var(--eo) both}
+@keyframes scrIn{from{opacity:0;transform:translateY(8px) scale(.98)}to{opacity:1;transform:none}}
+.area{flex:1;overflow-y:auto;overflow-x:hidden;scrollbar-width:none}
+.area::-webkit-scrollbar{display:none}
+
+/* ── STATUS BAR ── */
+.sb{height:50px;display:flex;align-items:flex-end;justify-content:space-between;padding:0 24px 8px;flex-shrink:0;background:transparent}
+.sb-t{font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:15px;color:var(--t1)}
+.sb-t.wh{color:white}
+.sb-i{display:flex;align-items:center;gap:5px}
+
+/* ── BOTTOM NAV ── */
+.bnav{height:80px;background:white;border-top:1.5px solid var(--border);display:flex;align-items:center;justify-content:space-around;padding:0 4px 12px;flex-shrink:0;position:relative;z-index:100}
+.ni{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;flex:1;transition:all .2s var(--sp)}
+.niw{padding:6px 14px;border-radius:14px;transition:all .25s var(--sp)}
+.ni.on .niw{background:var(--ol)}
+.ni.on svg{color:var(--orange)}
+.ni.on .nl{color:var(--orange);font-weight:700}
+.ni svg{color:var(--t3);transition:color .2s}
+.nl{font-size:10px;font-weight:500;color:var(--t3);font-family:'DM Sans',sans-serif;transition:color .2s}
+.ni:active .niw{transform:scale(.88)}
+
+/* ── TYPE ── */
+h1,h2,h3,h4{font-family:'Plus Jakarta Sans',sans-serif;color:var(--t1)}
+.f-jak{font-family:'Plus Jakarta Sans',sans-serif}
+
+/* ── BUTTONS ── */
+.btn{background:linear-gradient(135deg,#FF6B35,#FF8C5A);color:white;border:none;border-radius:18px;padding:16px 24px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:16px;cursor:pointer;width:100%;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 6px 28px rgba(255,107,53,.38);transition:all .2s var(--sp)}
+.btn:hover{transform:translateY(-2px);box-shadow:0 10px 36px rgba(255,107,53,.48)}
+.btn:active{transform:scale(.95)}
+
+/* ── CARDS ── */
+.card{background:white;border-radius:22px;padding:16px;box-shadow:var(--sh1);border:1.5px solid var(--border)}
+
+/* ── ANIMATIONS ── */
+@keyframes float{0%,100%{transform:translateY(0) rotate(-.5deg)}50%{transform:translateY(-10px) rotate(.5deg)}}
+@keyframes tentWave{0%,100%{transform:rotate(0deg)}50%{transform:rotate(14deg)}}
+@keyframes blink{0%,90%,100%{transform:scaleY(1)}95%{transform:scaleY(.1)}}
+@keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.22)}100%{transform:scale(1)}}
+@keyframes slideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(255,107,53,.4)}50%{box-shadow:0 0 0 10px rgba(255,107,53,0)}}
+@keyframes bounce{0%,100%{transform:translateY(0)}40%{transform:translateY(-8px)}70%{transform:translateY(-3px)}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.04)}}
+@keyframes confettiFall{0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(820px) rotate(360deg);opacity:0}}
+@keyframes typing{0%,60%,100%{opacity:1}30%{opacity:.4}}
+
+.float{animation:float 3.8s ease-in-out infinite}
+.bounce-anim{animation:bounce .6s var(--sp)}
+
+/* ════════════════════
+   NEW BRIX SVG SYSTEM
+════════════════════ */
+/* Brix is now chubbier, rounder, more expressive */
+
+/* ════════════════════
+   ONBOARDING
+════════════════════ */
+#s-ob{background:linear-gradient(170deg,#FFF6F2 0%,#fff 55%)}
+.ob-hero{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:54px 28px 20px}
+.ob-glow{width:230px;height:230px;background:radial-gradient(circle at 50% 45%,rgba(255,180,130,.35) 0%,rgba(255,107,53,.08) 50%,transparent 72%);border-radius:50%;display:flex;align-items:center;justify-content:center;animation:float 4s ease-in-out infinite}
+.ob-dots{display:flex;gap:8px;margin-top:22px}
+.dot{width:8px;height:8px;border-radius:100px;background:var(--border);transition:all .3s var(--sp)}
+.dot.on{width:30px;background:var(--orange)}
+.ob-card{background:white;border-radius:38px 38px 0 0;padding:30px 26px 44px;box-shadow:0 -16px 60px rgba(0,0,0,.09)}
+.ob-tag{display:inline-flex;align-items:center;gap:6px;background:var(--ol);color:var(--orange);padding:6px 14px;border-radius:100px;font-size:12px;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif;margin-bottom:12px}
+
+/* ════════════════════
+   HOME
+════════════════════ */
+.home-hdr{background:white;padding:12px 18px 16px;border-radius:0 0 26px 26px;box-shadow:var(--sh1);flex-shrink:0}
+.greet-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.greet-l{display:flex;align-items:center;gap:11px}
+.greet-name{font-size:19px;font-weight:800;font-family:'Plus Jakarta Sans',sans-serif;color:var(--t1)}
+.greet-sub{font-size:12px;color:var(--t2);margin-top:1px}
+.notif{width:40px;height:40px;background:var(--bg);border-radius:13px;display:flex;align-items:center;justify-content:center;border:1.5px solid var(--border);cursor:pointer;position:relative;transition:all .2s var(--sp)}
+.notif:hover{background:var(--ol);border-color:var(--orange)}
+.notif:active{transform:scale(.9)}
+.notif-dot{position:absolute;top:8px;right:8px;width:8px;height:8px;background:var(--orange);border-radius:50%;border:2px solid white;animation:pulse 2.2s infinite}
+
+/* MOOD - SVG face pills */
+.mood-row{display:flex;gap:7px}
+.mp{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;padding:10px 4px;border-radius:16px;font-size:11px;font-weight:700;cursor:pointer;transition:all .28s var(--sp);border:2px solid var(--border);background:var(--bg);color:var(--t2);font-family:'Plus Jakarta Sans',sans-serif;user-select:none}
+.mp:hover{transform:translateY(-2px) scale(1.03);border-color:var(--t4)}
+.mp:active{transform:scale(.9)}
+.mp.on{border-color:var(--orange);background:var(--ol);color:var(--orange);box-shadow:0 4px 16px rgba(255,107,53,.22);transform:translateY(-3px)}
+.mp.on .mf{transform:scale(1.18) rotate(-5deg)}
+.mf{transition:transform .3s var(--sp);line-height:1}
+
+/* BRIX CHAT BUBBLE */
+.brix-chat{background:white;border-radius:20px;padding:14px 16px;border:1.5px solid var(--border);box-shadow:var(--sh2);display:flex;align-items:flex-start;gap:12px;margin-bottom:12px;position:relative;animation:slideUp .4s var(--eo) both}
+.brix-chat::before{content:'';position:absolute;bottom:-8px;left:28px;width:16px;height:16px;background:white;border-right:1.5px solid var(--border);border-bottom:1.5px solid var(--border);transform:rotate(45deg);clip-path:polygon(50% 50%,100% 0,100% 100%,0 100%)}
+.chat-txt{font-size:13px;color:var(--t1);line-height:1.6;flex:1}
+.chat-txt strong{color:var(--orange)}
+.chat-actions{display:flex;gap:7px;margin-top:10px;flex-wrap:wrap}
+.chat-pill{padding:7px 13px;border-radius:100px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:white;color:var(--t2);font-family:'DM Sans',sans-serif;transition:all .2s var(--sp)}
+.chat-pill:hover{background:var(--ol);border-color:var(--orange);color:var(--orange)}
+.chat-pill:active{transform:scale(.92)}
+
+/* STREAK */
+.streak{background:linear-gradient(135deg, #FFF9F6 0%, #FFF0EB 100%);border-radius:24px;padding:16px 18px;margin-bottom:16px;position:relative;overflow:hidden;border:1.5px solid #FAD3C2;box-shadow:0 6px 20px rgba(255,107,53,.06)}
+.streak::before{content:'';position:absolute;top:-50px;right:-30px;width:160px;height:160px;background:rgba(255,210,63,.15);border-radius:50%}
+.streak::after{content:'';position:absolute;bottom:-60px;left:10px;width:130px;height:130px;background:rgba(14,165,233,.08);border-radius:50%}
+.streak-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;position:relative;z-index:1}
+.streak-l{display:flex;align-items:center;gap:11px}
+.streak-ico{width:44px;height:44px;background:rgba(255,107,53,.1);border-radius:14px;display:flex;align-items:center;justify-content:center}
+.streak-ico svg{fill:#FF6B35}
+.streak-h{color:var(--t1);font-size:15px;font-weight:800;font-family:'Plus Jakarta Sans',sans-serif}
+.streak-s{color:var(--t2);font-size:11px;margin-top:2px}
+.streak-num{background:var(--orange);color:white;font-family:'Plus Jakarta Sans',sans-serif;font-weight:900;font-size:20px;padding:6px 12px;border-radius:13px;line-height:1}
+.days{display:flex;gap:5px;position:relative;z-index:1}
+.day{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+.day-dot{width:30px;height:30px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--t3);background:var(--b2)}
+.day-dot.done{background:var(--yellow);color:#7A5C00}
+.day-dot.today{background:var(--orange);color:white;box-shadow:0 0 0 3px rgba(255,107,53,.3);animation:breathe 2s ease-in-out infinite}
+.day-dot.future{background:var(--b2)}
+.day-lbl{font-size:9px;color:var(--t3);font-family:'DM Sans',sans-serif;font-weight:600}
+.day-lbl.today-lbl{color:var(--orange)}
+
+/* TASK CARDS */
+.tc{background:white;border-radius:18px;padding:13px 15px;display:flex;align-items:center;gap:11px;box-shadow:var(--sh1);border:1.5px solid var(--border);margin-bottom:9px;cursor:pointer;transition:all .22s var(--sp)}
+.tc:hover{transform:translateX(3px);box-shadow:var(--sh2)}
+.tc:active{transform:scale(.97)}
+.chk{width:24px;height:24px;border-radius:8px;border:2.5px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .25s var(--sp);cursor:pointer}
+.chk:hover{border-color:var(--green);background:var(--gl)}
+.chk.done{background:var(--green);border-color:var(--green);animation:pop .35s var(--sp)}
+.tbar{width:4px;border-radius:4px;align-self:stretch;flex-shrink:0}
+.tt{font-size:14px;font-weight:600;color:var(--t1);font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s}
+.tt.done{text-decoration:line-through;color:var(--t3)}
+.ts{font-size:12px;color:var(--t2);margin-top:2px}
+.tbadge{font-size:11px;font-weight:700;padding:4px 10px;border-radius:100px;font-family:'DM Sans',sans-serif;white-space:nowrap}
+
+/* FAB */
+.fab{position:absolute;bottom:94px;right:14px;width:52px;height:52px;background:linear-gradient(135deg,var(--orange),var(--o2));border-radius:18px;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 24px rgba(255,107,53,.45);cursor:pointer;z-index:50;transition:all .25s var(--sp)}
+.fab:hover{transform:scale(1.1) rotate(90deg)}
+.fab:active{transform:scale(.92)}
+
+/* AD BANNER */
+@keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(200%)}}
+@keyframes pulse-glow{0%,100%{box-shadow:0 8px 32px rgba(255,107,53,.35),0 0 0 0 rgba(255,107,53,.25)}50%{box-shadow:0 8px 32px rgba(255,107,53,.55),0 0 0 6px rgba(255,107,53,.0)}}
+@keyframes float-badge{0%,100%{transform:translateY(0) rotate(-12deg)}50%{transform:translateY(-3px) rotate(-12deg)}}
+.ad-banner{margin:0 0 16px;background:linear-gradient(135deg,#FF6B35 0%,#FF3D00 40%,#c0392b 100%);border-radius:22px;padding:16px 18px;display:flex;align-items:center;gap:14px;position:relative;overflow:hidden;animation:pulse-glow 3s ease-in-out infinite;cursor:pointer;transition:transform .2s var(--sp)}
+.ad-banner:hover{transform:scale(1.015)}
+.ad-banner:active{transform:scale(.98)}
+.ad-banner::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,.18) 50%,transparent 100%);transform:translateX(-100%);animation:shimmer 2.8s ease-in-out infinite}
+.ad-banner::after{content:'';position:absolute;top:-30px;right:-30px;width:110px;height:110px;background:rgba(255,255,255,.12);border-radius:50%;pointer-events:none}
+.ad-tag{font-size:7.5px;font-weight:800;color:rgba(255,255,255,.55);text-transform:uppercase;letter-spacing:.12em;position:absolute;top:9px;right:14px;font-family:'DM Sans',sans-serif}
+.ad-badge{position:absolute;top:-8px;left:18px;background:#FFD700;color:#7B4500;font-size:9px;font-weight:900;padding:3px 9px;border-radius:100px;letter-spacing:.04em;font-family:'DM Sans',sans-serif;animation:float-badge 2.5s ease-in-out infinite;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+.ad-ico{width:44px;height:44px;background:rgba(255,255,255,.2);border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;backdrop-filter:blur(8px);border:1.5px solid rgba(255,255,255,.3)}
+.ad-txt{flex:1;min-width:0}
+.ad-h{font-size:13.5px;font-weight:800;color:white;font-family:'Plus Jakarta Sans',sans-serif;line-height:1.2;text-shadow:0 1px 4px rgba(0,0,0,.2)}
+.ad-s{font-size:11px;color:rgba(255,255,255,.8);margin-top:3px;font-family:'DM Sans',sans-serif}
+.ad-btn{background:white;color:#FF3D00;font-size:11.5px;font-weight:800;padding:9px 16px;border-radius:12px;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;white-space:nowrap;flex-shrink:0;transition:all .2s var(--sp);box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.ad-btn:hover{transform:scale(1.06);box-shadow:0 6px 18px rgba(0,0,0,.3)}
+
+/* ════════════════════
+   GAMES
+════════════════════ */
+.gh{background:white;padding:12px 18px 16px;flex-shrink:0}
+.feat{background:linear-gradient(135deg,#FF6B35,#FF3D00);border-radius:24px;padding:20px;margin-bottom:16px;position:relative;overflow:hidden}
+.feat::before{content:'';position:absolute;top:-25px;right:-25px;width:120px;height:120px;background:rgba(255,255,255,.1);border-radius:50%}
+.feat::after{content:'';position:absolute;bottom:-45px;right:20px;width:90px;height:90px;background:rgba(255,255,255,.07);border-radius:50%}
+.feat-tag{display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.22);color:white;font-size:11px;font-weight:700;padding:5px 11px;border-radius:100px;margin-bottom:9px;font-family:'DM Sans',sans-serif}
+.feat-t{color:white;font-size:19px;font-weight:800;margin-bottom:4px;font-family:'Plus Jakarta Sans',sans-serif}
+.feat-s{color:rgba(255,255,255,.75);font-size:13px;margin-bottom:14px}
+.feat-btn{display:inline-flex;align-items:center;gap:6px;background:white;color:var(--orange);padding:9px 18px;border-radius:12px;font-weight:700;font-size:13px;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all .2s var(--sp)}
+.feat-btn:hover{transform:scale(1.05)}
+.gg{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.gc{background:white;border-radius:20px;padding:16px 14px;box-shadow:var(--sh1);border:1.5px solid var(--border);cursor:pointer;transition:all .25s var(--sp);position:relative;overflow:hidden}
+.gc:hover{transform:translateY(-4px);box-shadow:var(--sh2)}
+.gc:active{transform:scale(.93);animation:pop .3s var(--sp)}
+.gi{width:48px;height:48px;border-radius:16px;display:flex;align-items:center;justify-content:center;margin-bottom:11px}
+.gn{font-size:15px;font-weight:700;color:var(--t1);font-family:'Plus Jakarta Sans',sans-serif;margin-bottom:3px}
+.gd{font-size:11px;color:var(--t2);line-height:1.4}
+.glv{display:inline-flex;align-items:center;gap:3px;margin-top:9px;font-size:11px;font-weight:600;color:var(--t3);font-family:'DM Sans',sans-serif}
+
+/* ════════════════════
+   TEST
+════════════════════ */
+#s-test{background:linear-gradient(170deg,#FFF6F2 0%,#fff 50%)}
+.test-body{display:flex;flex-direction:column;align-items:center;padding:52px 26px 28px;text-align:center}
+.test-glow{width:200px;height:200px;background:radial-gradient(circle at 50% 45%,rgba(255,180,130,.35) 0%,rgba(255,107,53,.08) 55%,transparent 72%);border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:22px;animation:float 4s ease-in-out infinite}
+.tbadges{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin:14px 0 22px}
+.tb{display:inline-flex;align-items:center;gap:5px;padding:7px 13px;border-radius:100px;font-size:12px;font-weight:600;font-family:'DM Sans',sans-serif}
+.disc{font-size:11px;color:var(--t3);text-align:center;margin-top:11px;line-height:1.6;padding:0 8px}
+
+/* ════════════════════
+   PROFILE
+════════════════════ */
+.ph{background:linear-gradient(135deg, #FFF9F6 0%, #FFF0EB 100%);padding:54px 20px 26px;display:flex;align-items:center;gap:15px;flex-shrink:0;position:relative;overflow:hidden;border-bottom:1.5px solid #FAD3C2}
+.ph::before{content:'';position:absolute;top:-40px;right:-30px;width:150px;height:150px;background:rgba(255,107,53,.08);border-radius:50%}
+.ava{width:72px;height:72px;background:linear-gradient(135deg,var(--orange),var(--o2));border-radius:24px;display:flex;align-items:center;justify-content:center;font-size:28px;box-shadow:0 6px 24px rgba(255,107,53,.4);border:3px solid rgba(255,255,255,.18);position:relative;z-index:1;flex-shrink:0}
+.pi{position:relative;z-index:1}
+.pi h2{color:white;font-size:20px;font-weight:800;font-family:'Plus Jakarta Sans',sans-serif}
+.ptyp{display:inline-flex;align-items:center;gap:5px;background:#F3E8FF;color:#7C3AED;border:1px solid #DDD6FE;font-size:12px;font-weight:700;padding:5px 12px;border-radius:100px;margin-top:6px;font-family:'DM Sans',sans-serif}
+.sr{display:grid;grid-template-columns:1fr 1fr 1fr;background:white;flex-shrink:0;box-shadow:var(--sh1);border-bottom:1.5px solid var(--border)}
+.si{text-align:center;padding:16px 6px;position:relative}
+.si:not(:last-child)::after{content:'';position:absolute;right:0;top:20%;height:60%;width:1px;background:var(--border)}
+.sn{font-size:21px;font-weight:900;font-family:'Plus Jakarta Sans',sans-serif}
+.sl{font-size:11px;color:var(--t3);margin-top:2px;font-family:'DM Sans',sans-serif}
+.mi{display:flex;align-items:center;gap:13px;padding:14px 18px;cursor:pointer;transition:background .15s;border-bottom:1px solid var(--border)}
+.mi:hover{background:var(--bg)}
+.mi:active{background:var(--ol)}
+.mico{width:40px;height:40px;border-radius:13px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.mt{font-size:14px;font-weight:600;color:var(--t1);font-family:'Plus Jakarta Sans',sans-serif}
+.ms{font-size:12px;color:var(--t2);margin-top:2px}
+.lbl{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;font-family:'Plus Jakarta Sans',sans-serif}
+
+/* ── SIDEBAR ── */
+.sidebar{display:flex;flex-direction:column;gap:3px;background:white;padding:18px 12px;border-radius:22px;box-shadow:var(--sh2);min-width:152px;height:fit-content}
+.sb-title{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.09em;margin-bottom:9px;padding:0 4px;font-family:'Plus Jakarta Sans',sans-serif}
+.sbb{display:flex;align-items:center;gap:8px;padding:10px 13px;border-radius:12px;cursor:pointer;border:none;background:transparent;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;color:var(--t2);transition:all .2s var(--sp);white-space:nowrap;width:100%}
+.sbb:hover{background:var(--bg);color:var(--t1)}
+.sbb.on{background:var(--ol);color:var(--orange);font-weight:700}
+.sbb.on svg{color:var(--orange)}
+
+/* ── PROG ── */
+.prog{background:var(--border);border-radius:100px;height:6px;overflow:hidden}
+.progf{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--orange),var(--o2));transition:width .6s var(--eo)}
+
+/* ── SEC HEADER ── */
+.sh{display:flex;align-items:center;justify-content:space-between;margin-bottom:13px}
+.st{font-size:17px;font-weight:700;color:var(--t1);font-family:'Plus Jakarta Sans',sans-serif}
+.sa{font-size:13px;font-weight:600;color:var(--orange);cursor:pointer}
+
+/* ── MASTER BRIX ACCESSORY SYSTEM ── */
+.brix-svg .acc-headphones,
+.brix-svg .acc-shoes,
+.brix-svg .acc-doctor-coat,
+.brix-svg .acc-thinking-hat,
+.brix-svg .acc-pencil,
+.brix-svg .acc-clipboard,
+.brix-svg .acc-stethoscope,
+.brix-svg .acc-heartbreak {
+  display: none !important;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.brix-svg.music .acc-headphones { display: block !important; opacity: 1; }
+.brix-svg.walk .acc-shoes { display: block !important; opacity: 1; }
+.brix-svg.doctor .acc-doctor-coat, 
+.brix-svg.doctor .acc-clipboard, 
+.brix-svg.doctor .acc-stethoscope { display: block !important; opacity: 1; }
+.brix-svg.focus .acc-thinking-hat, 
+.brix-svg.focus .acc-pencil { display: block !important; opacity: 1; }
+.brix-svg.sensitive .acc-heartbreak { display: block !important; opacity: 1; }
+
+.brix-svg.float { animation: brixFloat 4s ease-in-out infinite; }
+@keyframes brixFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(1deg); }
+}
+.brix-svg.walk { animation: brixWalk 0.5s ease-in-out infinite alternate; transform-origin: bottom center; }
+@keyframes brixWalk {
+  0% { transform: translateY(0) scaleY(1); }
+  100% { transform: translateY(-10px) scaleY(0.96); }
+}
+.brix-svg.music { animation: brixMusic 2s ease-in-out infinite alternate; transform-origin: bottom center; }
+@keyframes brixMusic {
+  0% { transform: rotate(-4deg) scale(1.02); }
+  100% { transform: rotate(4deg) scale(1.02); }
+}
+.brix-svg.focus { animation: brixFocus 3s ease-in-out infinite; transform-origin: center center; }
+@keyframes brixFocus {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  50% { transform: scale(1.04) rotate(1deg); }
+}
+.brix-svg.doctor { animation: brixDoctor 4.5s ease-in-out infinite; }
+@keyframes brixDoctor {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+/* ── MEMORY MATCH GAME ── */
+.mcard {
+  perspective: 1000px;
+  cursor: pointer;
+  aspect-ratio: 0.85;
+}
+.mcard-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.4s var(--sp);
+  transform-style: preserve-3d;
+  border-radius: 16px;
+  box-shadow: var(--sh1);
+}
+.mcard.flipped .mcard-inner {
+  transform: rotateY(180deg);
+}
+.mcard-front, .mcard-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--border);
+}
+.mcard-front {
+  background: linear-gradient(135deg, var(--teal), #0284C7);
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+}
+.mcard-back {
+  background: white;
+  transform: rotateY(180deg);
+  font-size: 32px;
+}
+.mcard.matched {
+  cursor: default;
+  pointer-events: none;
+}
+.mcard.matched .mcard-inner {
+  border: 2px solid var(--green);
+  box-shadow: 0 0 12px rgba(34, 197, 94, 0.2);
+}
+.ob-option {
+  width: 100%;
+  padding: 14px 16px;
+  background: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 16px;
+  text-align: left;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--navy);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.ob-option:hover {
+  background: var(--ol);
+  border-color: var(--orange);
+  transform: translateY(-1px);
+}
+/* Fidget Pop bubble styles */
+.fidget-bubble {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: inset -3px -3px 6px rgba(0,0,0,0.15), inset 3px 3px 6px rgba(255,255,255,0.8), 0 4px 6px rgba(0,0,0,0.06);
+  position: relative;
+  overflow: hidden;
+}
+.fidget-bubble::after {
+  content: '';
+  position: absolute;
+  top: 4px;
+  left: 6px;
+  width: 8px;
+  height: 4px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.6);
+  transform: rotate(-15deg);
+}
+.fidget-bubble.popped {
+  box-shadow: inset 2px 2px 4px rgba(0,0,0,0.25), 0 1px 2px rgba(255,255,255,0.4);
+  transform: scale(0.92);
+  filter: saturate(0.5) brightness(0.8);
+}
+.fidget-bubble:active {
+  transform: scale(0.85);
+}
+
+
+/* =========================================
+   V2.3 AWWARDS-TIER ETHEREAL GLASS UI REVAMP
+   ========================================= */
+
+/* 1. OLED-Grade Dark Theme Variables */
 :root {
-  /* OLED-Grade Dark Theme Variables */
-  --bg: #030508 !important;
-  --navy: #F8FAFC !important; /* Forces all text headers to light color instead of dark navy */
+  --bg: #05070c !important;
+  --navy: #f8fafc !important; /* Set var(--navy) to light color for text */
   --sur: rgba(13, 20, 35, 0.6) !important;
   --border: rgba(255, 255, 255, 0.08) !important;
   --b2: rgba(255, 255, 255, 0.05) !important;
@@ -39,7 +447,7 @@
   --ol: rgba(255, 107, 53, 0.15) !important;
   --teal: #26C6DA !important;
   --tl: rgba(38, 198, 218, 0.15) !important;
-  --green: #10B981 !important;
+  --green: #10B981 !important; /* Neon green */
   --gl: rgba(16, 185, 129, 0.15) !important;
   --yellow: #FFD23F !important;
   --yl: rgba(255, 210, 63, 0.15) !important;
@@ -55,182 +463,30 @@
   --sp: cubic-bezier(0.34, 1.56, 0.64, 1) !important;
 }
 
+/* 2. Premium Moving Glowing Backdrop */
 body {
-  font-family: 'DM Sans', sans-serif;
   background: 
     radial-gradient(circle at 10% 20%, rgba(255, 107, 53, 0.08) 0%, transparent 40%),
     radial-gradient(circle at 90% 10%, rgba(38, 198, 218, 0.08) 0%, transparent 40%),
     radial-gradient(circle at 50% 80%, rgba(168, 85, 247, 0.06) 0%, transparent 50%),
-    #030508 !important;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px 16px;
+    #05070c !important;
   overflow: hidden;
 }
 
-/* ── LAYOUT ── */
-.wrap {
-  display: flex;
-  gap: 24px;
-  align-items: flex-start;
-}
-
-/* ── SIDEBAR ── */
-.sidebar {
-  width: 220px;
-  background: rgba(13, 20, 35, 0.6) !important;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1.5px solid rgba(255, 255, 255, 0.08);
-  border-radius: 28px;
-  padding: 24px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.4);
-}
-
-.sb-title {
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 16px;
-  font-weight: 800;
-  color: var(--t1);
-  margin-bottom: 12px;
-  padding-left: 8px;
-  letter-spacing: -0.01em;
-}
-
-.sbb {
-  width: 100%;
-  padding: 12px 16px;
-  border-radius: 16px;
-  border: 1px solid transparent;
-  background: transparent;
-  color: var(--t2);
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 13px;
-  font-weight: 700;
-  text-align: left;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  transition: all 0.25s var(--eo);
-}
-
-.sbb:hover {
-  background: rgba(255, 255, 255, 0.04);
-  color: var(--t1);
-}
-
-.sbb.on {
-  background: rgba(255, 107, 53, 0.12) !important;
-  border-color: rgba(255, 107, 53, 0.2);
-  color: var(--orange) !important;
-}
-
-.sbb-icon {
-  font-size: 15px;
-}
-
-/* ── PHONE ── */
+/* Titanium simulated phone frame with thinner borders and sleek Dynamic Island */
 .phone {
-  width: 390px;
-  height: 844px;
-  background: #05070c !important;
+  background: #060913 !important;
   border-radius: 56px !important;
-  overflow: hidden;
   box-shadow: 
     0 40px 100px rgba(0,0,0,0.6), 
     0 0 0 10px #1e293b, 
     0 0 0 12px #334155, 
     inset 0 2px 4px rgba(255,255,255,0.1) !important;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  flex-shrink: 0;
+  transition: all 0.3s var(--eo);
 }
 
-.notch {
-  position: absolute;
-  top: 12px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 110px;
-  height: 28px;
-  background: #000000 !important;
-  border-radius: 20px !important;
-  z-index: 200;
-  box-shadow: inset 0 1px 2px rgba(255,255,255,0.1), 0 2px 4px rgba(0,0,0,0.2) !important;
-}
-
-/* ── SCREENS ── */
-.scr {
-  position: absolute;
-  inset: 0;
-  display: none;
-  flex-direction: column;
-  background: transparent;
-  overflow: hidden;
-}
-
-.scr.on {
-  display: flex;
-  animation: scrIn 0.38s var(--eo) both;
-}
-
-@keyframes scrIn {
-  from {
-    opacity: 0;
-    transform: translateY(8px) scale(0.98);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-.area {
-  flex: 1;
-  overflow-y: auto;
-  overflow-x: hidden;
-  scrollbar-width: none;
-}
-
-.area::-webkit-scrollbar {
-  display: none;
-}
-
-/* ── STATUS BAR ── */
-.sb {
-  height: 52px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 24px;
-  color: var(--t1);
-  font-size: 13px;
-  font-weight: 600;
-  z-index: 100;
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  flex-shrink: 0;
-  background: transparent;
-}
-
-.sb-t {
-  letter-spacing: -0.01em;
-}
-
-.sb-i {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  opacity: 0.8;
-}
-
-/* ── DOUBLE-BEZEL CARD SYSTEM ── */
+/* 3. Double-Bezel Concentric Card Overrides */
+/* Applying nesting style mathematically */
 .card, .streak, .tc, .feat {
   position: relative !important;
   background: rgba(255, 255, 255, 0.02) !important;
@@ -258,7 +514,7 @@ body {
   z-index: 1 !important;
 }
 
-/* Accent Card Pop styles */
+/* Special adjustments for .feat (Featured Card) to preserve color pop */
 .feat {
   background: rgba(255, 107, 53, 0.04) !important;
   border: 1.5px solid rgba(255, 107, 53, 0.25) !important;
@@ -269,6 +525,7 @@ body {
   border: 1px solid rgba(255, 107, 53, 0.2) !important;
 }
 
+/* Special adjustments for .streak (Streak Card) to preserve color pop */
 .streak {
   background: rgba(255, 107, 53, 0.03) !important;
   border: 1.5px solid rgba(255, 107, 53, 0.2) !important;
@@ -278,6 +535,7 @@ body {
   border: 1px solid rgba(255, 107, 53, 0.12) !important;
 }
 
+/* Task Cards overrides */
 .tc {
   border-radius: 20px !important;
   padding: 14px 16px !important;
@@ -299,7 +557,6 @@ body {
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.25) !important;
   overflow: hidden !important;
   transition: all 0.25s var(--eo) !important;
-  cursor: pointer;
 }
 .gc::before {
   content: '' !important;
@@ -323,7 +580,7 @@ body {
   transform: scale(0.97) !important;
 }
 
-/* ── BUTTONS ── */
+/* 4. Button-in-Button Tactile Pills */
 .btn {
   border-radius: 50px !important;
   padding: 14px 28px !important;
@@ -331,17 +588,11 @@ body {
   font-size: 15px !important;
   letter-spacing: 0.01em !important;
   background: linear-gradient(135deg, #FF6B35, #FF8C5A) !important;
-  color: white !important;
   border: none !important;
   box-shadow: 0 6px 20px rgba(255, 107, 53, 0.35) !important;
   transition: all 0.3s var(--eo) !important;
   position: relative !important;
   overflow: hidden !important;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
 }
 .btn:hover {
   transform: translateY(-2px) scale(1.02) !important;
@@ -351,18 +602,7 @@ body {
   transform: scale(0.96) !important;
 }
 
-.btn.grey, .btn[style*="var(--border)"] {
-  background: rgba(255, 255, 255, 0.05) !important;
-  color: var(--t2) !important;
-  border: 1px solid rgba(255, 255, 255, 0.08) !important;
-  box-shadow: none !important;
-}
-.btn.grey:hover, .btn[style*="var(--border)"]:hover {
-  background: rgba(255, 255, 255, 0.08) !important;
-  color: var(--t1) !important;
-}
-
-/* ── FLOATING GLASS NAVIGATION ── */
+/* 5. Floating Capsule Glass Bottom Nav */
 .bnav {
   position: absolute !important;
   bottom: 18px !important;
@@ -375,59 +615,34 @@ body {
   border: 1.5px solid rgba(255, 255, 255, 0.08) !important;
   border-radius: 24px !important;
   box-shadow: 0 20px 48px rgba(0, 0, 0, 0.4) !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-around !important;
   padding: 0 8px !important;
-  z-index: 90 !important;
 }
-
-.ni {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  cursor: pointer !important;
-  width: 22% !important;
-}
-
 .niw {
   padding: 8px 16px !important;
   border-radius: 16px !important;
   transition: all 0.3s var(--sp) !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  color: var(--t2) !important;
 }
-
 .ni.on .niw {
   background: rgba(255, 107, 53, 0.15) !important;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
-  color: #FF6B35 !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.05) !important;
+}
+.ni:active .niw {
+  transform: scale(0.9) !important;
 }
 
+/* 6. Glowing Active Indicators and Text */
 .ni.on svg {
   color: #FF6B35 !important;
   filter: drop-shadow(0 0 8px rgba(255, 107, 53, 0.5)) !important;
 }
-
-.nl {
-  font-family: 'Plus Jakarta Sans', sans-serif !important;
-  font-weight: 600 !important;
-  font-size: 10px !important;
-  margin-top: 4px !important;
-  color: var(--t2) !important;
-  text-align: center;
-}
-
 .ni.on .nl {
   color: #FF6B35 !important;
   font-weight: 800 !important;
   text-shadow: 0 0 8px rgba(255, 107, 53, 0.3) !important;
 }
-
-.ni:active .niw {
-  transform: scale(0.9) !important;
+.nl {
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+  font-weight: 600 !important;
 }
 
 /* Header areas */
@@ -536,9 +751,6 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.08) !important;
   color: var(--t2) !important;
   transition: all 0.2s var(--eo) !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
 }
 [id$="-overlay"] .card > div[onclick^="close"]:hover, 
 [id$="-modal"] .card > div[onclick^="close"]:hover,
@@ -548,22 +760,26 @@ body {
   color: var(--t1) !important;
 }
 
-/* ── ORGANIC SVG MASCOT ANIMATION SYSTEM ── */
+/* 7. Organic SVG Mascot Animation System */
+/* Breathing motion for the mascot */
 @keyframes brixBreathe {
   0%, 100% { transform: scaleY(1); }
   50% { transform: scaleY(0.96) translateY(2px); }
 }
 
+/* Continuous eye-blinking */
 @keyframes brixEyeBlink {
   0%, 90%, 100% { transform: scaleY(1); }
   95% { transform: scaleY(0.1); }
 }
 
+/* Continuous arm wave for waving tentacles */
 @keyframes brixArmWave {
   0%, 100% { transform: rotate(0deg); }
   50% { transform: rotate(8deg); }
 }
 
+/* Apply animations to the SVG elements */
 svg.brix-svg, svg[viewBox="0 0 200 230"] {
   animation: brixBreathe 4s ease-in-out infinite !important;
   transform-origin: bottom center !important;
@@ -576,6 +792,7 @@ svg g[class$="eyes-group"] {
   animation: brixEyeBlink 3.8s infinite !important;
 }
 
+/* Arm wave animation */
 path[style*="tentWave"] {
   animation: brixArmWave 3s ease-in-out infinite !important;
 }
@@ -589,47 +806,18 @@ path[style*="tentWave"] {
 }
 
 /* Memory Cards */
-.mcard {
-  perspective: 1000px;
-  cursor: pointer;
-  aspect-ratio: 0.85;
-}
 .mcard-inner {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  text-align: center;
-  transition: transform 0.4s var(--sp);
-  transform-style: preserve-3d;
   border-radius: 18px !important;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3) !important;
 }
-.mcard.flipped .mcard-inner {
-  transform: rotateY(180deg);
-}
-.mcard-front, .mcard-back {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  border-radius: 18px !important;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1.5px solid rgba(255,255,255,0.08) !important;
-}
 .mcard-front {
   background: linear-gradient(135deg, var(--teal), #0284C7) !important;
-  color: white !important;
-  font-size: 24px;
-  font-weight: bold;
+  border: 1.5px solid rgba(255,255,255,0.1) !important;
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.15) !important;
 }
 .mcard-back {
   background: rgba(255, 255, 255, 0.04) !important;
-  transform: rotateY(180deg);
-  font-size: 32px;
+  border: 1.5px solid rgba(255, 255, 255, 0.08) !important;
 }
 .mcard.matched .mcard-inner {
   border: 2px solid var(--green) !important;
@@ -641,42 +829,7 @@ path[style*="tentWave"] {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15) !important;
 }
 
-/* Master Brix Accessory System - styled with safe display rules */
-.brix-svg .acc-headphones,
-.brix-svg .acc-shoes,
-.brix-svg .acc-doctor-coat,
-.brix-svg .acc-thinking-hat,
-.brix-svg .acc-pencil,
-.brix-svg .acc-clipboard,
-.brix-svg .acc-stethoscope,
-.brix-svg .acc-heartbreak {
-  display: none !important;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.brix-svg.music .acc-headphones { display: block !important; opacity: 1; }
-.brix-svg.walk .acc-shoes { display: block !important; opacity: 1; }
-.brix-svg.doctor .acc-doctor-coat, 
-.brix-svg.doctor .acc-clipboard, 
-.brix-svg.doctor .acc-stethoscope { display: block !important; opacity: 1; }
-.brix-svg.focus .acc-thinking-hat, 
-.brix-svg.focus .acc-pencil { display: block !important; opacity: 1; }
-.brix-svg.sensitive .acc-heartbreak { display: block !important; opacity: 1; }
-
-.brix-svg.float { animation: brixFloat 4s ease-in-out infinite; }
-@keyframes brixFloat {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-8px) rotate(1deg); }
-}
-
-.brix-svg.walk { animation: brixWalk 0.5s ease-in-out infinite; }
-@keyframes brixWalk {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-4px) rotate(-1deg); }
-}
-
-/* ── RESPONSIVE MOBILE DEVICE SUPPORT ── */
+/* 8. Safe Areas Responsiveness below 480px */
 @media (max-width: 480px) {
   body {
     padding: 0 !important;
@@ -709,7 +862,6 @@ path[style*="tentWave"] {
 </style>
 </head>
 <body>
-
 <div class="wrap">
 
 <!-- SIDEBAR -->
@@ -811,8 +963,8 @@ path[style*="tentWave"] {
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 2l3 7h7l-6 4 3 7-7-4-7 4 3-7-6-4h7z"/></svg>
       Sana özel
     </div>
-    <h1>Merhaba! 👋<br>Ben <span style="color:var(--orange)">Brix</span></h1>
-    <p>ADHD beyninle birlikte çalışmak için buradayım. Yargılamadan, utanç olmadan. 🐙</p>
+    <h1 style="font-size:26px;font-weight:800;line-height:1.2;margin-bottom:10px;font-family:'Plus Jakarta Sans',sans-serif">Merhaba! 👋<br>Ben <span style="color:var(--orange)">Brix</span></h1>
+    <p style="font-size:15px;color:var(--t2);line-height:1.65;margin-bottom:24px">ADHD beyninle birlikte çalışmak için buradayım. Yargılamadan, utanç olmadan. 🐙</p>
     <button class="btn" onclick="startOnboardingQuiz()">
       Hadi Başlayalım
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -967,12 +1119,12 @@ path[style*="tentWave"] {
     </div>
   </div>
 
-  <div class="area">
+  <div class="area" style="padding:14px 16px 100px">
 
     <!-- BRIX AI COACH CHAT -->
-    <div class="brix-chat" id="brix-chat" style="display:flex;gap:14px;align-items:flex-start">
+    <div class="brix-chat" id="brix-chat" style="display: flex; gap: 14px; align-items: flex-start; padding: 16px; background: white; border-radius: 24px; border: 1.5px solid var(--border); box-shadow: var(--sh2); margin-bottom: 16px;">
       <!-- Brix mascot visual on the left -->
-      <div style="width:76px;height:76px;flex-shrink:0;position:relative">
+      <div style="width: 76px; height: 76px; flex-shrink: 0; position: relative;">
                 <svg id="brix-coach-avatar" class="brix-svg float" width="76" height="76" viewBox="0 0 200 230" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 4px 12px rgba(255,107,53,.25))">
           <!-- Ground shadow -->
           <ellipse cx="100" cy="220" rx="48" ry="6" fill="rgba(0,0,0,.08)"/>
@@ -1086,11 +1238,11 @@ path[style*="tentWave"] {
         </svg>
       </div>
       <!-- Speech bubble layout next to it -->
-      <div style="flex:1;display:flex;flex-direction:column">
-        <div class="chat-txt" id="chat-msg">
+      <div style="flex: 1; display: flex; flex-direction: column;">
+        <div class="chat-txt" id="chat-msg" style="font-size: 13px; color: var(--t1); line-height: 1.55;">
           Hey Savaş! Rapor görevin <strong>30 dakikadır</strong> bekliyor. Bir tıkanıklık mı var? 🤔
         </div>
-        <div class="chat-actions" id="chat-actions-container" style="display:flex;gap:7px">
+        <div class="chat-actions" id="chat-actions-container" style="display: flex; gap: 7px; margin-top: 10px; flex-wrap: wrap;">
           <div class="chat-pill" onclick="brixSuggest('walk')">😅 Evet biraz</div>
           <div class="chat-pill" onclick="brixSuggest('music')">🎵 Müzik öner</div>
           <div class="chat-pill" onclick="brixSuggest('break')">🚶 Yürüyüş!</div>
@@ -1099,17 +1251,17 @@ path[style*="tentWave"] {
     </div>
 
     <!-- DOPAMINE MENU CARD -->
-    <div style="position:relative;overflow:hidden;cursor:pointer" onclick="openDopamineMenu()">
-      <div style="position:absolute;top:-20px;right:-20px;width:80px;height:80px"></div>
-      <div style="display:flex;align-items:center;justify-content:space-between">
-        <div style="display:flex;align-items:center;gap:11px;text-align:left">
-          <div style="width:42px;height:42px;display:flex;align-items:center;justify-content:center">🍽️</div>
+    <div style="background: linear-gradient(135deg, #FFF6F2, #FFF0EB); border: 1.5px solid #FAD3C2; border-radius: 24px; padding: 16px 18px; margin-bottom: 16px; position: relative; overflow: hidden; cursor: pointer; box-shadow: var(--sh1);" onclick="openDopamineMenu()">
+      <div style="position: absolute; top: -20px; right: -20px; width: 80px; height: 80px; background: rgba(255,107,53,0.06); border-radius: 50%;"></div>
+      <div style="display: flex; align-items: center; justify-content: space-between;">
+        <div style="display: flex; align-items: center; gap: 11px; text-align: left;">
+          <div style="width: 42px; height: 42px; background: rgba(255,107,53,0.12); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px;">🍽️</div>
           <div>
-            <div>Dopamin Menüsü</div>
-            <div>Sağlıklı mikro aktivitelerle odağını tetikle!</div>
+            <div style="font-weight: 800; font-size: 15px; color: var(--navy); font-family: 'Plus Jakarta Sans';">Dopamin Menüsü</div>
+            <div style="font-size: 11px; color: var(--t2); margin-top: 2px;">Sağlıklı mikro aktivitelerle odağını tetikle!</div>
           </div>
         </div>
-        <div style="background:var(--orange)" id="dopamine-points-display">0 DP</div>
+        <div style="background: var(--orange); color: white; font-family: 'Plus Jakarta Sans'; font-weight: 800; font-size: 12px; padding: 6px 12px; border-radius: 12px;" id="dopamine-points-display">0 DP</div>
       </div>
     </div>
 
@@ -1133,42 +1285,42 @@ path[style*="tentWave"] {
     </div>
 
     <!-- DAILY TIP CARD -->
-    <div class="card" style="position:relative">
-      <div style="display:flex;justify-content:space-between;align-items:center">
-        <span>💡 GÜNÜN BİLGİSİ</span>
-        <button class="chat-pill" style="cursor:pointer" onclick="shareDailyTip()">Paylaş 📤</button>
+    <div class="card" style="background: linear-gradient(135deg, #FFFBEB 0%, #FFFBEB 100%); border: 1.5px solid #FDE68A; border-radius: 24px; padding: 14px 16px; margin-bottom: 16px; position: relative;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+        <span style="font-size: 10px; font-weight: 800; color: #D97706; background: #FEF3C7; padding: 4px 10px; border-radius: 100px; font-family: 'Plus Jakarta Sans';">💡 GÜNÜN BİLGİSİ</span>
+        <button class="chat-pill" style="padding: 4px 10px; font-size: 10px; font-weight: 700; border-radius: 8px; border: 1px solid #FDE68A; background: white; color: #D97706; cursor: pointer; margin: 0;" onclick="shareDailyTip()">Paylaş 📤</button>
       </div>
-      <p id="daily-tip-text" style="text-align:left"></p>
+      <p id="daily-tip-text" style="font-size: 12px; color: #92400E; line-height: 1.55; font-family: 'DM Sans', sans-serif; text-align: left;"></p>
     </div>
 
     <!-- WINS JOURNAL CARD -->
-    <div style="text-align:left">
-      <div style="display:flex;align-items:center;gap:10px">
-        <span>🏆</span>
-        <div>Başarı Günlüğü</div>
+    <div style="background: linear-gradient(135deg, #F0FDF4 0%, #ECFDF5 100%); border: 1.5px solid #A7F3D0; border-radius: 24px; padding: 16px 18px; margin-bottom: 16px; box-shadow: var(--sh1); text-align: left;">
+      <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+        <span style="font-size: 20px;">🏆</span>
+        <div style="font-weight: 800; font-size: 15px; color: var(--navy); font-family: 'Plus Jakarta Sans';">Başarı Günlüğü</div>
       </div>
-      <p id="journal-prompt-text">Bugünün en büyük başarısı neydi cano? Tek cümleyle kaydet, dopamini hisset!</p>
+      <p style="font-size: 11.5px; color: var(--t2); line-height: 1.5; margin-bottom: 12px;" id="journal-prompt-text">Bugünün en büyük başarısı neydi cano? Tek cümleyle kaydet, dopamini hisset!</p>
       
-      <div id="journal-input-area" style="display:flex;gap:8px">
-        <input type="text" id="journal-input-text" placeholder="Örn: Bugün yürüyüş yaptım!" style="flex:1">
-        <button class="btn" style="background:var(--green);width:auto" onclick="saveJournalEntry()">Kaydet</button>
+      <div id="journal-input-area" style="display: flex; gap: 8px;">
+        <input type="text" id="journal-input-text" placeholder="Örn: Bugün yürüyüş yaptım!" style="flex: 1; padding: 10px; border-radius: 12px; border: 1.5px solid var(--border); font-family: 'DM Sans'; font-size: 13px; outline: none; background: white;">
+        <button class="btn" style="background: var(--green); padding: 10px 14px; font-size: 12px; width: auto;" onclick="saveJournalEntry()">Kaydet</button>
       </div>
-      <div id="journal-saved-area" style="display:none;text-align:left">
-        🌟 Günün Başarısı: <span id="journal-saved-text" style="color:var(--green)">...</span>
+      <div id="journal-saved-area" style="display: none; font-size: 13px; color: var(--navy); font-weight: 700; background: white; border-radius: 12px; padding: 10px 12px; border: 1.5px solid #A7F3D0; text-align: left; line-height: 1.4;">
+        🌟 Günün Başarısı: <span id="journal-saved-text" style="color: var(--green); font-weight: 800;">...</span>
       </div>
     </div>
 
     <!-- WAITING MODE CARD -->
-    <div style="cursor:pointer;transition:transform 0.2s" onclick="openWaitingMode()" onmouseenter="this.style.transform='translateY(-2px)'" onmouseleave="this.style.transform=''">
-      <div style="display:flex;align-items:center;justify-content:space-between">
-        <div style="display:flex;align-items:center;gap:11px;text-align:left">
-          <div style="width:42px;height:42px;display:flex;align-items:center;justify-content:center">⏳</div>
+    <div style="background: linear-gradient(135deg, #E0FBFD, #FFF); border: 1.5px solid #80DEEA; border-radius: 24px; padding: 16px; margin-bottom: 16px; cursor: pointer; transition: transform 0.2s;" onclick="openWaitingMode()" onmouseenter="this.style.transform='translateY(-2px)'" onmouseleave="this.style.transform=''">
+      <div style="display: flex; align-items: center; justify-content: space-between;">
+        <div style="display: flex; align-items: center; gap: 11px; text-align: left;">
+          <div style="width: 42px; height: 42px; background: rgba(38,198,218,0.12); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px;">⏳</div>
           <div>
-            <div>Bekleme Modu Kurtarıcısı</div>
-            <div id="waiting-mode-status">Randevu öncesi felç olma, zamanı bana bırak!</div>
+            <div style="font-weight: 800; font-size: 15px; color: var(--navy); font-family: 'Plus Jakarta Sans';">Bekleme Modu Kurtarıcısı</div>
+            <div style="font-size: 11px; color: var(--t2); margin-top: 2px;" id="waiting-mode-status">Randevu öncesi felç olma, zamanı bana bırak!</div>
           </div>
         </div>
-        <span style="color:var(--teal);border:1.5px solid var(--teal)" id="waiting-mode-badge-time">AÇ</span>
+        <span style="font-size: 11px; font-weight: 800; color: var(--teal); border: 1.5px solid var(--teal); padding: 4px 10px; border-radius: 10px;" id="waiting-mode-badge-time">AÇ</span>
       </div>
     </div>
 
@@ -1197,46 +1349,46 @@ path[style*="tentWave"] {
     </div>
 
     <!-- HABITS TRACKER -->
-    <div class="sh">
+    <div class="sh" style="margin-top:16px;">
       <span class="st">Günlük Alışkanlıklar</span>
-      <span class="sa" id="habit-progress-pct" style="color:var(--green)">0%</span>
+      <span class="sa" id="habit-progress-pct" style="color: var(--green);">0%</span>
     </div>
-    <div class="card" style="display:flex;flex-direction:column;gap:12px">
-      <div class="prog" style="height:6px">
-        <div class="progf" id="habit-progress-bar" style="width:0%;background:linear-gradient(90deg, var(--teal), #22C55E)"></div>
+    <div class="card" style="background: white; border-radius: 24px; padding: 14px 16px; border: 1.5px solid var(--border); box-shadow: var(--sh1); display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px;">
+      <div class="prog" style="background: var(--b2); height: 6px;">
+        <div class="progf" id="habit-progress-bar" style="width: 0%; background: linear-gradient(90deg, var(--teal), #22C55E);"></div>
       </div>
-      <div style="display:flex;gap:8px;justify-content:space-between">
+      <div style="display: flex; gap: 8px; justify-content: space-between;">
         <!-- Water habit -->
-        <div id="habit-water" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;transition:all 0.2s" onclick="toggleHabit('water')">
-          <span>💧</span>
-          <span>Su İçtim</span>
-          <div id="habit-check-water" style="width:16px;height:16px;display:flex;align-items:center;justify-content:center"></div>
+        <div id="habit-water" style="flex: 1; background: var(--bg); border: 1.5px solid var(--border); border-radius: 16px; padding: 10px 4px; display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; transition: all 0.2s;" onclick="toggleHabit('water')">
+          <span style="font-size: 18px;">💧</span>
+          <span style="font-size: 10px; font-weight: 700; color: var(--t2); white-space: nowrap;">Su İçtim</span>
+          <div id="habit-check-water" style="width: 16px; height: 16px; border-radius: 5px; border: 1.5px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: bold; background: white;"></div>
         </div>
         <!-- Move habit -->
-        <div id="habit-exercise" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;transition:all 0.2s" onclick="toggleHabit('exercise')">
-          <span>🏃</span>
-          <span>Egzersiz</span>
-          <div id="habit-check-exercise" style="width:16px;height:16px;display:flex;align-items:center;justify-content:center"></div>
+        <div id="habit-exercise" style="flex: 1; background: var(--bg); border: 1.5px solid var(--border); border-radius: 16px; padding: 10px 4px; display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; transition: all 0.2s;" onclick="toggleHabit('exercise')">
+          <span style="font-size: 18px;">🏃</span>
+          <span style="font-size: 10px; font-weight: 700; color: var(--t2); white-space: nowrap;">Egzersiz</span>
+          <div id="habit-check-exercise" style="width: 16px; height: 16px; border-radius: 5px; border: 1.5px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: bold; background: white;"></div>
         </div>
         <!-- Sleep habit -->
-        <div id="habit-sleep" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;transition:all 0.2s" onclick="toggleHabit('sleep')">
-          <span>😴</span>
-          <span>Uykumu Aldım</span>
-          <div id="habit-check-sleep" style="width:16px;height:16px;display:flex;align-items:center;justify-content:center"></div>
+        <div id="habit-sleep" style="flex: 1; background: var(--bg); border: 1.5px solid var(--border); border-radius: 16px; padding: 10px 4px; display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; transition: all 0.2s;" onclick="toggleHabit('sleep')">
+          <span style="font-size: 18px;">😴</span>
+          <span style="font-size: 10px; font-weight: 700; color: var(--t2); white-space: nowrap;">Uykumu Aldım</span>
+          <div id="habit-check-sleep" style="width: 16px; height: 16px; border-radius: 5px; border: 1.5px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: bold; background: white;"></div>
         </div>
       </div>
     </div>
 
     <!-- MINI GAME -->
-    <div class="sh"><span class="st">Günün Egzersizi</span><span class="sa" onclick="go('games',document.querySelectorAll('.sbb')[2])">Tümü →</span></div>
-    <div style="display:flex;align-items:center;gap:12px;cursor:pointer;transition:all .2s var(--sp)" onclick="openMemoryGame()" onmouseenter="this.style.transform='translateY(-2px)'" onmouseleave="this.style.transform=''">
-      <div style="width:50px;height:50px;background:var(--yellow);display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#B45309" stroke-width="2" stroke-linecap="round"><path d="M12 2a8 8 0 018 8c0 5-4 8-8 12C8 18 4 15 4 10a8 8 0 018-8z"/><circle cx="12" cy="10" r="3"/></svg></div>
-      <div style="flex:1"><div>Hızlı Hafıza 🧩</div><div>Çalışma Belleği · 5 dakika</div><div class="prog"><div class="progf" style="width:66%;background:linear-gradient(90deg,var(--yellow),#F59E0B)"></div></div></div>
-      <div style="background:var(--orange)">Başla</div>
+    <div class="sh" style="margin-top:16px"><span class="st">Günün Egzersizi</span><span class="sa" onclick="go('games',document.querySelectorAll('.sbb')[2])">Tümü →</span></div>
+    <div style="background:linear-gradient(135deg,#EFF6FF,#DBEAFE);border-radius:20px;padding:14px;display:flex;align-items:center;gap:12px;border:1.5px solid #BFDBFE;cursor:pointer;margin-bottom:10px;transition:all .2s var(--sp)" onclick="openMemoryGame()" onmouseenter="this.style.transform='translateY(-2px)'" onmouseleave="this.style.transform=''">
+      <div style="width:50px;height:50px;background:var(--yellow);border-radius:17px;display:flex;align-items:center;justify-content:center;flex-shrink:0"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#B45309" stroke-width="2" stroke-linecap="round"><path d="M12 2a8 8 0 018 8c0 5-4 8-8 12C8 18 4 15 4 10a8 8 0 018-8z"/><circle cx="12" cy="10" r="3"/></svg></div>
+      <div style="flex:1"><div style="font-size:14px;font-weight:700;color:var(--navy);font-family:'Plus Jakarta Sans',sans-serif">Hızlı Hafıza 🧩</div><div style="font-size:12px;color:#3B82F6;margin-top:3px">Çalışma Belleği · 5 dakika</div><div class="prog" style="margin-top:8px;background:#BFDBFE"><div class="progf" style="width:66%;background:linear-gradient(90deg,var(--yellow),#F59E0B)"></div></div></div>
+      <div style="background:var(--orange);color:white;padding:9px 15px;border-radius:13px;font-size:13px;font-weight:700;font-family:'Plus Jakarta Sans',sans-serif">Başla</div>
     </div>
 
     <!-- TEST CTA -->
-    <div style="display:flex;align-items:center;gap:12px;cursor:pointer;transition:all .2s var(--sp)" onclick="go('test',document.querySelectorAll('.sbb')[3])" onmouseenter="this.style.transform='translateY(-2px)'" onmouseleave="this.style.transform=''">
+    <div style="background:linear-gradient(135deg,#FFF0EB,#FFE4D6);border-radius:20px;padding:14px;display:flex;align-items:center;gap:12px;border:1.5px solid #FECDB3;cursor:pointer;transition:all .2s var(--sp)" onclick="go('test',document.querySelectorAll('.sbb')[3])" onmouseenter="this.style.transform='translateY(-2px)'" onmouseleave="this.style.transform=''">
       <!-- Tiny Brix doctor -->
       <svg width="46" height="46" viewBox="0 0 130 140" fill="none" style="filter:drop-shadow(0 3px 8px rgba(255,107,53,.2))">
         <!-- Legs (short, chubby) -->
@@ -1284,8 +1436,8 @@ path[style*="tentWave"] {
         <path d="M54 70 Q65 78 76 70" stroke="#2d2d2d" stroke-width="2.5" stroke-linecap="round" fill="none"/>
       </svg>
       <div style="flex:1">
-        <div>ADHD Testi Yap 🧠</div>
-        <div style="color:var(--orange)">Dr. Brix ile · 5 dk · Ücretsiz</div>
+        <div style="font-size:14px;font-weight:700;color:var(--navy);font-family:'Plus Jakarta Sans',sans-serif">ADHD Testi Yap 🧠</div>
+        <div style="font-size:12px;color:var(--orange);margin-top:3px">Dr. Brix ile · 5 dk · Ücretsiz</div>
       </div>
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </div>
@@ -1295,11 +1447,11 @@ path[style*="tentWave"] {
   <div class="fab" onclick="toggleFabMenu()"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></div>
 
   <!-- FAB MENU -->
-  <div id="fab-menu" style="display:none;position:absolute;bottom:154px;right:14px;z-index:101;flex-direction:column;gap:4px;width:180px;animation:slideUp 0.2s cubic-bezier(0.22, 1, 0.36, 1) both">
-    <button style="display:flex;align-items:center;gap:8px;cursor:pointer;width:100%;text-align:left" onclick="openAddTaskModal(); toggleFabMenu();">
+  <div id="fab-menu" style="display: none; position: absolute; bottom: 154px; right: 14px; background: white; border-radius: 18px; border: 1.5px solid var(--border); box-shadow: var(--sh2); padding: 8px; z-index: 101; flex-direction: column; gap: 4px; width: 180px; animation: slideUp 0.2s cubic-bezier(0.22, 1, 0.36, 1) both;">
+    <button style="border: none; background: transparent; padding: 10px; border-radius: 12px; font-family: 'Plus Jakarta Sans'; font-size: 12px; font-weight: 700; color: var(--navy); display: flex; align-items: center; gap: 8px; cursor: pointer; width: 100%; text-align: left;" onclick="openAddTaskModal(); toggleFabMenu();">
       <span>📝</span> Yeni Görev Ekle
     </button>
-    <button style="color:var(--orange);display:flex;align-items:center;gap:8px;cursor:pointer;width:100%;text-align:left" onclick="openHyperfocusOverlay(); toggleFabMenu();">
+    <button style="border: none; background: transparent; padding: 10px; border-radius: 12px; font-family: 'Plus Jakarta Sans'; font-size: 12px; font-weight: 700; color: var(--orange); display: flex; align-items: center; gap: 8px; cursor: pointer; width: 100%; text-align: left;" onclick="openHyperfocusOverlay(); toggleFabMenu();">
       <span>🎯</span> Hiperfokus Alarmı
     </button>
   </div>
@@ -1316,12 +1468,12 @@ path[style*="tentWave"] {
 <div class="scr" id="s-games">
   <div class="sb"><span class="sb-t">9:41</span><div class="sb-i"><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round"><path d="M1 6l5 5 4-4 4 4 5-5"/></svg><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="7" width="16" height="10" rx="2"/><path d="M20 11v2" stroke-linecap="round"/></svg></div></div>
   <div class="gh">
-    <div style="display:flex;align-items:center;justify-content:space-between"><h2>Beyin Antrenmanı 🧠</h2></div>
-    <p>Bugün 2/3 tamamlandı</p>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px"><h2 style="font-size:21px;font-weight:800;font-family:'Plus Jakarta Sans',sans-serif">Beyin Antrenmanı 🧠</h2></div>
+    <p style="font-size:12px;color:var(--t2);margin-bottom:11px">Bugün 2/3 tamamlandı</p>
     <div class="prog"><div class="progf" style="width:66%"></div></div>
   </div>
-  <div class="area">
-    <div class="feat" onclick="openMemoryGame()" style="cursor:pointer">
+  <div class="area" style="padding:14px 16px 100px">
+    <div class="feat" onclick="openMemoryGame()" style="cursor:pointer;">
       <div style="position:relative;z-index:1">
         <div class="feat-tag">⭐ Günün Oyunu</div>
         <div class="feat-t">Hızlı Hafıza 🧩</div>
@@ -1331,12 +1483,12 @@ path[style*="tentWave"] {
     </div>
     <div class="sh"><span class="st">Kategoriler</span></div>
     <div class="gg">
-      <div class="gc" onclick="go('test',document.querySelectorAll('.sbb')[3]); startCptTest();" style="cursor:pointer"><div style="position:absolute;top:-16px;right:-16px;width:60px;height:60px;background:var(--teal);opacity:.1"></div><div class="gi" style="background:var(--tl)"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div><div class="gn">Odak</div><div class="gd">Dikkat span'ını geliştir</div><div class="glv">⭐ Seviye 3</div></div>
-      <div class="gc" onclick="openMemoryGame()" style="cursor:pointer"><div style="position:absolute;top:-16px;right:-16px;width:60px;height:60px;background:var(--yellow);opacity:.12"></div><div class="gi" style="background:var(--yl)"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#B45309" stroke-width="2.2" stroke-linecap="round"><path d="M12 2a8 8 0 018 8c0 5-4 8-8 12C8 18 4 15 4 10a8 8 0 018-8z"/><circle cx="12" cy="10" r="3"/></svg></div><div class="gn">Hafıza</div><div class="gd">Çalışma belleğini güçlendir</div><div class="glv">⭐ Seviye 2</div></div>
-      <div class="gc" onclick="go('test',document.querySelectorAll('.sbb')[3]); startPlanningTest();" style="cursor:pointer"><div style="position:absolute;top:-16px;right:-16px;width:60px;height:60px;background:var(--orange);opacity:.1"></div><div class="gi" style="background:var(--ol)"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2.2" stroke-linecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><div class="gn">Erteleme</div><div class="gd">Başlama engelini aş</div><div class="glv">⭐ Seviye 1</div></div>
-      <div class="gc" onclick="openActivity('breathing')" style="cursor:pointer"><div style="position:absolute;top:-16px;right:-16px;width:60px;height:60px;background:var(--green);opacity:.1"></div><div class="gi" style="background:var(--gl)"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></div><div class="gn">Stres</div><div class="gd">Kendinle barış, sakinleş</div><div class="glv">⭐ Seviye 4</div></div>
-      <div class="gc" onclick="openFidgetToy()" style="cursor:pointer"><div style="position:absolute;top:-16px;right:-16px;width:60px;height:60px;background:var(--pink);opacity:.12"></div><div class="gi" style="background:var(--pl)"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--pink)" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div><div class="gn">Fidget 🫧</div><div class="gd">Balonları patlat, stres at</div><div class="glv">⭐ İnteraktif</div></div>
-      <div class="gc" onclick="go('test',document.querySelectorAll('.sbb')[3]); startPlanningTest();" style="cursor:pointer"><div style="position:absolute;top:-16px;right:-16px;width:60px;height:60px;background:var(--purple);opacity:.1"></div><div class="gi" style="background:var(--pul)"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--purple)" stroke-width="2.2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div><div class="gn">Dikkat</div><div class="gd">Detayları yakala</div><div class="glv">⭐ Seviye 1</div></div>
+      <div class="gc" onclick="go('test',document.querySelectorAll('.sbb')[3]); startCptTest();" style="cursor:pointer;"><div style="position:absolute;top:-16px;right:-16px;width:60px;height:60px;border-radius:50%;background:var(--teal);opacity:.1"></div><div class="gi" style="background:var(--tl)"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div><div class="gn">Odak</div><div class="gd">Dikkat span'ını geliştir</div><div class="glv">⭐ Seviye 3</div></div>
+      <div class="gc" onclick="openMemoryGame()" style="cursor:pointer;"><div style="position:absolute;top:-16px;right:-16px;width:60px;height:60px;border-radius:50%;background:var(--yellow);opacity:.12"></div><div class="gi" style="background:var(--yl)"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#B45309" stroke-width="2.2" stroke-linecap="round"><path d="M12 2a8 8 0 018 8c0 5-4 8-8 12C8 18 4 15 4 10a8 8 0 018-8z"/><circle cx="12" cy="10" r="3"/></svg></div><div class="gn">Hafıza</div><div class="gd">Çalışma belleğini güçlendir</div><div class="glv">⭐ Seviye 2</div></div>
+      <div class="gc" onclick="go('test',document.querySelectorAll('.sbb')[3]); startPlanningTest();" style="cursor:pointer;"><div style="position:absolute;top:-16px;right:-16px;width:60px;height:60px;border-radius:50%;background:var(--orange);opacity:.1"></div><div class="gi" style="background:var(--ol)"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2.2" stroke-linecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><div class="gn">Erteleme</div><div class="gd">Başlama engelini aş</div><div class="glv">⭐ Seviye 1</div></div>
+      <div class="gc" onclick="openActivity('breathing')" style="cursor:pointer;"><div style="position:absolute;top:-16px;right:-16px;width:60px;height:60px;border-radius:50%;background:var(--green);opacity:.1"></div><div class="gi" style="background:var(--gl)"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></div><div class="gn">Stres</div><div class="gd">Kendinle barış, sakinleş</div><div class="glv">⭐ Seviye 4</div></div>
+      <div class="gc" onclick="openFidgetToy()" style="cursor:pointer;"><div style="position:absolute;top:-16px;right:-16px;width:60px;height:60px;border-radius:50%;background:var(--pink);opacity:.12"></div><div class="gi" style="background:var(--pl)"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--pink)" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></div><div class="gn">Fidget 🫧</div><div class="gd">Balonları patlat, stres at</div><div class="glv">⭐ İnteraktif</div></div>
+      <div class="gc" onclick="go('test',document.querySelectorAll('.sbb')[3]); startPlanningTest();" style="cursor:pointer;"><div style="position:absolute;top:-16px;right:-16px;width:60px;height:60px;border-radius:50%;background:var(--purple);opacity:.1"></div><div class="gi" style="background:var(--pul)"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--purple)" stroke-width="2.2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div><div class="gn">Dikkat</div><div class="gd">Detayları yakala</div><div class="glv">⭐ Seviye 1</div></div>
     </div>
   </div>
   <div class="bnav">
@@ -1348,60 +1500,60 @@ path[style*="tentWave"] {
 </div>
 
 <!-- ══ TEST ══ -->
-<div class="scr" id="s-test">
+<div class="scr" id="s-test" style="background: linear-gradient(170deg, #FFF6F2 0%, #fff 50%)">
   <div class="sb"><span class="sb-t">9:41</span><div class="sb-i"><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round"><path d="M1 6l5 5 4-4 4 4 5-5"/></svg><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="7" width="16" height="10" rx="2"/><path d="M20 11v2" stroke-linecap="round"/></svg></div></div>
   
-  <div class="area" style="overflow-y:auto">
+  <div class="area" style="overflow-y: auto;">
     <!-- TEST MENU -->
-    <div id="test-menu" style="display:flex;flex-direction:column;gap:16px">
-      <div style="text-align:center">
-        <h1>Dr. Brix Test Merkezi 🧠</h1>
-        <p>Zihinsel durumunu ve bilişsel yeteneklerini ölçmek için test seç aslan!</p>
+    <div id="test-menu" style="display: flex; flex-direction: column; padding: 20px 16px 28px; gap: 16px;">
+      <div style="text-align: center; margin-bottom: 8px;">
+        <h1 style="font-size: 23px; font-weight: 900; color: var(--navy); font-family: 'Plus Jakarta Sans', sans-serif;">Dr. Brix Test Merkezi 🧠</h1>
+        <p style="font-size: 13px; color: var(--t2); margin-top: 4px;">Zihinsel durumunu ve bilişsel yeteneklerini ölçmek için test seç aslan!</p>
       </div>
 
       <!-- Test 1: ASRS-v1.1 -->
-      <div class="card" style="display:flex;flex-direction:column;gap:12px;position:relative;overflow:hidden;transition:transform 0.2s" onmouseenter="this.style.transform='translateY(-2px)'" onmouseleave="this.style.transform=''">
-        <div style="display:flex;justify-content:space-between;align-items:center">
-          <span style="background:var(--pul);color:var(--purple)">⚕️ BİLİMSEL TARAMA</span>
-          <span>5 Dakika</span>
+      <div class="card" style="display: flex; flex-direction: column; gap: 12px; border-radius: 24px; padding: 18px; position: relative; overflow: hidden; border: 1.5px solid var(--border); box-shadow: var(--sh1); transition: transform 0.2s;" onmouseenter="this.style.transform='translateY(-2px)'" onmouseleave="this.style.transform=''">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span style="background: var(--pul); color: var(--purple); font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 100px; font-family: 'Plus Jakarta Sans';">⚕️ BİLİMSEL TARAMA</span>
+          <span style="font-size: 12px; color: var(--t3); font-weight: 600;">5 Dakika</span>
         </div>
         <div>
-          <h3>ASRS-v1.1 ADHD Belirti Testi</h3>
-          <p>Dünya Sağlık Örgütü (WHO) onaylı, yetişkin dikkat dağınıklığı ve hiperaktivite tarama ölçeği.</p>
+          <h3 style="font-size: 16px; font-weight: 800; color: var(--navy); margin-bottom: 4px;">ASRS-v1.1 ADHD Belirti Testi</h3>
+          <p style="font-size: 12px; color: var(--t2); line-height: 1.5;">Dünya Sağlık Örgütü (WHO) onaylı, yetişkin dikkat dağınıklığı ve hiperaktivite tarama ölçeği.</p>
         </div>
-        <button class="btn" onclick="openAsrsIntro()">Teste Git 🐙</button>
+        <button class="btn" style="padding: 10px; font-size: 14px; border-radius: 14px;" onclick="openAsrsIntro()">Teste Git 🐙</button>
       </div>
 
       <!-- Test 2: CPT (Tıklama Testi) -->
-      <div class="card" style="display:flex;flex-direction:column;gap:12px;position:relative;overflow:hidden;transition:transform 0.2s" onmouseenter="this.style.transform='translateY(-2px)'" onmouseleave="this.style.transform=''">
-        <div style="display:flex;justify-content:space-between;align-items:center">
-          <span style="background:var(--tl);color:var(--teal)">⚡ DİKKAT &amp; DÜRTÜ</span>
-          <span>30 Saniye</span>
+      <div class="card" style="display: flex; flex-direction: column; gap: 12px; border-radius: 24px; padding: 18px; position: relative; overflow: hidden; border: 1.5px solid var(--border); box-shadow: var(--sh1); transition: transform 0.2s;" onmouseenter="this.style.transform='translateY(-2px)'" onmouseleave="this.style.transform=''">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span style="background: var(--tl); color: var(--teal); font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 100px; font-family: 'Plus Jakarta Sans';">⚡ DİKKAT &amp; DÜRTÜ</span>
+          <span style="font-size: 12px; color: var(--t3); font-weight: 600;">30 Saniye</span>
         </div>
         <div>
-          <h3>Sürekli Performans Testi (CPT)</h3>
-          <p>Harfleri takip et, 'X' dışındaki tüm harflere tıkla. Tepki hızını ve dürtü kontrolünü ölç!</p>
+          <h3 style="font-size: 16px; font-weight: 800; color: var(--navy); margin-bottom: 4px;">Sürekli Performans Testi (CPT)</h3>
+          <p style="font-size: 12px; color: var(--t2); line-height: 1.5;">Harfleri takip et, 'X' dışındaki tüm harflere tıkla. Tepki hızını ve dürtü kontrolünü ölç!</p>
         </div>
-        <button class="btn" style="background:linear-gradient(135deg, var(--teal), #00ACC1)" onclick="startCptTest()">Teste Git ⚡</button>
+        <button class="btn" style="background: linear-gradient(135deg, var(--teal), #00ACC1); box-shadow: 0 4px 15px rgba(38,198,218,0.3); padding: 10px; font-size: 14px; border-radius: 14px;" onclick="startCptTest()">Teste Git ⚡</button>
       </div>
 
       <!-- Test 3: Tüp Taşıma Testi -->
-      <div class="card" style="display:flex;flex-direction:column;gap:12px;position:relative;overflow:hidden;transition:transform 0.2s" onmouseenter="this.style.transform='translateY(-2px)'" onmouseleave="this.style.transform=''">
-        <div style="display:flex;justify-content:space-between;align-items:center">
-          <span style="background:var(--ol);color:var(--orange)">🧩 PLANLAMA</span>
-          <span>Zeka Oyunu</span>
+      <div class="card" style="display: flex; flex-direction: column; gap: 12px; border-radius: 24px; padding: 18px; position: relative; overflow: hidden; border: 1.5px solid var(--border); box-shadow: var(--sh1); transition: transform 0.2s;" onmouseenter="this.style.transform='translateY(-2px)'" onmouseleave="this.style.transform=''">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span style="background: var(--ol); color: var(--orange); font-size: 10px; font-weight: 800; padding: 4px 10px; border-radius: 100px; font-family: 'Plus Jakarta Sans';">🧩 PLANLAMA</span>
+          <span style="font-size: 12px; color: var(--t3); font-weight: 600;">Zeka Oyunu</span>
         </div>
         <div>
-          <h3>Tüp Taşıma Testi</h3>
-          <p>Renkli topları tüpler arasında taşıyarak en az hamleyle hedef düzene ulaş. Zihinsel planlamanı ölç!</p>
+          <h3 style="font-size: 16px; font-weight: 800; color: var(--navy); margin-bottom: 4px;">Tüp Taşıma Testi</h3>
+          <p style="font-size: 12px; color: var(--t2); line-height: 1.5;">Renkli topları tüpler arasında taşıyarak en az hamleyle hedef düzene ulaş. Zihinsel planlamanı ölç!</p>
         </div>
-        <button class="btn" style="background:linear-gradient(135deg, var(--orange), #FF8C5A)" onclick="startPlanningTest()">Teste Git 🧪</button>
+        <button class="btn" style="background: linear-gradient(135deg, var(--orange), #FF8C5A); padding: 10px; font-size: 14px; border-radius: 14px;" onclick="startPlanningTest()">Teste Git 🧪</button>
       </div>
     </div>
 
     <!-- TEST INTRO -->
-    <div class="test-body" id="test-intro" style="display:none;flex-direction:column;align-items:center;text-align:center">
-      <div class="test-glow">
+    <div class="test-body" id="test-intro" style="display: none; flex-direction: column; align-items: center; padding: 40px 24px 28px; text-align: center;">
+      <div class="test-glow" style="margin-bottom: 16px;">
                 <svg id="brix-test-intro" class="brix-svg doctor" width="150" height="150" viewBox="0 0 200 230" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 4px 12px rgba(255,107,53,.25))">
           <!-- Ground shadow -->
           <ellipse cx="100" cy="220" rx="48" ry="6" fill="rgba(0,0,0,.08)"/>
@@ -1499,29 +1651,29 @@ path[style*="tentWave"] {
           <ellipse cx="100" cy="114" rx="10" ry="6" fill="#c0392b" opacity=".6"/>
         </svg>
       </div>
-      <h1>ADHD'li misin?</h1>
-      <p>Dr. Brix seninle 5 dakika geçirmek istiyor. Bilimsel, güvenilir bir tarama testi.</p>
-      <div class="tbadges" style="display:flex;gap:7px;justify-content:center">
-        <span class="tb" style="background:var(--tl);color:var(--teal)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="margin-right: 4px; vertical-align: middle;"><path d="M9 11l3 3L22 4"/></svg>WHO Onaylı</span>
-        <span class="tb" style="background:var(--ol);color:var(--orange)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="margin-right: 4px; vertical-align: middle;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>18 Soru</span>
-        <span class="tb" style="background:var(--gl);color:var(--green)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="margin-right: 4px; vertical-align: middle;"><path d="M12 2l3 7h7l-6 4 3 7-7-4-7 4 3-7-6-4h7z"/></svg>Ücretsiz</span>
+      <h1 style="font-size:27px;font-weight:900;line-height:1.2;margin-bottom:10px;font-family:'Plus Jakarta Sans',sans-serif">ADHD'li misin?</h1>
+      <p style="font-size:14px;color:var(--t2);line-height:1.65;margin-bottom:18px;">Dr. Brix seninle 5 dakika geçirmek istiyor. Bilimsel, güvenilir bir tarama testi.</p>
+      <div class="tbadges" style="display: flex; gap: 7px; flex-wrap: wrap; justify-content: center; margin-bottom: 22px;">
+        <span class="tb" style="background:var(--tl);color:var(--teal);padding:6px 12px;border-radius:100px;font-size:11px;font-weight:600;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="margin-right: 4px; vertical-align: middle;"><path d="M9 11l3 3L22 4"/></svg>WHO Onaylı</span>
+        <span class="tb" style="background:var(--ol);color:var(--orange);padding:6px 12px;border-radius:100px;font-size:11px;font-weight:600;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="margin-right: 4px; vertical-align: middle;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>18 Soru</span>
+        <span class="tb" style="background:var(--gl);color:var(--green);padding:6px 12px;border-radius:100px;font-size:11px;font-weight:600;"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="margin-right: 4px; vertical-align: middle;"><path d="M12 2l3 7h7l-6 4 3 7-7-4-7 4 3-7-6-4h7z"/></svg>Ücretsiz</span>
       </div>
       <button class="btn" onclick="startTest()">Teste Başla 🐙</button>
-      <p class="disc" style="text-align:center">⚕️ Bu bir tanı değildir. Uzman görüşü için psikiyatrist veya psikolog ile görüşün.</p>
+      <p class="disc" style="font-size:11px;color:var(--t3);text-align:center;margin-top:14px;line-height:1.6;padding:0 8px;">⚕️ Bu bir tanı değildir. Uzman görüşü için psikiyatrist veya psikolog ile görüşün.</p>
     </div>
 
     <!-- TEST QUIZ -->
-    <div id="test-quiz" style="display:none;flex-direction:column;justify-content:space-between;min-height:520px">
+    <div id="test-quiz" style="display: none; padding: 24px 16px; flex-direction: column; justify-content: space-between; min-height: 520px;">
       <div>
-        <div style="display:flex;justify-content:space-between">
+        <div style="display: flex; justify-content: space-between; font-size: 13px; color: var(--t2); font-weight: 700; margin-bottom: 8px;">
           <span>Dr. Brix Analiz Ediyor</span>
           <span id="question-number">Soru 1 / 18</span>
         </div>
-        <div class="prog"><div class="progf" id="quiz-progress" style="width:5.5%"></div></div>
+        <div class="prog" style="margin-bottom: 24px;"><div class="progf" id="quiz-progress" style="width: 5.5%;"></div></div>
       </div>
 
-      <div style="display:flex;flex-direction:column;align-items:center">
-        <div style="width:100px;height:100px;position:relative">
+      <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 24px;">
+        <div style="width: 100px; height: 100px; position: relative; margin-bottom: 12px;">
                     <svg id="brix-doctor-avatar-quiz" class="brix-svg doctor" width="100" height="100" viewBox="0 0 200 230" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 4px 12px rgba(255,107,53,.25))">
           <!-- Ground shadow -->
           <ellipse cx="100" cy="220" rx="48" ry="6" fill="rgba(0,0,0,.08)"/>
@@ -1620,24 +1772,24 @@ path[style*="tentWave"] {
         </svg>
         </div>
         
-        <div style="width:100%;position:relative;text-align:center">
-          <div style="position:absolute;top:-7px;left:50%;transform:translateX(-50%) rotate(45deg);width:12px;height:12px"></div>
-          <h3 id="question-text">Bir işin son detaylarını bitirirken ne sıklıkla zorlanırsın?</h3>
+        <div style="background: white; border: 1.5px solid var(--border); border-radius: 20px; padding: 16px; box-shadow: var(--sh1); width: 100%; position: relative; text-align: center;">
+          <div style="content: ''; position: absolute; top: -7px; left: 50%; transform: translateX(-50%) rotate(45deg); width: 12px; height: 12px; background: white; border-left: 1.5px solid var(--border); border-top: 1.5px solid var(--border);"></div>
+          <h3 id="question-text" style="font-size: 14px; font-weight: 700; color: var(--t1); line-height: 1.5;">Bir işin son detaylarını bitirirken ne sıklıkla zorlanırsın?</h3>
         </div>
       </div>
 
-      <div style="display:flex;flex-direction:column;gap:8px">
-        <button class="chat-pill" style="text-align:center;display:block;width:100%" onclick="answerQuestion(0)">😮 Hiçbir zaman</button>
-        <button class="chat-pill" style="text-align:center;display:block;width:100%" onclick="answerQuestion(1)">😐 Nadiren</button>
-        <button class="chat-pill" style="text-align:center;display:block;width:100%" onclick="answerQuestion(2)">🤔 Bazen</button>
-        <button class="chat-pill" style="text-align:center;display:block;width:100%" onclick="answerQuestion(3)">😩 Sık sık</button>
-        <button class="chat-pill" style="text-align:center;display:block;width:100%" onclick="answerQuestion(4)">🤯 Çok sık</button>
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <button class="chat-pill" style="padding: 12px; text-align: center; border-radius: 14px; font-size: 13px; font-weight: 700; display: block; width: 100%; border: 1.5px solid var(--border);" onclick="answerQuestion(0)">😮 Hiçbir zaman</button>
+        <button class="chat-pill" style="padding: 12px; text-align: center; border-radius: 14px; font-size: 13px; font-weight: 700; display: block; width: 100%; border: 1.5px solid var(--border);" onclick="answerQuestion(1)">😐 Nadiren</button>
+        <button class="chat-pill" style="padding: 12px; text-align: center; border-radius: 14px; font-size: 13px; font-weight: 700; display: block; width: 100%; border: 1.5px solid var(--border);" onclick="answerQuestion(2)">🤔 Bazen</button>
+        <button class="chat-pill" style="padding: 12px; text-align: center; border-radius: 14px; font-size: 13px; font-weight: 700; display: block; width: 100%; border: 1.5px solid var(--border);" onclick="answerQuestion(3)">😩 Sık sık</button>
+        <button class="chat-pill" style="padding: 12px; text-align: center; border-radius: 14px; font-size: 13px; font-weight: 700; display: block; width: 100%; border: 1.5px solid var(--border);" onclick="answerQuestion(4)">🤯 Çok sık</button>
       </div>
     </div>
 
     <!-- TEST LOADING -->
-    <div id="test-loading" style="display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:480px">
-      <div style="width:130px;height:130px;position:relative">
+    <div id="test-loading" style="display: none; padding: 60px 24px; flex-direction: column; align-items: center; justify-content: center; text-align: center; min-height: 480px;">
+      <div style="width: 130px; height: 130px; margin-bottom: 24px; position: relative;">
         <svg id="brix-doctor-loading" class="brix-svg doctor" width="130" height="130" viewBox="0 0 200 230" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 4px 12px rgba(255,107,53,.25))">
           <!-- Ground shadow -->
           <ellipse cx="100" cy="220" rx="48" ry="6" fill="rgba(0,0,0,.08)"/>
@@ -1735,211 +1887,211 @@ path[style*="tentWave"] {
           <ellipse cx="100" cy="114" rx="10" ry="6" fill="#c0392b" opacity=".6"/>
         </svg>
       </div>
-      <h2>Dr. Brix Hesaplama Yapıyor...</h2>
-      <p>Yanıtların bilimsel ASRS-v1.1 ölçeğine göre analiz ediliyor.</p>
-      <div style="width:32px;height:32px;animation:spin 1s linear infinite"></div>
+      <h2 style="font-size: 18px; font-weight: 800; color: var(--navy); margin-bottom: 6px; margin-top: 16px;">Dr. Brix Hesaplama Yapıyor...</h2>
+      <p style="font-size: 13px; color: var(--t2); margin-bottom: 20px;">Yanıtların bilimsel ASRS-v1.1 ölçeğine göre analiz ediliyor.</p>
+      <div style="width: 32px; height: 32px; border: 4px solid var(--border); border-top-color: var(--orange); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto;"></div>
     </div>
 
     <!-- TEST RESULT -->
-    <div id="test-result" style="display:none;flex-direction:column;overflow-y:auto;align-items:center;text-align:center">
-      <h2>Test Tamamlandı! 🎉</h2>
+    <div id="test-result" style="display: none; padding: 24px 16px 100px; flex-direction: column; overflow-y: auto; align-items: center; text-align: center;">
+      <h2 style="font-size: 20px; font-weight: 800; color: var(--navy); margin-bottom: 16px;">Test Tamamlandı! 🎉</h2>
       
       <!-- Profile Card Container -->
-      <div id="result-profile-card" style="width:100%;display:flex;flex-direction:column;align-items:center;transition:transform 0.2s">
-        <div id="result-emoji">🌀</div>
-        <h3 id="result-title">Zihin Gezgini</h3>
-        <div id="result-subtitle" style="display:inline-flex;align-items:center;gap:5px">Karma Tip ADHD</div>
-        <p id="result-description">Hem dikkat dağınıklığı hem hiperaktivite boyutlarında belirtiler taşıyorsun. Yaratıcı, bağlantı kuran bir beyin!</p>
+      <div id="result-profile-card" style="width: 100%; border-radius: 24px; padding: 24px 20px; border: 1.5px solid var(--border); box-shadow: var(--sh1); display: flex; flex-direction: column; align-items: center; margin-bottom: 24px; transition: transform 0.2s;">
+        <div id="result-emoji" style="font-size: 48px; margin-bottom: 12px; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.06));">🌀</div>
+        <h3 id="result-title" style="font-size: 20px; font-weight: 800; color: var(--navy); font-family: 'Plus Jakarta Sans', sans-serif;">Zihin Gezgini</h3>
+        <div id="result-subtitle" style="font-size: 11px; font-weight: 700; padding: 5px 14px; border-radius: 100px; margin-top: 8px; display: inline-flex; align-items: center; gap: 5px; font-family: 'Plus Jakarta Sans', sans-serif;">Karma Tip ADHD</div>
+        <p id="result-description" style="font-size: 13px; color: var(--t2); line-height: 1.65; margin-top: 16px; font-family: 'DM Sans', sans-serif;">Hem dikkat dağınıklığı hem hiperaktivite boyutlarında belirtiler taşıyorsun. Yaratıcı, bağlantı kuran bir beyin!</p>
       </div>
 
       <!-- Actions -->
-      <button class="btn" style="background:linear-gradient(135deg, var(--orange), #FF8C5A);width:100%" onclick="generateShareCard()">
+      <button class="btn" style="background: linear-gradient(135deg, var(--orange), #FF8C5A); width: 100%; margin-bottom: 12px;" onclick="generateShareCard()">
         Sonucunu Paylaş (Story)
       </button>
       
-      <button class="btn" style="color:var(--orange);border:2.5px solid var(--orange);width:100%" onclick="restartTest()">
+      <button class="btn" style="background: white; color: var(--orange); border: 2.5px solid var(--orange); box-shadow: none; width: 100%; margin-bottom: 24px;" onclick="restartTest()">
         Testi Yeniden Çöz
       </button>
       
-      <p class="disc" style="text-align:center">⚕️ Bu bir tanı değildir. Uzman görüşü için psikiyatrist veya psikolog ile görüşün.</p>
+      <p class="disc" style="font-size:11px;color:var(--t3);text-align:center;line-height:1.6;padding: 0 8px;">⚕️ Bu bir tanı değildir. Uzman görüşü için psikiyatrist veya psikolog ile görüşün.</p>
     </div>
 
     <!-- TEST CPT (Tıklama Testi) -->
-    <div id="test-cpt" style="display:none;flex-direction:column;justify-content:space-between;min-height:520px;align-items:center;text-align:center">
-      <div style="width:100%">
-        <div style="display:flex;justify-content:space-between">
+    <div id="test-cpt" style="display: none; padding: 24px 16px; flex-direction: column; justify-content: space-between; min-height: 520px; align-items: center; text-align: center;">
+      <div style="width: 100%;">
+        <div style="display: flex; justify-content: space-between; font-size: 13px; color: var(--t2); font-weight: 700; margin-bottom: 8px;">
           <span>Sürekli Performans Testi (CPT)</span>
-          <span id="cpt-timer" style="color:var(--teal)">30s</span>
+          <span id="cpt-timer" style="color: var(--teal); font-weight: 800;">30s</span>
         </div>
-        <div class="prog"><div class="progf" id="cpt-progress" style="width:100%;background:var(--teal)"></div></div>
+        <div class="prog" style="margin-bottom: 20px;"><div class="progf" id="cpt-progress" style="width: 100%; background: var(--teal);"></div></div>
       </div>
 
-      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;width:100%">
-        <div>GÖRDÜĞÜN HARF:</div>
+      <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; flex: 1; width: 100%; margin-bottom: 24px;">
+        <div style="font-size: 12px; color: var(--t2); font-weight: 600; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.05em;">GÖRDÜĞÜN HARF:</div>
         
         <!-- Big letter area with light blue backdrop -->
-        <div style="width:140px;height:140px;background:var(--tl);display:flex;align-items:center;justify-content:center;transition:transform 0.1s var(--sp)" id="cpt-letter-container">
-          <span id="cpt-letter">A</span>
+        <div style="width: 140px; height: 140px; background: var(--tl); border-radius: 36px; display: flex; align-items: center; justify-content: center; font-size: 76px; font-weight: 900; color: var(--navy); border: 2.5px solid #80DEEA; box-shadow: inset 0 2px 10px rgba(38,198,218,0.15); transition: transform 0.1s var(--sp);" id="cpt-letter-container">
+          <span id="cpt-letter" style="font-family: 'Plus Jakarta Sans', sans-serif;">A</span>
         </div>
         
         <!-- Info indicator -->
-        <p style="max-width:250px" id="cpt-status-hint">
+        <p style="font-size: 12px; color: var(--t3); margin-top: 18px; line-height: 1.6; max-width: 250px;" id="cpt-status-hint">
           <strong>Kural:</strong> "X" harfi hariç her harfe bas! "X" gelince bekle.
         </p>
       </div>
 
       <!-- Action click button -->
-      <button id="cpt-click-btn" class="btn" style="background:linear-gradient(135deg, var(--teal), #00ACC1);height:84px" onclick="registerCptClick()">
+      <button id="cpt-click-btn" class="btn" style="background: linear-gradient(135deg, var(--teal), #00ACC1); height: 84px; font-size: 22px; font-weight: 800; border-radius: 20px; box-shadow: 0 8px 24px rgba(38,198,218,0.35); text-transform: uppercase;" onclick="registerCptClick()">
         TIKLA! ⚡
       </button>
 
-      <button class="btn" style="width:auto" onclick="exitToTestMenu()">
+      <button class="btn" style="background: white; color: var(--t2); border: 1.5px solid var(--border); box-shadow: none; padding: 10px; margin-top: 14px; font-size: 13px; border-radius: 14px; width: auto;" onclick="exitToTestMenu()">
         Testten Çık ↩
       </button>
     </div>
 
     <!-- TEST CPT RESULT -->
-    <div id="test-cpt-result" style="display:none;flex-direction:column;overflow-y:auto;align-items:center;text-align:center">
-      <h2>CPT Test Sonucu ⚡</h2>
+    <div id="test-cpt-result" style="display: none; padding: 24px 16px 100px; flex-direction: column; overflow-y: auto; align-items: center; text-align: center;">
+      <h2 style="font-size: 20px; font-weight: 800; color: var(--navy); margin-bottom: 16px;">CPT Test Sonucu ⚡</h2>
       
       <!-- CPT Result Profile Card -->
-      <div id="cpt-result-card" style="width:100%;display:flex;flex-direction:column;align-items:center">
-        <div>⚡</div>
-        <h3 id="cpt-result-title">Dikkat Odaklı</h3>
-        <div id="cpt-result-badge" style="display:inline-flex;align-items:center;gap:5px;background:var(--teal)">YÜKSEK HIZ</div>
+      <div id="cpt-result-card" style="width: 100%; border-radius: 24px; padding: 24px 20px; border: 1.5px solid #80DEEA; background: linear-gradient(135deg, #E0FBFD, #FFF); box-shadow: var(--sh1); display: flex; flex-direction: column; align-items: center; margin-bottom: 24px;">
+        <div style="font-size: 48px; margin-bottom: 12px;">⚡</div>
+        <h3 id="cpt-result-title" style="font-size: 20px; font-weight: 800; color: var(--navy); font-family: 'Plus Jakarta Sans', sans-serif;">Dikkat Odaklı</h3>
+        <div id="cpt-result-badge" style="font-size: 11px; font-weight: 700; padding: 5px 14px; border-radius: 100px; margin-top: 8px; display: inline-flex; align-items: center; gap: 5px; background: var(--teal); color: white; font-family: 'Plus Jakarta Sans', sans-serif;">YÜKSEK HIZ</div>
         
-        <p id="cpt-result-description">Sürekli dikkat düzeyin yüksek. Hızlı refleksler sergilerken dürtü kontrolünü de başarıyla korudun!</p>
+        <p id="cpt-result-description" style="font-size: 13px; color: var(--t2); line-height: 1.65; margin-top: 16px; font-family: 'DM Sans', sans-serif;">Sürekli dikkat düzeyin yüksek. Hızlı refleksler sergilerken dürtü kontrolünü de başarıyla korudun!</p>
         
         <!-- Score Details -->
-        <div style="width:100%;display:grid;grid-template-columns:1fr 1fr;gap:10px">
-          <div style="text-align:left">
-            <div>DOĞRULUK ORANI</div>
-            <div id="cpt-acc">92%</div>
+        <div style="width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 18px; border-top: 1px dashed rgba(38,198,218,0.3); padding-top: 14px;">
+          <div style="text-align: left;">
+            <div style="font-size: 11px; color: var(--t3); font-weight: 600;">DOĞRULUK ORANI</div>
+            <div style="font-size: 16px; font-weight: 800; color: var(--navy);" id="cpt-acc">92%</div>
           </div>
-          <div style="text-align:left">
-            <div>TEPKİ SÜRESİ</div>
-            <div id="cpt-rt">348 ms</div>
+          <div style="text-align: left;">
+            <div style="font-size: 11px; color: var(--t3); font-weight: 600;">TEPKİ SÜRESİ</div>
+            <div style="font-size: 16px; font-weight: 800; color: var(--navy);" id="cpt-rt">348 ms</div>
           </div>
-          <div style="text-align:left">
-            <div>YANLIŞ TIKLAMA (X)</div>
-            <div style="color:var(--red)" id="cpt-comm">1 / 8</div>
+          <div style="text-align: left;">
+            <div style="font-size: 11px; color: var(--t3); font-weight: 600;">YANLIŞ TIKLAMA (X)</div>
+            <div style="font-size: 16px; font-weight: 800; color: var(--red);" id="cpt-comm">1 / 8</div>
           </div>
-          <div style="text-align:left">
-            <div>KAÇIRILAN HARF</div>
-            <div style="color:var(--orange)" id="cpt-om">2 / 22</div>
+          <div style="text-align: left;">
+            <div style="font-size: 11px; color: var(--t3); font-weight: 600;">KAÇIRILAN HARF</div>
+            <div style="font-size: 16px; font-weight: 800; color: var(--orange);" id="cpt-om">2 / 22</div>
           </div>
         </div>
       </div>
 
-      <button class="btn" style="background:linear-gradient(135deg, var(--teal), #00ACC1);width:100%" onclick="exitToTestMenu()">
+      <button class="btn" style="background: linear-gradient(135deg, var(--teal), #00ACC1); width: 100%; margin-bottom: 24px;" onclick="exitToTestMenu()">
         Test Merkezine Dön ↩
       </button>
       
-      <p class="disc" style="text-align:center">⚕️ Bu test sürekli dikkat performansını ölçmek için tasarlanmış bir simülasyondur.</p>
+      <p class="disc" style="font-size:11px;color:var(--t3);text-align:center;line-height:1.6;padding: 0 8px;">⚕️ Bu test sürekli dikkat performansını ölçmek için tasarlanmış bir simülasyondur.</p>
     </div>
 
     <!-- TEST PLANNING (Tüp Taşıma Testi) -->
-    <div id="test-planning" style="display:none;flex-direction:column;justify-content:space-between;min-height:520px;align-items:center;text-align:center">
-      <div style="width:100%">
-        <div style="display:flex;justify-content:space-between">
+    <div id="test-planning" style="display: none; padding: 24px 16px; flex-direction: column; justify-content: space-between; min-height: 520px; align-items: center; text-align: center;">
+      <div style="width: 100%;">
+        <div style="display: flex; justify-content: space-between; font-size: 13px; color: var(--t2); font-weight: 700; margin-bottom: 8px;">
           <span>Tüp Taşıma Testi (Tower of London)</span>
-          <span>Hamle: <span id="planning-moves" style="color:var(--orange)">0</span></span>
+          <span>Hamle: <span id="planning-moves" style="color: var(--orange); font-weight: 800;">0</span></span>
         </div>
-        <div class="prog"><div class="progf" id="planning-progress" style="width:0%;background:var(--orange)"></div></div>
+        <div class="prog" style="margin-bottom: 12px;"><div class="progf" id="planning-progress" style="width: 0%; background: var(--orange);"></div></div>
       </div>
 
       <!-- TARGET DESCRIPTION -->
-      <div style="width:100%;text-align:center">
-        <span style="display:block">🎯 HEDEF DÜZEN:</span>
-        <div style="display:flex;justify-content:center;gap:20px;align-items:flex-end">
+      <div style="background: var(--bg); border: 1.5px solid var(--border); border-radius: 18px; padding: 10px 14px; width: 100%; margin-bottom: 16px; text-align: center;">
+        <span style="font-size: 11px; font-weight: 700; color: var(--t2); display: block; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px;">🎯 HEDEF DÜZEN:</span>
+        <div style="display: flex; justify-content: center; gap: 20px; align-items: flex-end;">
           <!-- Target Tube 1 -->
-          <div style="display:flex;flex-direction:column;align-items:center;gap:3px">
-            <div style="width:22px;height:50px;display:flex;flex-direction:column-reverse;align-items:center;justify-content:flex-start;gap:2px">
-              <div style="width:14px;height:14px"></div>
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 3px;">
+            <div style="width: 22px; height: 50px; border: 1.5px solid var(--t3); border-top: none; border-radius: 0 0 10px 10px; display: flex; flex-direction: column-reverse; align-items: center; justify-content: flex-start; padding-bottom: 2px; gap: 2px;">
+              <div style="width: 14px; height: 14px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #FF8C5A, #EF4444);"></div>
             </div>
-            <span>Tüp 1</span>
+            <span style="font-size: 9px; color: var(--t3); font-weight: 700;">Tüp 1</span>
           </div>
           <!-- Target Tube 2 -->
-          <div style="display:flex;flex-direction:column;align-items:center;gap:3px">
-            <div style="width:22px;height:50px;display:flex;flex-direction:column-reverse;align-items:center;justify-content:flex-start;gap:2px">
-              <div style="width:14px;height:14px"></div>
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 3px;">
+            <div style="width: 22px; height: 50px; border: 1.5px solid var(--t3); border-top: none; border-radius: 0 0 10px 10px; display: flex; flex-direction: column-reverse; align-items: center; justify-content: flex-start; padding-bottom: 2px; gap: 2px;">
+              <div style="width: 14px; height: 14px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #4ade80, #22C55E);"></div>
             </div>
-            <span>Tüp 2</span>
+            <span style="font-size: 9px; color: var(--t3); font-weight: 700;">Tüp 2</span>
           </div>
           <!-- Target Tube 3 -->
-          <div style="display:flex;flex-direction:column;align-items:center;gap:3px">
-            <div style="width:22px;height:50px;display:flex;flex-direction:column-reverse;align-items:center;justify-content:flex-start;gap:2px">
-              <div style="width:14px;height:14px"></div>
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 3px;">
+            <div style="width: 22px; height: 50px; border: 1.5px solid var(--t3); border-top: none; border-radius: 0 0 10px 10px; display: flex; flex-direction: column-reverse; align-items: center; justify-content: flex-start; padding-bottom: 2px; gap: 2px;">
+              <div style="width: 14px; height: 14px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #38bdf8, #0284C7);"></div>
             </div>
-            <span>Tüp 3</span>
+            <span style="font-size: 9px; color: var(--t3); font-weight: 700;">Tüp 3</span>
           </div>
         </div>
       </div>
 
       <!-- PLAY AREA (Tubes and balls) -->
-      <div style="display:flex;justify-content:space-around;align-items:flex-end;width:100%;height:180px">
+      <div style="display: flex; justify-content: space-around; align-items: flex-end; width: 100%; height: 180px; margin-bottom: 20px; background: rgba(15,23,41,0.02); border-radius: 24px; padding: 20px 10px; border: 1.5px dashed var(--border);">
         
         <!-- Tube 1 -->
-        <div class="planning-tube" onclick="selectPlanningTube(0)" style="width:60px;height:130px;display:flex;flex-direction:column-reverse;align-items:center;gap:5px;cursor:pointer;transition:all 0.2s var(--sp);position:relative">
+        <div class="planning-tube" onclick="selectPlanningTube(0)" style="width: 60px; height: 130px; border: 3px solid var(--t2); border-top: none; border-radius: 0 0 30px 30px; display: flex; flex-direction: column-reverse; align-items: center; padding-bottom: 6px; gap: 5px; cursor: pointer; transition: all 0.2s var(--sp); position: relative;">
           <!-- Balls go inside dynamically -->
-          <div id="tube-0" style="display:flex;flex-direction:column-reverse;align-items:center;gap:5px;width:100%"></div>
+          <div id="tube-0" style="display: flex; flex-direction: column-reverse; align-items: center; gap: 5px; width: 100%;"></div>
         </div>
 
         <!-- Tube 2 -->
-        <div class="planning-tube" onclick="selectPlanningTube(1)" style="width:60px;height:130px;display:flex;flex-direction:column-reverse;align-items:center;gap:5px;cursor:pointer;transition:all 0.2s var(--sp);position:relative">
+        <div class="planning-tube" onclick="selectPlanningTube(1)" style="width: 60px; height: 130px; border: 3px solid var(--t2); border-top: none; border-radius: 0 0 30px 30px; display: flex; flex-direction: column-reverse; align-items: center; padding-bottom: 6px; gap: 5px; cursor: pointer; transition: all 0.2s var(--sp); position: relative;">
           <!-- Balls go inside dynamically -->
-          <div id="tube-1" style="display:flex;flex-direction:column-reverse;align-items:center;gap:5px;width:100%"></div>
+          <div id="tube-1" style="display: flex; flex-direction: column-reverse; align-items: center; gap: 5px; width: 100%;"></div>
         </div>
 
         <!-- Tube 3 -->
-        <div class="planning-tube" onclick="selectPlanningTube(2)" style="width:60px;height:130px;display:flex;flex-direction:column-reverse;align-items:center;gap:5px;cursor:pointer;transition:all 0.2s var(--sp);position:relative">
+        <div class="planning-tube" onclick="selectPlanningTube(2)" style="width: 60px; height: 130px; border: 3px solid var(--t2); border-top: none; border-radius: 0 0 30px 30px; display: flex; flex-direction: column-reverse; align-items: center; padding-bottom: 6px; gap: 5px; cursor: pointer; transition: all 0.2s var(--sp); position: relative;">
           <!-- Balls go inside dynamically -->
-          <div id="tube-2" style="display:flex;flex-direction:column-reverse;align-items:center;gap:5px;width:100%"></div>
+          <div id="tube-2" style="display: flex; flex-direction: column-reverse; align-items: center; gap: 5px; width: 100%;"></div>
         </div>
 
       </div>
 
-      <div id="planning-instruction">
+      <div style="font-size: 13px; color: var(--t2); font-weight: 600; line-height: 1.5; margin-bottom: 12px;" id="planning-instruction">
         Tüplerden birini seçerek üstteki topu al, sonra taşımak istediğin tüpe tıkla!
       </div>
 
-      <div style="display:flex;gap:10px;width:100%">
-        <button class="btn" style="flex:1;color:var(--orange);border:2.5px solid var(--orange)" onclick="resetPlanningGame()">
+      <div style="display: flex; gap: 10px; width: 100%;">
+        <button class="btn" style="flex: 1; background: white; color: var(--orange); border: 2.5px solid var(--orange); box-shadow: none;" onclick="resetPlanningGame()">
           Sıfırla 🔄
         </button>
-        <button class="btn" style="flex:1" onclick="exitToTestMenu()">
+        <button class="btn" style="flex: 1; background: white; color: var(--t2); border: 1.5px solid var(--border); box-shadow: none;" onclick="exitToTestMenu()">
           Çıkış ↩
         </button>
       </div>
     </div>
 
     <!-- TEST PLANNING RESULT -->
-    <div id="test-planning-result" style="display:none;flex-direction:column;overflow-y:auto;align-items:center;text-align:center">
-      <h2>Planlama Test Sonucu 🧩</h2>
+    <div id="test-planning-result" style="display: none; padding: 24px 16px 100px; flex-direction: column; overflow-y: auto; align-items: center; text-align: center;">
+      <h2 style="font-size: 20px; font-weight: 800; color: var(--navy); margin-bottom: 16px;">Planlama Test Sonucu 🧩</h2>
       
       <!-- Planning Result Profile Card -->
-      <div id="planning-result-card" style="width:100%;border:1.5px solid var(--orange);display:flex;flex-direction:column;align-items:center">
-        <div>🧩</div>
-        <h3 id="planning-result-title">Planlama Dehası</h3>
-        <div id="planning-result-badge" style="display:inline-flex;align-items:center;gap:5px;background:var(--orange)">EN AZ HAMLE</div>
+      <div id="planning-result-card" style="width: 100%; border-radius: 24px; padding: 24px 20px; border: 1.5px solid var(--orange); background: linear-gradient(135deg, #FFF0EB, #FFF); box-shadow: var(--sh1); display: flex; flex-direction: column; align-items: center; margin-bottom: 24px;">
+        <div style="font-size: 48px; margin-bottom: 12px;">🧩</div>
+        <h3 id="planning-result-title" style="font-size: 20px; font-weight: 800; color: var(--navy); font-family: 'Plus Jakarta Sans', sans-serif;">Planlama Dehası</h3>
+        <div id="planning-result-badge" style="font-size: 11px; font-weight: 700; padding: 5px 14px; border-radius: 100px; margin-top: 8px; display: inline-flex; align-items: center; gap: 5px; background: var(--orange); color: white; font-family: 'Plus Jakarta Sans', sans-serif;">EN AZ HAMLE</div>
         
-        <p id="planning-result-description">Çok başarılı! Problemi önceden tasarlayarak adımları en verimli şekilde kurguladın ve zihinsel planlama becerini gösterdin!</p>
+        <p id="planning-result-description" style="font-size: 13px; color: var(--t2); line-height: 1.65; margin-top: 16px; font-family: 'DM Sans', sans-serif;">Çok başarılı! Problemi önceden tasarlayarak adımları en verimli şekilde kurguladın ve zihinsel planlama becerini gösterdin!</p>
         
         <!-- Score Details -->
-        <div style="width:100%;display:grid;grid-template-columns:1fr;gap:10px">
+        <div style="width: 100%; display: grid; grid-template-columns: 1fr; gap: 10px; margin-top: 18px; border-top: 1px dashed rgba(255,107,53,0.3); padding-top: 14px;">
           <div>
-            <div>TOPLAM HAMLE SAYISI</div>
-            <div style="color:var(--orange)" id="planning-final-moves">6 Hamle</div>
-            <div id="planning-moves-compare">(Hedef minimum: 6 hamleydi)</div>
+            <div style="font-size: 11px; color: var(--t3); font-weight: 600; text-transform: uppercase;">TOPLAM HAMLE SAYISI</div>
+            <div style="font-size: 22px; font-weight: 900; color: var(--orange);" id="planning-final-moves">6 Hamle</div>
+            <div style="font-size: 10px; color: var(--t3); margin-top: 2px;" id="planning-moves-compare">(Hedef minimum: 6 hamleydi)</div>
           </div>
         </div>
       </div>
 
-      <button class="btn" style="background:linear-gradient(135deg, var(--orange), #FF8C5A);width:100%" onclick="exitToTestMenu()">
+      <button class="btn" style="background: linear-gradient(135deg, var(--orange), #FF8C5A); width: 100%; margin-bottom: 24px;" onclick="exitToTestMenu()">
         Test Merkezine Dön ↩
       </button>
       
-      <p class="disc" style="text-align:center">⚕️ Bu test Tower of London bilişsel planlama simülasyonudur.</p>
+      <p class="disc" style="font-size:11px;color:var(--t3);text-align:center;line-height:1.6;padding: 0 8px;">⚕️ Bu test Tower of London bilişsel planlama simülasyonudur.</p>
     </div>
   </div>
 
@@ -1953,11 +2105,11 @@ path[style*="tentWave"] {
 </div>
 
 <!-- ══ PROFILE ══ -->
-<div class="scr" id="s-profile">
+<div class="scr" id="s-profile" style="background: var(--bg);">
   <div class="sb"><span class="sb-t">9:41</span><div class="sb-i"><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round"><path d="M1 6l5 5 4-4 4 4 5-5"/></svg><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="7" width="16" height="10" rx="2"/><path d="M20 11v2" stroke-linecap="round"/></svg></div></div>
   
-  <div class="ph" style="display:flex;flex-direction:column;align-items:center;text-align:center;position:relative;gap:12px;flex-shrink:0">
-    <div class="ava" style="border:2.5px solid var(--orange);width:88px;height:88px;display:flex;align-items:center;justify-content:center;z-index:1;transition:transform 0.3s var(--sp)" onmouseenter="this.style.transform='scale(1.06) rotate(3deg)'" onmouseleave="this.style.transform=''">
+  <div class="ph" style="background: linear-gradient(180deg, #FFF9F6 0%, #FFF0EB 100%); padding: 24px 20px 30px; display: flex; flex-direction: column; align-items: center; text-align: center; border-bottom: 1.5px solid #FAD3C2; position: relative; gap: 12px; flex-shrink: 0;">
+    <div class="ava" style="background: white; border: 2.5px solid var(--orange); padding: 5px; box-shadow: 0 8px 24px rgba(255,107,53,0.18); width: 88px; height: 88px; border-radius: 30px; display: flex; align-items: center; justify-content: center; z-index: 1; transition: transform 0.3s var(--sp);" onmouseenter="this.style.transform='scale(1.06) rotate(3deg)'" onmouseleave="this.style.transform=''">
       <!-- Mini Brix SVG avatar -->
       <svg width="70" height="70" viewBox="0 0 130 140" fill="none">
         <!-- Legs (short, chubby) -->
@@ -1998,121 +2150,121 @@ path[style*="tentWave"] {
     </div>
     
     <div>
-      <h2>Savaş K.</h2>
-      <div class="ptyp" style="display:inline-flex;align-items:center;gap:5px">🌀 Zihin Gezgini</div>
+      <h2 style="color: var(--navy); font-size: 22px; font-weight: 900; letter-spacing: -0.01em;">Savaş K.</h2>
+      <div class="ptyp" style="background:#F3E8FF; color:#7C3AED; border:1px solid #DDD6FE; font-size:12px; font-weight:700; padding:5px 14px; border-radius:100px; margin-top:6px; display: inline-flex; align-items: center; gap: 5px;">🌀 Zihin Gezgini</div>
     </div>
   </div>
 
   <!-- STATS TILES -->
-  <div style="display:grid;grid-template-columns:repeat(3, 1fr);gap:10px;flex-shrink:0">
-    <div style="text-align:center;transition:transform 0.2s" onmouseenter="this.style.transform='translateY(-2px)'" onmouseleave="this.style.transform=''">
-      <div style="color:var(--orange)">7 🔥</div>
-      <div>Günlük Seri</div>
+  <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 16px 16px 8px; background: transparent; flex-shrink: 0;">
+    <div style="background: white; border-radius: 20px; padding: 14px 10px; text-align: center; border: 1.5px solid var(--border); box-shadow: var(--sh1); transition: transform 0.2s;" onmouseenter="this.style.transform='translateY(-2px)'" onmouseleave="this.style.transform=''">
+      <div style="font-size: 20px; font-weight: 900; color: var(--orange); font-family: 'Plus Jakarta Sans';">7 🔥</div>
+      <div style="font-size: 10px; color: var(--t2); margin-top: 4px; font-weight: 700; font-family: 'Plus Jakarta Sans';">Günlük Seri</div>
     </div>
-    <div style="text-align:center;transition:transform 0.2s" onmouseenter="this.style.transform='translateY(-2px)'" onmouseleave="this.style.transform=''">
-      <div>24</div>
-      <div>Görev Tamam</div>
+    <div style="background: white; border-radius: 20px; padding: 14px 10px; text-align: center; border: 1.5px solid var(--border); box-shadow: var(--sh1); transition: transform 0.2s;" onmouseenter="this.style.transform='translateY(-2px)'" onmouseleave="this.style.transform=''">
+      <div style="font-size: 20px; font-weight: 900; color: var(--navy); font-family: 'Plus Jakarta Sans';">24</div>
+      <div style="font-size: 10px; color: var(--t2); margin-top: 4px; font-weight: 700; font-family: 'Plus Jakarta Sans';">Görev Tamam</div>
     </div>
-    <div style="text-align:center;transition:transform 0.2s" onmouseenter="this.style.transform='translateY(-2px)'" onmouseleave="this.style.transform=''">
-      <div id="profile-games-count" style="color:var(--teal)">12</div>
-      <div>Oyun Oynandı</div>
+    <div style="background: white; border-radius: 20px; padding: 14px 10px; text-align: center; border: 1.5px solid var(--border); box-shadow: var(--sh1); transition: transform 0.2s;" onmouseenter="this.style.transform='translateY(-2px)'" onmouseleave="this.style.transform=''">
+      <div id="profile-games-count" style="font-size: 20px; font-weight: 900; color: var(--teal); font-family: 'Plus Jakarta Sans';">12</div>
+      <div style="font-size: 10px; color: var(--t2); margin-top: 4px; font-weight: 700; font-family: 'Plus Jakarta Sans';">Oyun Oynandı</div>
     </div>
   </div>
 
-  <div class="area">
+  <div class="area" style="padding-bottom:100px">
     
     <!-- ACCOUNT MENU GROUP -->
-    <div class="lbl">Hesabım</div>
-    <div style="overflow:hidden">
+    <div style="padding: 6px 18px 8px" class="lbl">Hesabım</div>
+    <div style="margin: 0 16px 16px; background: white; border-radius: 24px; border: 1.5px solid var(--border); box-shadow: var(--sh1); overflow: hidden;">
       
-      <div class="mi" style="display:flex;align-items:center;gap:13px">
-        <div class="mico" style="background:var(--ol);width:38px;height:38px;display:flex;align-items:center;justify-content:center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
-        <div style="flex:1"><div class="mt">Profil Düzenle</div><div class="ms">İsim, fotoğraf, tercihler</div></div>
+      <div class="mi" style="border-bottom: 1.5px solid var(--b2); display: flex; align-items: center; gap: 13px; padding: 14px 16px;">
+        <div class="mico" style="background:var(--ol); width: 38px; height: 38px; border-radius: 12px; display: flex; align-items: center; justify-content: center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        <div style="flex:1"><div class="mt" style="font-size: 14px; font-weight: 700; color: var(--t1);">Profil Düzenle</div><div class="ms" style="font-size: 11px; color: var(--t2);">İsim, fotoğraf, tercihler</div></div>
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
       </div>
       
-      <div class="mi" onclick="buyPremium()" style="display:flex;align-items:center;gap:13px">
-        <div class="mico" style="background:var(--yl);width:38px;height:38px;display:flex;align-items:center;justify-content:center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#B45309" stroke-width="2" stroke-linecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
-        <div style="flex:1;display:flex;align-items:center;justify-content:space-between;gap:8px">
+      <div class="mi" onclick="buyPremium()" style="border-bottom: 1.5px solid var(--b2); display: flex; align-items: center; gap: 13px; padding: 14px 16px;">
+        <div class="mico" style="background:var(--yl); width: 38px; height: 38px; border-radius: 12px; display: flex; align-items: center; justify-content: center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#B45309" stroke-width="2" stroke-linecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+        <div style="flex:1; display:flex; align-items:center; justify-content:space-between; gap: 8px;">
           <div>
-            <div class="mt">Briqo Premium</div>
-            <div class="ms">Tüm özelliklerin kilidini aç</div>
+            <div class="mt" style="font-size: 14px; font-weight: 700; color: var(--t1);">Briqo Premium</div>
+            <div class="ms" style="font-size: 11px; color: var(--t2);">Tüm özelliklerin kilidini aç</div>
           </div>
-          <span id="profile-pro-badge" style="background:linear-gradient(135deg,var(--orange),var(--o2))">PRO</span>
+          <span id="profile-pro-badge" style="background:linear-gradient(135deg,var(--orange),var(--o2)); color:white; font-size:10px; font-weight:800; padding:4px 10px; border-radius:100px; font-family:'Plus Jakarta Sans';">PRO</span>
         </div>
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
       </div>
       
-      <div class="mi" onclick="openDopamineShop()" style="display:flex;align-items:center;gap:13px;cursor:pointer">
-        <div class="mico" style="width:38px;height:38px;display:flex;align-items:center;justify-content:center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2.2" stroke-linecap="round"><polygon points="12,2 22,8.5 22,15.5 12,22 2,15.5 2,8.5"/></svg></div>
+      <div class="mi" onclick="openDopamineShop()" style="border-bottom: 1.5px solid var(--b2); display: flex; align-items: center; gap: 13px; padding: 14px 16px; cursor: pointer;">
+        <div class="mico" style="background:rgba(255,107,53,0.1); width: 38px; height: 38px; border-radius: 12px; display: flex; align-items: center; justify-content: center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--orange)" stroke-width="2.2" stroke-linecap="round"><polygon points="12,2 22,8.5 22,15.5 12,22 2,15.5 2,8.5"/></svg></div>
         <div style="flex:1">
-          <div class="mt">Dopamin Dükkanı 💎</div>
-          <div class="ms">Brix için yeni kıyafetler satın al!</div>
+          <div class="mt" style="font-size: 14px; font-weight: 700; color: var(--t1);">Dopamin Dükkanı 💎</div>
+          <div class="ms" style="font-size: 11px; color: var(--t2);">Brix için yeni kıyafetler satın al!</div>
         </div>
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
       </div>
       
-      <div class="mi" style="display:flex;align-items:center;gap:13px">
-        <div class="mico" style="background:var(--tl);width:38px;height:38px;display:flex;align-items:center;justify-content:center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg></div>
-        <div style="flex:1"><div class="mt">Bildirimler</div><div class="ms">Hatırlatıcı ve öneriler</div></div>
+      <div class="mi" style="display: flex; align-items: center; gap: 13px; padding: 14px 16px;">
+        <div class="mico" style="background:var(--tl); width: 38px; height: 38px; border-radius: 12px; display: flex; align-items: center; justify-content: center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--teal)" stroke-width="2" stroke-linecap="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg></div>
+        <div style="flex:1"><div class="mt" style="font-size: 14px; font-weight: 700; color: var(--t1);">Bildirimler</div><div class="ms" style="font-size: 11px; color: var(--t2);">Hatırlatıcı ve öneriler</div></div>
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--t3)" stroke-width="2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
       </div>
       
     </div>
 
     <!-- BRAIN ANALYTICS / STATS GROUP -->
-    <div class="lbl">Beyin Analitiği</div>
-    <div style="display:flex;flex-direction:column;gap:12px">
+    <div style="padding: 6px 18px 8px" class="lbl">Beyin Analitiği</div>
+    <div style="margin: 0 16px 16px; background: white; border-radius: 24px; border: 1.5px solid var(--border); box-shadow: var(--sh1); padding: 16px; display: flex; flex-direction: column; gap: 12px;">
       
       <div>
-        <div style="display:flex;justify-content:space-between">
+        <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; color: var(--navy); margin-bottom: 5px; font-family:'Plus Jakarta Sans';">
           <span>🧠 Odak Kararlılığı</span>
-          <span style="color:var(--orange)">85%</span>
+          <span style="color: var(--orange);">85%</span>
         </div>
-        <div style="height:6px;overflow:hidden">
-          <div style="height:100%;width:85%;background:linear-gradient(90deg, var(--orange), var(--o2))"></div>
+        <div style="height: 6px; background: var(--b2); border-radius: 10px; overflow: hidden;">
+          <div style="height: 100%; width: 85%; background: linear-gradient(90deg, var(--orange), var(--o2)); border-radius: 10px;"></div>
         </div>
       </div>
       
       <div>
-        <div style="display:flex;justify-content:space-between">
+        <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; color: var(--navy); margin-bottom: 5px; font-family:'Plus Jakarta Sans';">
           <span>🧩 Hafıza Gücü</span>
-          <span style="color:var(--teal)">92%</span>
+          <span style="color: var(--teal);">92%</span>
         </div>
-        <div style="height:6px;overflow:hidden">
-          <div style="height:100%;width:92%;background:linear-gradient(90deg, var(--teal), #38bdf8)"></div>
+        <div style="height: 6px; background: var(--b2); border-radius: 10px; overflow: hidden;">
+          <div style="height: 100%; width: 92%; background: linear-gradient(90deg, var(--teal), #38bdf8); border-radius: 10px;"></div>
         </div>
       </div>
 
       <div>
-        <div style="display:flex;justify-content:space-between">
+        <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: 700; color: var(--navy); margin-bottom: 5px; font-family:'Plus Jakarta Sans';">
           <span>⚡ Dürtü Kontrolü</span>
-          <span style="color:var(--green)">78%</span>
+          <span style="color: var(--green);">78%</span>
         </div>
-        <div style="height:6px;overflow:hidden">
-          <div style="height:100%;width:78%;background:linear-gradient(90deg, var(--green), #4ade80)"></div>
+        <div style="height: 6px; background: var(--b2); border-radius: 10px; overflow: hidden;">
+          <div style="height: 100%; width: 78%; background: linear-gradient(90deg, var(--green), #4ade80); border-radius: 10px;"></div>
         </div>
       </div>
 
     </div>
 
     <!-- ADHD PROFILE CARD -->
-    <div class="lbl">ADHD Profilim</div>
-    <div id="profile-adhd-card">
-      <div style="display:flex;align-items:center;gap:12px">
-        <div style="width:48px;height:48px;display:flex;align-items:center;justify-content:center">🌀</div>
+    <div style="padding: 6px 18px 8px" class="lbl">ADHD Profilim</div>
+    <div id="profile-adhd-card" style="margin:0 16px 16px; background:linear-gradient(135deg,#F3E8FF,#EDE9FE); border-radius:24px; padding:18px; border:1.5px solid #DDD6FE; box-shadow: 0 4px 15px rgba(124,58,237,0.06);">
+      <div style="display:flex; align-items:center; gap:12px; margin-bottom:11px">
+        <div style="font-size:32px; background: white; width: 48px; height: 48px; border-radius: 16px; display:flex; align-items:center; justify-content:center; box-shadow: 0 4px 10px rgba(124,58,237,0.12)">🌀</div>
         <div>
-          <div>Zihin Gezgini</div>
-          <div>Karma Tip ADHD</div>
+          <div style="font-size:16px; font-weight:800; color:var(--navy); font-family:'Plus Jakarta Sans',sans-serif">Zihin Gezgini</div>
+          <div style="font-size:12px; color:#7C3AED; font-weight: 700; margin-top:2px; font-family:'Plus Jakarta Sans';">Karma Tip ADHD</div>
         </div>
       </div>
-      <p>Hem dikkat dağınıklığı hem hiperaktivite boyutlarında belirtiler taşıyorsun. Yaratıcı, bağlantı kuran bir beyin!</p>
-      <button style="cursor:pointer;width:100%;transition:all .2s var(--sp)" onmouseover="this.style.background='#F3E8FF'; this.style.transform='translateY(-1px)';" onmouseout="this.style.background='white'; this.style.transform='';" onclick="restartTest(); go('test', document.querySelectorAll('.sbb')[3])">Testi Yenile</button>
+      <p style="font-size:13px; color:var(--t2); line-height:1.65; font-family:'DM Sans';">Hem dikkat dağınıklığı hem hiperaktivite boyutlarında belirtiler taşıyorsun. Yaratıcı, bağlantı kuran bir beyin!</p>
+      <button style="margin-top:14px; background:white; color:#7C3AED; border:1.5px solid #C084FC; border-radius:16px; padding:11px 20px; font-family:'Plus Jakarta Sans',sans-serif; font-weight:700; font-size:13px; cursor:pointer; width:100%; box-shadow: 0 2px 8px rgba(124,58,237,0.08); transition:all .2s var(--sp)" onmouseover="this.style.background='#F3E8FF'; this.style.transform='translateY(-1px)';" onmouseout="this.style.background='white'; this.style.transform='';" onclick="restartTest(); go('test', document.querySelectorAll('.sbb')[3])">Testi Yenile</button>
     </div>
     <!-- PAST SUCCESS LOGS -->
-    <div class="lbl">Geçmiş Başarılarım 🏆</div>
-    <div id="profile-success-list" style="max-height:200px;overflow-y:auto;display:flex;flex-direction:column;gap:8px">
-      <div style="text-align:center">
+    <div style="padding: 6px 18px 8px" class="lbl">Geçmiş Başarılarım 🏆</div>
+    <div id="profile-success-list" style="margin: 0 16px 20px; max-height: 200px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px;">
+      <div style="padding: 16px; text-align: center; color: var(--t3); font-size: 13px; background: white; border-radius: 20px; border: 1.5px dashed var(--border);">
         Henüz başarı kaydedilmedi. Başarı günlüğünü kullanarak ilk zaferini kaydet! 🏆
       </div>
     </div>
@@ -2128,21 +2280,21 @@ path[style*="tentWave"] {
 </div>
 
 <!-- ══ POMODORO TIMER ══ -->
-<div class="scr" id="s-pomodoro">
+<div class="scr" id="s-pomodoro" style="background: linear-gradient(170deg, #FFF6F2 0%, #FFFDFB 55%);">
   <div class="sb"><span class="sb-t">9:41</span><div class="sb-i"><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round"><path d="M1 6l5 5 4-4 4 4 5-5"/></svg><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="7" width="16" height="10" rx="2"/><path d="M20 11v2" stroke-linecap="round"/></svg></div></div>
   
-  <div style="display:flex;align-items:center;justify-content:space-between">
-    <div style="display:flex;align-items:center;gap:10px">
-      <div style="cursor:pointer" onclick="closePomodoro()">←</div>
-      <h2>Pomodoro Odak 🍅</h2>
+  <div style="padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1.5px solid var(--border); background: white;">
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <div style="font-size: 20px; font-weight: 800; cursor: pointer; color: var(--navy);" onclick="closePomodoro()">←</div>
+      <h2 style="font-size: 17px; font-weight: 800; color: var(--navy); font-family: 'Plus Jakarta Sans', sans-serif;">Pomodoro Odak 🍅</h2>
     </div>
-    <div style="background:var(--orange)" id="pomodoro-mode-badge">ODAK</div>
+    <div style="background: var(--orange); color: white; padding: 4px 12px; border-radius: 100px; font-size: 11px; font-weight: 700; font-family: 'Plus Jakarta Sans', sans-serif;" id="pomodoro-mode-badge">ODAK</div>
   </div>
 
-  <div class="area" style="display:flex;flex-direction:column;align-items:center;justify-content:space-between;height:calc(100% - 130px)">
+  <div class="area" style="padding: 24px 16px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; height: calc(100% - 130px); background: transparent;">
     
     <!-- Focused Brix SVG -->
-    <div style="width:130px;height:130px;position:relative">
+    <div style="width: 130px; height: 130px; margin: 20px 0; position: relative;">
             <svg id="brix-pomodoro-avatar" class="brix-svg focus" width="130" height="130" viewBox="0 0 200 230" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter:drop-shadow(0 4px 12px rgba(255,107,53,.25))">
           <!-- Ground shadow -->
           <ellipse cx="100" cy="220" rx="48" ry="6" fill="rgba(0,0,0,.08)"/>
@@ -2241,115 +2393,115 @@ path[style*="tentWave"] {
     </div>
 
     <!-- Countdown Timer -->
-    <div style="text-align:center">
-      <h1 id="pomodoro-time">25:00</h1>
-      <p id="pomodoro-tip">Raporu bitirme zamanı, odaklan cano!</p>
+    <div style="text-align: center; margin: 10px 0;">
+      <h1 id="pomodoro-time" style="font-size: 64px; font-weight: 900; letter-spacing: -0.02em; color: var(--navy); font-family: 'Plus Jakarta Sans', sans-serif;">25:00</h1>
+      <p id="pomodoro-tip" style="font-size: 13px; color: var(--t2); margin-top: 4px; font-family: 'DM Sans', sans-serif;">Raporu bitirme zamanı, odaklan cano!</p>
     </div>
 
     <!-- Controls -->
-    <div style="display:flex;gap:14px;width:100%;max-width:300px">
-      <button class="btn" id="pomodoro-play-btn" style="flex:2;background:linear-gradient(135deg, var(--orange), #FF8C5A)" onclick="togglePomodoro()">
+    <div style="display: flex; gap: 14px; width: 100%; max-width: 300px; margin-bottom: 20px;">
+      <button class="btn" id="pomodoro-play-btn" style="flex: 2; background: linear-gradient(135deg, var(--orange), #FF8C5A);" onclick="togglePomodoro()">
         Başlat
       </button>
-      <button class="btn" style="flex:1" onclick="resetPomodoro()">
+      <button class="btn" style="flex: 1; background: white; color: var(--t1); box-shadow: var(--sh1); border: 1.5px solid var(--border);" onclick="resetPomodoro()">
         Sıfırla
       </button>
     </div>
 
     <!-- Mode Toggles -->
-    <div style="display:flex;gap:4px;width:100%;max-width:280px">
-      <button id="p-mode-focus" style="flex:1;cursor:pointer;background:var(--orange);transition:all 0.2s" onclick="setPomodoroMode('focus')">Odaklan</button>
-      <button id="p-mode-break" style="flex:1;cursor:pointer;transition:all 0.2s" onclick="setPomodoroMode('break')">Mola</button>
+    <div style="background: var(--b2); padding: 6px; border-radius: 18px; display: flex; gap: 4px; width: 100%; max-width: 280px; border: 1px solid var(--border); margin-bottom: 20px;">
+      <button id="p-mode-focus" style="flex: 1; border: none; padding: 8px 12px; border-radius: 12px; font-size: 12px; font-weight: 700; font-family: 'Plus Jakarta Sans', sans-serif; cursor: pointer; background: var(--orange); color: white; transition: all 0.2s;" onclick="setPomodoroMode('focus')">Odaklan</button>
+      <button id="p-mode-break" style="flex: 1; border: none; padding: 8px 12px; border-radius: 12px; font-size: 12px; font-weight: 700; font-family: 'Plus Jakarta Sans', sans-serif; cursor: pointer; background: transparent; color: var(--t2); transition: all 0.2s;" onclick="setPomodoroMode('break')">Mola</button>
     </div>
 
     <!-- Competitor Insight: Focus Soundscapes Selector Card -->
-    <div style="width:100%;max-width:280px;text-align:center">
-      <span style="color:var(--teal);display:block">🎧 ODAK SESLERİ</span>
-      <div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:6px">
-        <button id="sound-none" class="chat-pill" style="background:var(--teal);border-color:var(--teal);cursor:pointer;width:100%;display:block" onclick="selectSoundscape('none')">Sessiz</button>
-        <button id="sound-rain" class="chat-pill" style="cursor:pointer;width:100%;display:block" onclick="selectSoundscape('rain')">Yağmur</button>
-        <button id="sound-noise" class="chat-pill" style="cursor:pointer;width:100%;display:block" onclick="selectSoundscape('noise')">Gürültü</button>
-        <button id="sound-lofi" class="chat-pill" style="cursor:pointer;width:100%;display:block" onclick="selectSoundscape('lofi')">Lo-fi</button>
+    <div style="background: white; border-radius: 20px; padding: 12px 14px; border: 1.5px solid var(--border); box-shadow: var(--sh1); width: 100%; max-width: 280px; text-align: center; margin-bottom: 12px;">
+      <span style="font-size: 11px; font-weight: 800; color: var(--teal); letter-spacing: 0.05em; display: block; text-transform: uppercase; margin-bottom: 8px; font-family: 'Plus Jakarta Sans';">🎧 ODAK SESLERİ</span>
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;">
+        <button id="sound-none" class="chat-pill" style="padding: 6px 2px; font-size: 10px; font-weight: 700; border-radius: 10px; border: 1.5px solid var(--border); background: var(--teal); color: white; border-color: var(--teal); cursor: pointer; margin: 0; width: 100%; display: block;" onclick="selectSoundscape('none')">Sessiz</button>
+        <button id="sound-rain" class="chat-pill" style="padding: 6px 2px; font-size: 10px; font-weight: 700; border-radius: 10px; border: 1.5px solid var(--border); cursor: pointer; margin: 0; width: 100%; display: block;" onclick="selectSoundscape('rain')">Yağmur</button>
+        <button id="sound-noise" class="chat-pill" style="padding: 6px 2px; font-size: 10px; font-weight: 700; border-radius: 10px; border: 1.5px solid var(--border); cursor: pointer; margin: 0; width: 100%; display: block;" onclick="selectSoundscape('noise')">Gürültü</button>
+        <button id="sound-lofi" class="chat-pill" style="padding: 6px 2px; font-size: 10px; font-weight: 700; border-radius: 10px; border: 1.5px solid var(--border); cursor: pointer; margin: 0; width: 100%; display: block;" onclick="selectSoundscape('lofi')">Lo-fi</button>
       </div>
     </div>
   </div>
 </div>
 
 <!-- ══ MEMORY MATCH GAME ══ -->
-<div class="scr" id="s-memory-game">
+<div class="scr" id="s-memory-game" style="background: linear-gradient(135deg, #EFF6FF, #DBEAFE);">
   <div class="sb"><span class="sb-t">9:41</span><div class="sb-i"><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round"><path d="M1 6l5 5 4-4 4 4 5-5"/></svg><svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="7" width="16" height="10" rx="2"/><path d="M20 11v2" stroke-linecap="round"/></svg></div></div>
   
-  <div style="display:flex;align-items:center;justify-content:space-between">
-    <div style="display:flex;align-items:center;gap:10px">
-      <div style="cursor:pointer" onclick="closeMemoryGame()">←</div>
-      <h2>Hızlı Hafıza 🧩</h2>
+  <div style="padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1.5px solid rgba(59, 130, 246, 0.2); background: white;">
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <div style="font-size: 20px; font-weight: 800; cursor: pointer; color: var(--navy);" onclick="closeMemoryGame()">←</div>
+      <h2 style="font-size: 17px; font-weight: 800; color: var(--navy); font-family: 'Plus Jakarta Sans', sans-serif;">Hızlı Hafıza 🧩</h2>
     </div>
-    <div style="background:var(--teal)" id="game-timer">00:00</div>
+    <div style="background: var(--teal); color: white; padding: 4px 12px; border-radius: 100px; font-size: 12px; font-weight: 700; font-family: 'Plus Jakarta Sans', sans-serif;" id="game-timer">00:00</div>
   </div>
 
-  <div class="area" style="display:flex;flex-direction:column;align-items:center;justify-content:space-between;height:calc(100% - 130px)">
-    <div style="display:flex;justify-content:space-between;width:100%">
-      <span>Eşleşmeler: <span id="game-matches" style="color:var(--teal)">0 / 6</span></span>
-      <span>Hamleler: <span id="game-moves" style="color:var(--orange)">0</span></span>
+  <div class="area" style="padding: 16px; display: flex; flex-direction: column; align-items: center; justify-content: space-between; height: calc(100% - 130px);">
+    <div style="display: flex; justify-content: space-between; width: 100%; margin-bottom: 14px; font-weight: 700; font-size: 13px; color: var(--t2); font-family: 'Plus Jakarta Sans', sans-serif;">
+      <span>Eşleşmeler: <span id="game-matches" style="color: var(--teal)">0 / 6</span></span>
+      <span>Hamleler: <span id="game-moves" style="color: var(--orange)">0</span></span>
     </div>
 
     <!-- 4x3 Grid -->
-    <div id="memory-grid" style="display:grid;grid-template-columns:repeat(3, 1fr);gap:10px;width:100%;max-width:320px">
+    <div id="memory-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; max-width: 320px; margin-bottom: 14px;">
        <!-- Dynamic Cards -->
     </div>
 
     <!-- Win Screen overlay -->
-    <div id="game-win-card" style="display:none;text-align:center;width:100%">
-      <div>🎉</div>
-      <h3>Harikasın, Eşleşti!</h3>
-      <p>Hafızan daha da güçlendi. Brix çok sevindi!</p>
-      <button class="btn" onclick="closeMemoryGame()">Geri Dön</button>
+    <div id="game-win-card" style="display: none; background: white; border-radius: 22px; padding: 20px; border: 1.5px solid var(--border); box-shadow: var(--sh2); text-align: center; width: 100%; margin-top: 10px;">
+      <div style="font-size: 40px; margin-bottom: 8px;">🎉</div>
+      <h3 style="font-size: 16px; font-weight: 800; color: var(--navy); margin-bottom: 4px; font-family: 'Plus Jakarta Sans', sans-serif;">Harikasın, Eşleşti!</h3>
+      <p style="font-size: 12px; color: var(--t2); margin-bottom: 16px;">Hafızan daha da güçlendi. Brix çok sevindi!</p>
+      <button class="btn" style="padding: 12px;" onclick="closeMemoryGame()">Geri Dön</button>
     </div>
   </div>
 </div>
 
 <!-- ACTIVITY OVERLAY -->
-<div id="activity-overlay" style="display:none;position:absolute;inset:0;z-index:500;align-items:center;justify-content:center">
-  <div class="card" style="width:100%;max-width:320px;text-align:center;animation:slideUp 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;position:relative">
-    <div id="overlay-close-btn" style="position:absolute;top:16px;right:16px;cursor:pointer" onclick="closeActivityOverlay()">✕</div>
+<div id="activity-overlay" style="display: none; position: absolute; inset: 0; background: rgba(15,23,41,0.55); backdrop-filter: blur(8px); z-index: 500; align-items: center; justify-content: center; padding: 20px;">
+  <div class="card" style="width: 100%; max-width: 320px; background: white; border-radius: 28px; padding: 24px; text-align: center; border: 1.5px solid var(--border); box-shadow: var(--sh3); animation: slideUp 0.35s cubic-bezier(0.22, 1, 0.36, 1) both; position: relative;">
+    <div id="overlay-close-btn" style="position: absolute; top: 16px; right: 16px; font-size: 18px; font-weight: bold; color: var(--t3); cursor: pointer;" onclick="closeActivityOverlay()">✕</div>
     
-    <div id="overlay-mascot-container" style="width:100px;height:100px;position:relative;display:flex;align-items:center;justify-content:center">
+    <div id="overlay-mascot-container" style="width: 100px; height: 100px; margin: 0 auto 16px; position: relative; display: flex; align-items: center; justify-content: center;">
       <!-- Brix SVG inside modal -->
     </div>
     
-    <h3 id="overlay-title">Aktivite Başlığı</h3>
-    <p id="overlay-description">Açıklama metni buraya gelecek...</p>
+    <h3 id="overlay-title" style="font-size: 18px; font-weight: 800; color: var(--navy); margin-bottom: 8px;">Aktivite Başlığı</h3>
+    <p id="overlay-description" style="font-size: 13px; color: var(--t2); line-height: 1.55; margin-bottom: 20px;">Açıklama metni buraya gelecek...</p>
     
     <!-- Dynamic interactive elements inside modal -->
-    <div id="overlay-interactive-area">
+    <div id="overlay-interactive-area" style="margin-bottom: 20px;">
       <!-- Timer, Breathing ring, stretch guides, etc. -->
     </div>
     
-    <button class="btn" id="overlay-action-btn" style="width:100%" onclick="closeActivityOverlay()">Tamamla</button>
+    <button class="btn" id="overlay-action-btn" style="padding: 12px 24px; width: 100%;" onclick="closeActivityOverlay()">Tamamla</button>
   </div>
 </div>
 
 <!-- DOPAMINE OVERLAY -->
-<div id="dopamine-overlay" style="display:none;position:absolute;inset:0;z-index:500;align-items:center;justify-content:center">
-  <div class="card" style="width:100%;height:90%;max-width:350px;display:flex;flex-direction:column;position:relative;animation:slideUp 0.35s cubic-bezier(0.22, 1, 0.36, 1) both">
-    <div style="position:absolute;top:20px;right:20px;cursor:pointer" onclick="closeDopamineMenu()">✕</div>
+<div id="dopamine-overlay" style="display: none; position: absolute; inset: 0; background: rgba(15,23,41,0.6); backdrop-filter: blur(10px); z-index: 500; align-items: center; justify-content: center; padding: 20px;">
+  <div class="card" style="width: 100%; height: 90%; max-width: 350px; background: white; border-radius: 32px; padding: 24px 20px; display: flex; flex-direction: column; border: 1.5px solid var(--border); box-shadow: var(--sh3); position: relative; animation: slideUp 0.35s cubic-bezier(0.22, 1, 0.36, 1) both;">
+    <div style="position: absolute; top: 20px; right: 20px; font-size: 18px; font-weight: bold; color: var(--t3); cursor: pointer;" onclick="closeDopamineMenu()">✕</div>
     
-    <div style="text-align:center">
-      <span>🍽️</span>
-      <h3>Dopamin Menüsü</h3>
-      <p>Aşağıdaki sağlıklı aktiviteleri tamamlayarak prefrontal korteksini uyar ve odaklanma gücünü artır!</p>
+    <div style="text-align: center; margin-bottom: 16px;">
+      <span style="font-size: 28px;">🍽️</span>
+      <h3 style="font-size: 18px; font-weight: 900; color: var(--navy); font-family: 'Plus Jakarta Sans'; margin-top: 4px;">Dopamin Menüsü</h3>
+      <p style="font-size: 12px; color: var(--t2); line-height: 1.4; margin-top: 4px;">Aşağıdaki sağlıklı aktiviteleri tamamlayarak prefrontal korteksini uyar ve odaklanma gücünü artır!</p>
     </div>
 
     <!-- Scrollable list of 4 random items -->
-    <div id="dopamine-items-list" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:10px">
+    <div id="dopamine-items-list" style="flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding-right: 4px;">
       <!-- Dynamically filled with 4 items -->
     </div>
     
-    <div style="display:flex;gap:8px;width:100%">
-      <button class="btn" style="flex:1.2;background:linear-gradient(135deg, var(--purple), #C084FC)" onclick="refreshDopamineMenu()">
+    <div style="display: flex; gap: 8px; margin-top: 16px; width: 100%;">
+      <button class="btn" style="flex: 1.2; background: linear-gradient(135deg, var(--purple), #C084FC); box-shadow: 0 4px 12px rgba(168,85,247,0.2); padding: 12px 6px; font-size: 13px; font-family: 'Plus Jakarta Sans'; font-weight: 800;" onclick="refreshDopamineMenu()">
         Yenile 🔄
       </button>
-      <button class="btn" id="rewarded-ad-btn" style="flex:1.8;background:linear-gradient(135deg, var(--green), #34D399);display:flex;align-items:center;justify-content:center;gap:4px" onclick="startRewardedAd('dopamine')">
+      <button class="btn" id="rewarded-ad-btn" style="flex: 1.8; background: linear-gradient(135deg, var(--green), #34D399); box-shadow: 0 4px 12px rgba(34,197,94,0.2); padding: 12px 6px; font-size: 13px; font-family: 'Plus Jakarta Sans'; font-weight: 800; display: flex; align-items: center; justify-content: center; gap: 4px;" onclick="startRewardedAd('dopamine')">
         🎬 +15 DP Kazan
       </button>
     </div>
@@ -2357,80 +2509,80 @@ path[style*="tentWave"] {
 </div>
 
 <!-- WAITING MODE OVERLAY -->
-<div id="waiting-mode-overlay" style="display:none;position:absolute;inset:0;z-index:500;align-items:center;justify-content:center">
-  <div class="card" style="width:100%;max-width:320px;text-align:center;animation:slideUp 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;position:relative">
-    <div style="position:absolute;top:16px;right:16px;cursor:pointer" onclick="closeWaitingMode()">✕</div>
+<div id="waiting-mode-overlay" style="display: none; position: absolute; inset: 0; background: rgba(15,23,41,0.55); backdrop-filter: blur(8px); z-index: 500; align-items: center; justify-content: center; padding: 20px;">
+  <div class="card" style="width: 100%; max-width: 320px; background: white; border-radius: 28px; padding: 24px; text-align: center; border: 1.5px solid var(--border); box-shadow: var(--sh3); animation: slideUp 0.3s cubic-bezier(0.22, 1, 0.36, 1) both; position: relative;">
+    <div style="position: absolute; top: 16px; right: 16px; font-size: 18px; font-weight: bold; color: var(--t3); cursor: pointer;" onclick="closeWaitingMode()">✕</div>
     
-    <div>⏳</div>
-    <h3>Bekleme Modu</h3>
-    <p>Randevuna veya önemli etkinliğine kaç saat var? Zamanı takip edip seni uyaracağım, böylece felç olmadan rahatça vakit geçirebilirsin!</p>
+    <div style="font-size: 32px; margin-bottom: 8px;">⏳</div>
+    <h3 style="font-size: 18px; font-weight: 800; color: var(--navy); margin-bottom: 6px; font-family: 'Plus Jakarta Sans';">Bekleme Modu</h3>
+    <p style="font-size: 12.5px; color: var(--t2); line-height: 1.5; margin-bottom: 16px;">Randevuna veya önemli etkinliğine kaç saat var? Zamanı takip edip seni uyaracağım, böylece felç olmadan rahatça vakit geçirebilirsin!</p>
     
-    <div>
-      <div style="display:flex;justify-content:space-between">
+    <div style="margin-bottom: 20px;">
+      <div style="display: flex; justify-content: space-between; font-size: 12px; font-weight: 800; color: var(--navy); margin-bottom: 8px; font-family: 'Plus Jakarta Sans';">
         <span>Süre Seçin:</span>
-        <span id="waiting-slider-val" style="color:var(--teal)">2 Saat</span>
+        <span id="waiting-slider-val" style="color: var(--teal); font-weight: 900;">2 Saat</span>
       </div>
-      <input type="range" id="waiting-slider" min="1" max="8" value="2" style="width:100%;accent-color:var(--teal)" oninput="updateWaitingSlider(this.value)">
+      <input type="range" id="waiting-slider" min="1" max="8" value="2" style="width: 100%; accent-color: var(--teal);" oninput="updateWaitingSlider(this.value)">
     </div>
     
-    <div id="waiting-active-area" style="display:none;background:var(--tl);border:1px dashed var(--teal)">
-      <div style="color:var(--teal)" id="waiting-countdown">02:00:00</div>
-      <div style="text-align:left">Zaman akıyor. Kendine çok yüklenme, sadece bir adet mikro görev tamamlayabilirsin.</div>
+    <div id="waiting-active-area" style="display: none; background: var(--tl); border-radius: 16px; padding: 12px; margin-bottom: 16px; border: 1px dashed var(--teal);">
+      <div style="font-size: 24px; font-weight: 900; color: var(--teal); font-family: 'Plus Jakarta Sans';" id="waiting-countdown">02:00:00</div>
+      <div style="font-size: 11px; color: var(--t2); margin-top: 4px; line-height: 1.4; text-align: left;">Zaman akıyor. Kendine çok yüklenme, sadece bir adet mikro görev tamamlayabilirsin.</div>
     </div>
     
-    <button class="btn" id="waiting-action-btn" style="background:linear-gradient(135deg, var(--teal), #00ACC1)" onclick="toggleWaitingModeState()">
+    <button class="btn" id="waiting-action-btn" style="background: linear-gradient(135deg, var(--teal), #00ACC1); box-shadow: 0 4px 15px rgba(38,198,218,0.3); padding: 12px;" onclick="toggleWaitingModeState()">
       Bekleme Modunu Başlat
     </button>
   </div>
 </div>
 
 <!-- HYPERFOCUS OVERLAY -->
-<div id="hyperfocus-overlay" style="display:none;position:absolute;inset:0;z-index:500;align-items:center;justify-content:center">
-  <div class="card" style="width:100%;max-width:320px;text-align:center;animation:slideUp 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;position:relative">
-    <div style="position:absolute;top:16px;right:16px;cursor:pointer" onclick="closeHyperfocusOverlay()">✕</div>
+<div id="hyperfocus-overlay" style="display: none; position: absolute; inset: 0; background: rgba(15,23,41,0.55); backdrop-filter: blur(8px); z-index: 500; align-items: center; justify-content: center; padding: 20px;">
+  <div class="card" style="width: 100%; max-width: 320px; background: white; border-radius: 28px; padding: 24px; text-align: center; border: 1.5px solid var(--border); box-shadow: var(--sh3); animation: slideUp 0.3s cubic-bezier(0.22, 1, 0.36, 1) both; position: relative;">
+    <div style="position: absolute; top: 16px; right: 16px; font-size: 18px; font-weight: bold; color: var(--t3); cursor: pointer;" onclick="closeHyperfocusOverlay()">✕</div>
     
-    <div>🎯</div>
-    <h3>Hiperfokus Alarmı</h3>
-    <p>ADHD hiperfokusuna kapılıp saatlerce su içmeyi, yemeyi veya ayağa kalkmayı unutabiliyoruz. 45 dakikalık bir koruyucu alarm kurarak zihnini koru!</p>
+    <div style="font-size: 32px; margin-bottom: 8px;">🎯</div>
+    <h3 style="font-size: 18px; font-weight: 800; color: var(--navy); margin-bottom: 6px; font-family: 'Plus Jakarta Sans';">Hiperfokus Alarmı</h3>
+    <p style="font-size: 12.5px; color: var(--t2); line-height: 1.5; margin-bottom: 16px;">ADHD hiperfokusuna kapılıp saatlerce su içmeyi, yemeyi veya ayağa kalkmayı unutabiliyoruz. 45 dakikalık bir koruyucu alarm kurarak zihnini koru!</p>
     
-    <div id="hyperfocus-active-area" style="display:none;background:var(--ol);border:1px dashed var(--orange)">
-      <div style="color:var(--orange)" id="hyperfocus-countdown">45:00</div>
-      <div>Hiperfokus modu aktif. Doğru iş üzerindesin değil mi cano?</div>
+    <div id="hyperfocus-active-area" style="display: none; background: var(--ol); border-radius: 16px; padding: 12px; margin-bottom: 16px; border: 1px dashed var(--orange);">
+      <div style="font-size: 24px; font-weight: 900; color: var(--orange); font-family: 'Plus Jakarta Sans';" id="hyperfocus-countdown">45:00</div>
+      <div style="font-size: 11px; color: var(--t2); margin-top: 4px;">Hiperfokus modu aktif. Doğru iş üzerindesin değil mi cano?</div>
     </div>
     
     <!-- Alarm Triggered View -->
-    <div id="hyperfocus-triggered-area" style="display:none;background:var(--rl);border:1px solid var(--red)">
-      <span>🚨</span>
-      <h4 style="color:var(--red)">45 Dakika Oldu!</h4>
-      <p style="text-align:left">Hâlâ doğru şeyle uğraşıyor musun? Bir yudum su iç, omuzlarını esnet ve zihnini kontrol et aslan! 🐙💧</p>
-      <div style="display:flex;gap:8px">
-        <button class="chat-pill" style="flex:1;border:1.5px solid var(--orange);color:var(--orange)" onclick="extendHyperfocus()">15 Dk Uzat</button>
-        <button class="chat-pill" style="flex:1;border:1.5px solid var(--green);color:var(--green)" onclick="stopHyperfocus()">Bırakıyorum ✓</button>
+    <div id="hyperfocus-triggered-area" style="display: none; background: var(--rl); border-radius: 16px; padding: 14px; margin-bottom: 16px; border: 1px solid var(--red);">
+      <span style="font-size: 24px;">🚨</span>
+      <h4 style="font-size: 14px; font-weight: 800; color: var(--red); margin-top: 4px;">45 Dakika Oldu!</h4>
+      <p style="font-size: 11.5px; color: var(--t2); line-height: 1.45; margin-top: 4px; margin-bottom: 10px; text-align: left;">Hâlâ doğru şeyle uğraşıyor musun? Bir yudum su iç, omuzlarını esnet ve zihnini kontrol et aslan! 🐙💧</p>
+      <div style="display: flex; gap: 8px;">
+        <button class="chat-pill" style="flex: 1; padding: 6px; font-size: 11px; border: 1.5px solid var(--orange); color: var(--orange); border-radius: 8px; font-weight: bold; background: white;" onclick="extendHyperfocus()">15 Dk Uzat</button>
+        <button class="chat-pill" style="flex: 1; padding: 6px; font-size: 11px; border: 1.5px solid var(--green); color: var(--green); border-radius: 8px; font-weight: bold; background: white;" onclick="stopHyperfocus()">Bırakıyorum ✓</button>
       </div>
     </div>
     
-    <button class="btn" id="hyperfocus-action-btn" style="background:linear-gradient(135deg, var(--orange), #FF8C5A)" onclick="toggleHyperfocusState()">
+    <button class="btn" id="hyperfocus-action-btn" style="background: linear-gradient(135deg, var(--orange), #FF8C5A); padding: 12px;" onclick="toggleHyperfocusState()">
       Hiperfokus Alarmını Başlat
     </button>
   </div>
 </div>
 
 <!-- TASK ADD OVERLAY -->
-<div id="task-add-overlay" style="display:none;position:absolute;inset:0;z-index:500;align-items:center;justify-content:center">
-  <div class="card" style="width:100%;max-width:320px;text-align:center;animation:slideUp 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;position:relative">
-    <div style="position:absolute;top:16px;right:16px;cursor:pointer" onclick="closeAddTaskModal()">✕</div>
+<div id="task-add-overlay" style="display: none; position: absolute; inset: 0; background: rgba(15,23,41,0.55); backdrop-filter: blur(8px); z-index: 500; align-items: center; justify-content: center; padding: 20px;">
+  <div class="card" style="width: 100%; max-width: 320px; background: white; border-radius: 28px; padding: 24px; text-align: center; border: 1.5px solid var(--border); box-shadow: var(--sh3); animation: slideUp 0.3s cubic-bezier(0.22, 1, 0.36, 1) both; position: relative;">
+    <div style="position: absolute; top: 16px; right: 16px; font-size: 18px; font-weight: bold; color: var(--t3); cursor: pointer;" onclick="closeAddTaskModal()">✕</div>
     
-    <h3>Yeni Görev Ekle</h3>
+    <h3 style="font-size: 18px; font-weight: 800; color: var(--navy); margin-bottom: 16px; font-family: 'Plus Jakarta Sans';">Yeni Görev Ekle</h3>
     
-    <div style="display:flex;flex-direction:column;gap:12px;text-align:left">
+    <div style="display: flex; flex-direction: column; gap: 12px; text-align: left; margin-bottom: 20px;">
       <div>
-        <label style="display:block">Görev Adı</label>
-        <input type="text" id="task-input-text" placeholder="Örn: Raporu tamamla" style="width:100%;transition:border-color 0.2s" onfocus="this.style.borderColor='var(--orange)'" onblur="this.style.borderColor='var(--border)'">
+        <label style="font-size: 11px; font-weight: 700; color: var(--t2); text-transform: uppercase; display: block; margin-bottom: 6px;">Görev Adı</label>
+        <input type="text" id="task-input-text" placeholder="Örn: Raporu tamamla" style="width: 100%; padding: 12px; border-radius: 12px; border: 1.5px solid var(--border); font-family: 'DM Sans'; font-size: 14px; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='var(--orange)'" onblur="this.style.borderColor='var(--border)'">
       </div>
       
       <div>
-        <label style="display:block">Görev Türü</label>
-        <select id="task-input-type" style="width:100%">
+        <label style="font-size: 11px; font-weight: 700; color: var(--t2); text-transform: uppercase; display: block; margin-bottom: 6px;">Görev Türü</label>
+        <select id="task-input-type" style="width: 100%; padding: 12px; border-radius: 12px; border: 1.5px solid var(--border); font-family: 'DM Sans'; font-size: 14px; outline: none; background: white;">
           <option value="normal">Normal Görev (10 dk)</option>
           <option value="pomodoro">Pomodoro Odak (25 dk)</option>
           <option value="game">Beyin Antrenmanı (5 dk)</option>
@@ -2438,148 +2590,148 @@ path[style*="tentWave"] {
       </div>
       
       <div>
-        <label style="display:block">Alt Adımlar (Opsiyonel)</label>
-        <div style="display:flex;flex-direction:column;gap:6px">
-          <input type="text" class="subtask-input" placeholder="1. Alt adım (örn: Taslağı çıkar)" style="width:100%">
-          <input type="text" class="subtask-input" placeholder="2. Alt adım (örn: Kaynakları bul)" style="width:100%">
-          <input type="text" class="subtask-input" placeholder="3. Alt adım (örn: Kontrol et)" style="width:100%">
+        <label style="font-size: 11px; font-weight: 700; color: var(--t2); text-transform: uppercase; display: block; margin-bottom: 6px;">Alt Adımlar (Opsiyonel)</label>
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <input type="text" class="subtask-input" placeholder="1. Alt adım (örn: Taslağı çıkar)" style="width: 100%; padding: 10px; border-radius: 10px; border: 1.5px solid var(--border); font-family: 'DM Sans'; font-size: 12px; outline: none;">
+          <input type="text" class="subtask-input" placeholder="2. Alt adım (örn: Kaynakları bul)" style="width: 100%; padding: 10px; border-radius: 10px; border: 1.5px solid var(--border); font-family: 'DM Sans'; font-size: 12px; outline: none;">
+          <input type="text" class="subtask-input" placeholder="3. Alt adım (örn: Kontrol et)" style="width: 100%; padding: 10px; border-radius: 10px; border: 1.5px solid var(--border); font-family: 'DM Sans'; font-size: 12px; outline: none;">
         </div>
       </div>
     </div>
     
-    <button class="btn" onclick="addNewTask()">Görevi Ekle 🚀</button>
+    <button class="btn" style="padding: 12px;" onclick="addNewTask()">Görevi Ekle 🚀</button>
   </div>
 </div>
 
 <!-- FIDGET TOY OVERLAY -->
-<div id="fidget-toy-overlay" style="display:none;position:absolute;inset:0;z-index:500;align-items:center;justify-content:center">
-  <div class="card" style="width:100%;max-width:320px;text-align:center;animation:slideUp 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;position:relative">
-    <div style="position:absolute;top:16px;right:16px;cursor:pointer" onclick="closeFidgetToy()">✕</div>
+<div id="fidget-toy-overlay" style="display: none; position: absolute; inset: 0; background: rgba(15,23,41,0.6); backdrop-filter: blur(8px); z-index: 500; align-items: center; justify-content: center; padding: 20px;">
+  <div class="card" style="width: 100%; max-width: 320px; background: white; border-radius: 28px; padding: 22px; text-align: center; border: 1.5px solid var(--border); box-shadow: var(--sh3); animation: slideUp 0.3s cubic-bezier(0.22, 1, 0.36, 1) both; position: relative;">
+    <div style="position: absolute; top: 16px; right: 16px; font-size: 18px; font-weight: bold; color: var(--t3); cursor: pointer;" onclick="closeFidgetToy()">✕</div>
     
-    <h3>Fidget Balon Patlatma 🫧</h3>
-    <p>Balonları patlat, zihnini sakinleştir. Ara sıra dopamin kazan!</p>
+    <h3 style="font-size: 18px; font-weight: 800; color: var(--navy); margin-bottom: 4px; font-family: 'Plus Jakarta Sans';">Fidget Balon Patlatma 🫧</h3>
+    <p style="font-size: 11px; color: var(--t2); margin-bottom: 12px;">Balonları patlat, zihnini sakinleştir. Ara sıra dopamin kazan!</p>
     
-    <div style="display:inline-flex;align-items:center;gap:6px">
-      💎 Fidget Dopamini: <span id="fidget-dp-counter" style="color:var(--orange)">0/10 DP</span>
+    <div style="background: var(--bg); padding: 8px 12px; border-radius: 14px; font-size: 12px; font-weight: 700; color: var(--t1); margin-bottom: 16px; display: inline-flex; align-items: center; gap: 6px;">
+      💎 Fidget Dopamini: <span id="fidget-dp-counter" style="color: var(--orange);">0/10 DP</span>
     </div>
     
-    <div id="fidget-grid" style="display:grid;grid-template-columns:repeat(6, 1fr);gap:8px;width:100%;box-sizing:border-box">
+    <div id="fidget-grid" style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; background: var(--bg); padding: 12px; border-radius: 20px; border: 1.5px solid var(--border); margin-bottom: 16px; justify-items: center; width: 100%; box-sizing: border-box;">
       <!-- Bubbles injected by JS -->
     </div>
     
-    <div style="display:flex;gap:8px">
-      <button class="btn" style="color:var(--orange);flex:1;width:auto" onclick="resetFidgetGrid()">Şişir 🔄</button>
-      <button class="btn" style="flex:1;width:auto" onclick="closeFidgetToy()">Kapat</button>
+    <div style="display: flex; gap: 8px;">
+      <button class="btn" style="background: rgba(255,107,53,0.1); color: var(--orange); flex: 1; font-size: 12px; padding: 10px; width: auto;" onclick="resetFidgetGrid()">Şişir 🔄</button>
+      <button class="btn" style="flex: 1; font-size: 12px; padding: 10px; width: auto;" onclick="closeFidgetToy()">Kapat</button>
     </div>
   </div>
 </div>
 
 <!-- BRIX CUSTOM MODAL OVERLAY -->
-<div id="brix-custom-modal" style="display:none;position:absolute;inset:0;z-index:9999;align-items:center;justify-content:center">
-  <div class="card" style="width:100%;max-width:320px;text-align:center;animation:slideUp 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;position:relative;display:flex;flex-direction:column;align-items:center;gap:14px">
-    <div id="brix-modal-icon">🐙</div>
-    <h3 id="brix-modal-title">Brix Hatırlatması</h3>
-    <p id="brix-modal-message" style="text-align:center">Mesaj...</p>
-    <button id="brix-modal-btn" class="btn" style="background:linear-gradient(135deg, var(--orange), var(--o2));width:100%" onclick="closeBrixModal()">
+<div id="brix-custom-modal" style="display: none; position: absolute; inset: 0; background: rgba(15,23,41,0.6); backdrop-filter: blur(8px); z-index: 9999; align-items: center; justify-content: center; padding: 20px;">
+  <div class="card" style="width: 100%; max-width: 320px; background: white; border-radius: 28px; padding: 24px; text-align: center; border: 1.5px solid var(--border); box-shadow: var(--sh3); animation: slideUp 0.3s cubic-bezier(0.22, 1, 0.36, 1) both; position: relative; display: flex; flex-direction: column; align-items: center; gap: 14px;">
+    <div id="brix-modal-icon" style="font-size: 44px; filter: drop-shadow(0 4px 10px rgba(255,107,53,0.25));">🐙</div>
+    <h3 id="brix-modal-title" style="font-size: 18px; font-weight: 800; color: var(--navy); font-family: 'Plus Jakarta Sans'; margin: 0;">Brix Hatırlatması</h3>
+    <p id="brix-modal-message" style="font-size: 13px; color: var(--t2); line-height: 1.55; margin: 0; font-family: 'DM Sans'; text-align: center; word-break: break-word;">Mesaj...</p>
+    <button id="brix-modal-btn" class="btn" style="background: linear-gradient(135deg, var(--orange), var(--o2)); padding: 12px; width: 100%; font-family: 'Plus Jakarta Sans'; font-size: 14px; font-weight: 800;" onclick="closeBrixModal()">
       Tamam
     </button>
   </div>
 </div>
 
 <!-- PREMIUM PAYWALL OVERLAY -->
-<div id="premium-paywall-overlay" style="display:none;position:absolute;inset:0;z-index:9999;align-items:center;justify-content:center">
-  <div class="card" style="width:100%;max-width:320px;text-align:center;animation:slideUp 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;position:relative;display:flex;flex-direction:column;align-items:center;gap:12px">
-    <div style="position:absolute;top:16px;right:16px;cursor:pointer" onclick="closePremiumPaywall()">✕</div>
-    <div>💎</div>
-    <h3>Briqo Premium</h3>
-    <p style="color:var(--orange)">Zihninin Süper Gücünü Aç</p>
+<div id="premium-paywall-overlay" style="display: none; position: absolute; inset: 0; background: rgba(15,23,41,0.65); backdrop-filter: blur(10px); z-index: 9999; align-items: center; justify-content: center; padding: 20px;">
+  <div class="card" style="width: 100%; max-width: 320px; background: white; border-radius: 28px; padding: 24px; text-align: center; border: 1.5px solid #FAD3C2; box-shadow: var(--sh3); animation: slideUp 0.3s cubic-bezier(0.22, 1, 0.36, 1) both; position: relative; display: flex; flex-direction: column; align-items: center; gap: 12px;">
+    <div style="position: absolute; top: 16px; right: 16px; font-size: 18px; font-weight: bold; color: var(--t3); cursor: pointer;" onclick="closePremiumPaywall()">✕</div>
+    <div style="font-size: 48px; filter: drop-shadow(0 4px 10px rgba(255,107,53,0.3));">💎</div>
+    <h3 style="font-size: 20px; font-weight: 900; color: var(--navy); font-family: 'Plus Jakarta Sans'; margin: 0;">Briqo Premium</h3>
+    <p style="font-size: 12px; color: var(--orange); font-weight: 700; text-transform: uppercase; margin-top: -6px; letter-spacing: 0.5px;">Zihninin Süper Gücünü Aç</p>
     
-    <div style="display:flex;flex-direction:column;gap:8px;width:100%;text-align:left">
-      <div style="display:flex;align-items:center;gap:10px">
-        <span style="color:var(--orange)">✓</span>
+    <div style="display: flex; flex-direction: column; gap: 8px; width: 100%; text-align: left; margin: 8px 0 14px;">
+      <div style="display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--t1); font-family: 'DM Sans';">
+        <span style="color: var(--orange); font-weight: bold;">✓</span>
         <span>Sınırsız Günlük Alışkanlık Ekleme</span>
       </div>
-      <div style="display:flex;align-items:center;gap:10px">
-        <span style="color:var(--orange)">✓</span>
+      <div style="display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--t1); font-family: 'DM Sans';">
+        <span style="color: var(--orange); font-weight: bold;">✓</span>
         <span>Dr. Brix Premium Odak Sesleri & Oyunları</span>
       </div>
-      <div style="display:flex;align-items:center;gap:10px">
-        <span style="color:var(--orange)">✓</span>
+      <div style="display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--t1); font-family: 'DM Sans';">
+        <span style="color: var(--orange); font-weight: bold;">✓</span>
         <span>Reklamları Tamamen Kaldır</span>
       </div>
-      <div style="display:flex;align-items:center;gap:10px">
-        <span style="color:var(--orange)">✓</span>
+      <div style="display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--t1); font-family: 'DM Sans';">
+        <span style="color: var(--orange); font-weight: bold;">✓</span>
         <span>Hassas RSD Egzersizlerinin Tamamı</span>
       </div>
     </div>
     
-    <div style="display:flex;gap:10px;width:100%">
-      <div style="flex:1;cursor:pointer;transition:all 0.2s" id="paywall-opt-monthly" onclick="selectPaywallOption('monthly')">
-        <div>Aylık</div>
-        <div>49.99 TL</div>
-        <div>Aylık Faturalandırılır</div>
+    <div style="display: flex; gap: 10px; width: 100%; margin-bottom: 16px;">
+      <div style="flex: 1; border: 2px solid var(--border); border-radius: 16px; padding: 12px 6px; cursor: pointer; transition: all 0.2s;" id="paywall-opt-monthly" onclick="selectPaywallOption('monthly')">
+        <div style="font-size: 11px; font-weight: 700; color: var(--t3);">Aylık</div>
+        <div style="font-size: 14px; font-weight: 800; color: var(--navy); margin: 4px 0;">49.99 TL</div>
+        <div style="font-size: 9px; color: var(--t3);">Aylık Faturalandırılır</div>
       </div>
-      <div style="flex:1;border:2px solid var(--orange);background:var(--ol);cursor:pointer;transition:all 0.2s;position:relative" id="paywall-opt-yearly" onclick="selectPaywallOption('yearly')">
-        <div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:var(--orange)">%50 TASARRUF</div>
-        <div style="color:var(--orange)">Yıllık</div>
-        <div>299.99 TL</div>
-        <div>Yıllık Faturalandırılır</div>
+      <div style="flex: 1; border: 2px solid var(--orange); background: var(--ol); border-radius: 16px; padding: 12px 6px; cursor: pointer; transition: all 0.2s; position: relative;" id="paywall-opt-yearly" onclick="selectPaywallOption('yearly')">
+        <div style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: var(--orange); color: white; font-size: 8px; font-weight: 800; padding: 2px 6px; border-radius: 100px; white-space: nowrap;">%50 TASARRUF</div>
+        <div style="font-size: 11px; font-weight: 700; color: var(--orange);">Yıllık</div>
+        <div style="font-size: 14px; font-weight: 800; color: var(--navy); margin: 4px 0;">299.99 TL</div>
+        <div style="font-size: 9px; color: var(--t3);">Yıllık Faturalandırılır</div>
       </div>
     </div>
     
-    <button class="btn" style="background:linear-gradient(135deg, var(--orange), #FF8570);width:100%" onclick="activatePremiumSimulate()">
+    <button class="btn" style="background: linear-gradient(135deg, var(--orange), #FF8570); padding: 12px; width: 100%; font-weight: 800; font-size: 14px; font-family: 'Plus Jakarta Sans';" onclick="activatePremiumSimulate()">
       Satın Al & Premium Ol ✨
     </button>
   </div>
 </div>
 
 <!-- DOPAMINE SHOP OVERLAY -->
-<div id="dopamine-shop-overlay" style="display:none;position:absolute;inset:0;z-index:9999;align-items:center;justify-content:center">
-  <div class="card" style="width:100%;max-width:320px;text-align:center;animation:slideUp 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;position:relative;display:flex;flex-direction:column;align-items:center;gap:12px;box-sizing:border-box">
-    <div style="position:absolute;top:16px;right:16px;cursor:pointer" onclick="closeDopamineShop()">✕</div>
+<div id="dopamine-shop-overlay" style="display: none; position: absolute; inset: 0; background: rgba(15,23,41,0.65); backdrop-filter: blur(10px); z-index: 9999; align-items: center; justify-content: center; padding: 20px;">
+  <div class="card" style="width: 100%; max-width: 320px; background: white; border-radius: 28px; padding: 24px; text-align: center; border: 1.5px solid var(--border); box-shadow: var(--sh3); animation: slideUp 0.3s cubic-bezier(0.22, 1, 0.36, 1) both; position: relative; display: flex; flex-direction: column; align-items: center; gap: 12px; box-sizing: border-box;">
+    <div style="position: absolute; top: 16px; right: 16px; font-size: 18px; font-weight: bold; color: var(--t3); cursor: pointer;" onclick="closeDopamineShop()">✕</div>
     
-    <div>💎</div>
-    <h3>Dopamin Dükkanı</h3>
-    <p>Brix'in kıyafet odasına hoş geldin! Puanlarınla Brix'e tarz kat.</p>
+    <div style="font-size: 44px; filter: drop-shadow(0 4px 10px rgba(255,107,53,0.25));">💎</div>
+    <h3 style="font-size: 20px; font-weight: 900; color: var(--navy); font-family: 'Plus Jakarta Sans'; margin: 0;">Dopamin Dükkanı</h3>
+    <p style="font-size: 11px; color: var(--t2); margin-top: -6px; line-height: 1.4;">Brix'in kıyafet odasına hoş geldin! Puanlarınla Brix'e tarz kat.</p>
     
-    <div style="display:flex;align-items:center;gap:6px">
-      💎 Bakiye: <span id="shop-dp-balance" style="color:var(--orange)">0 DP</span>
+    <div style="background: var(--bg); padding: 8px 16px; border-radius: 100px; font-size: 13px; font-weight: 800; color: var(--navy); display: flex; align-items: center; gap: 6px; margin: 4px 0 8px;">
+      💎 Bakiye: <span id="shop-dp-balance" style="color: var(--orange);">0 DP</span>
     </div>
     
-    <div id="shop-items-container" style="width:100%;display:flex;flex-direction:column;gap:10px;max-height:240px;overflow-y:auto;box-sizing:border-box">
+    <div id="shop-items-container" style="width: 100%; display: flex; flex-direction: column; gap: 10px; max-height: 240px; overflow-y: auto; padding-right: 2px; box-sizing: border-box;">
       <!-- Dynamic list of items -->
     </div>
     
-    <button class="btn" style="width:100%" onclick="closeDopamineShop()">Kapat</button>
+    <button class="btn" style="width: 100%; margin-top: 8px;" onclick="closeDopamineShop()">Kapat</button>
   </div>
 </div>
 
 <!-- REWARDED AD OVERLAY (SIMULATOR) -->
-<div id="rewarded-ad-overlay" style="display:none;position:absolute;inset:0;z-index:10000;align-items:center;justify-content:center;flex-direction:column">
-  <div style="position:absolute;top:16px;left:16px;display:flex;align-items:center;gap:8px">
+<div id="rewarded-ad-overlay" style="display: none; position: absolute; inset: 0; background: #0f172a; z-index: 10000; align-items: center; justify-content: center; flex-direction: column; padding: 20px; color: white;">
+  <div style="position: absolute; top: 16px; left: 16px; display: flex; align-items: center; gap: 8px; font-family: 'Plus Jakarta Sans'; font-size: 11px; color: rgba(255,255,255,0.4); font-weight: bold; background: rgba(255,255,255,0.08); padding: 4px 10px; border-radius: 8px;">
     <span>🎬 Sponsorlu Reklam</span>
   </div>
   
-  <div style="position:absolute;top:16px;right:16px">
-    <button id="rewarded-ad-close-btn" disabled style="cursor:not-allowed;transition:all 0.2s" onclick="closeRewardedAd()">
+  <div style="position: absolute; top: 16px; right: 16px;">
+    <button id="rewarded-ad-close-btn" disabled style="background: rgba(255,255,255,0.1); border: none; color: rgba(255,255,255,0.3); font-weight: 800; font-size: 13px; font-family: 'Plus Jakarta Sans'; padding: 6px 12px; border-radius: 12px; cursor: not-allowed; transition: all 0.2s;" onclick="closeRewardedAd()">
       Kapat (5)
     </button>
   </div>
   
-  <div style="width:100%;max-width:300px;height:180px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center">
-    <div>🐙🕹️</div>
-    <div style="background:linear-gradient(to right, var(--orange), #FF8570)">Brix Runner 2D</div>
-    <p>ADHD zihnini eğlendirirken reflekslerini geliştir! Şimdi ücretsiz oyna.</p>
-    <button class="btn" style="background:var(--orange)" onclick="showBrixModal('Brix Runner 2D mağazaya çok yakında geliyor! 🚀', 'Brix Games 🐙', 'Tamam', '🐙')">
+  <div style="width: 100%; max-width: 300px; height: 180px; background: linear-gradient(135deg, #1e293b, #0f172a); border: 2px solid rgba(255,255,255,0.1); border-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 20px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
+    <div style="font-size: 40px;">🐙🕹️</div>
+    <div style="font-family: 'Plus Jakarta Sans'; font-weight: 900; font-size: 15px; background: linear-gradient(to right, var(--orange), #FF8570); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Brix Runner 2D</div>
+    <p style="font-size: 11px; color: rgba(255,255,255,0.6); line-height: 1.4; margin: 0;">ADHD zihnini eğlendirirken reflekslerini geliştir! Şimdi ücretsiz oyna.</p>
+    <button class="btn" style="background: var(--orange); padding: 8px 16px; font-size: 11px; margin-top: 4px;" onclick="showBrixModal('Brix Runner 2D mağazaya çok yakında geliyor! 🚀', 'Brix Games 🐙', 'Tamam', '🐙')">
       Yükle 📥
     </button>
   </div>
   
-  <div style="width:100%;max-width:300px;height:4px;overflow:hidden;position:relative">
-    <div id="rewarded-ad-progress" style="width:0%;height:100%;background:var(--orange);transition:width 0.1s linear"></div>
+  <div style="width: 100%; max-width: 300px; height: 4px; background: rgba(255,255,255,0.1); border-radius: 2px; margin-top: 24px; overflow: hidden; position: relative;">
+    <div id="rewarded-ad-progress" style="width: 0%; height: 100%; background: var(--orange); transition: width 0.1s linear;"></div>
   </div>
   
-  <div id="rewarded-ad-status-text">
+  <div style="font-family: 'DM Sans'; font-size: 11px; color: rgba(255,255,255,0.4); margin-top: 10px;" id="rewarded-ad-status-text">
     Puanını almak için reklamı sonuna kadar izle...
   </div>
 </div>
