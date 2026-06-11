@@ -1,4 +1,4 @@
-const CACHE_NAME = 'briqo-v2';
+const CACHE_NAME = 'briqo-v2.3';
 const ASSETS = [
   './',
   './index.html',
@@ -11,7 +11,7 @@ self.addEventListener('install', e => {
   e.waitUntil(
     caches.open(CACHE_NAME).then(cache => {
       return cache.addAll(ASSETS);
-    })
+    }).then(() => self.skipWaiting())
   );
 });
 
@@ -25,14 +25,25 @@ self.addEventListener('activate', e => {
           }
         })
       );
-    })
+    }).then(() => self.clients.claim())
   );
 });
 
+// Network First strategy: fetches from network first, falls back to cache if offline
 self.addEventListener('fetch', e => {
   e.respondWith(
-    caches.match(e.request).then(cachedResponse => {
-      return cachedResponse || fetch(e.request);
-    })
+    fetch(e.request)
+      .then(response => {
+        if (response && response.status === 200 && response.type === 'basic') {
+          const responseToCache = response.clone();
+          caches.open(CACHE_NAME).then(cache => {
+            cache.put(e.request, responseToCache);
+          });
+        }
+        return response;
+      })
+      .catch(() => {
+        return caches.match(e.request);
+      })
   );
 });
