@@ -1,0 +1,6 @@
+{
+  "appId": "app.briqo.prod",
+  "appName": "Briqo",
+  "webDir": "www",
+  "bundledWebRuntime": false
+}

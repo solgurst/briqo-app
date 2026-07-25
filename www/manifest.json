@@ -1,0 +1,22 @@
+{
+  "name": "Briqo ADHD Companion",
+  "short_name": "Briqo",
+  "description": "ADHD Zihnini Sevmeyi Öğreten Akıllı Arkadaş",
+  "start_url": "index.html",
+  "display": "standalone",
+  "background_color": "#FFFDFB",
+  "theme_color": "#FF6B35",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}

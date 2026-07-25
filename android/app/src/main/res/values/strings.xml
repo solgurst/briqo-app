@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Briqo</string>
+    <string name="title_activity_main">Briqo</string>
+    <string name="package_name">app.briqo.prod</string>
+    <string name="custom_url_scheme">app.briqo.prod</string>
+</resources>

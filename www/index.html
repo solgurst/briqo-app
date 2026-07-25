@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
+<title>Briqo 3.0 — Beynini Sevenler İçin (ADHD Companion)</title>
+<link rel="manifest" href="manifest.json"/>
+<meta name="theme-color" content="#FF6B35"/>
+<!-- iOS PWA Support -->
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+<meta name="apple-mobile-web-app-title" content="Briqo"/>
+<link rel="apple-touch-icon" href="icon-192.png"/>
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet"/>
+
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+
+:root {
+  --navy: #0B1120;
+  --navy-card: #151F32;
+  --orange: #FF6B35;
+  --orange-light: #FFF0EB;
+  --orange-glow: rgba(255, 107, 53, 0.35);
+  --teal: #26C6DA;
+  --teal-light: #E0FBFD;
+  --yellow: #FFD23F;
+  --yellow-light: #FFFBEB;
+  --green: #22C55E;
+  --green-light: #DCFCE7;
+  --pink: #F472B6;
+  --pink-light: #FCE7F3;
+  --purple: #A855F7;
+  --purple-light: #F3E8FF;
+  --red: #EF4444;
+  --red-light: #FEE2E2;
+  
+  --bg: #F8FAFC;
+  --surface: #FFFFFF;
+  --border: #E2E8F0;
+  --border-dark: #334155;
+  
+  --text-main: #0F1729;
+  --text-muted: #64748B;
+  --text-light: #94A3B8;
+  
+  --radius-s: 12px;
+  --radius-m: 20px;
+  --radius-l: 28px;
+  --radius-full: 9999px;
+  
+  --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.05);
+  --shadow-md: 0 8px 24px rgba(15, 23, 42, 0.08);
+  --shadow-lg: 0 20px 50px rgba(15, 23, 42, 0.14);
+  --shadow-orange: 0 10px 30px rgba(255, 107, 53, 0.3);
+  
+  --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: radial-gradient(circle at 50% 20%, #1E293B 0%, #0F172A 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  color: var(--text-main);
+  overflow-x: hidden;
+}
+
+/* ── CONTAINER & MOCKUP ── */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  max-width: 440px;
+}
+
+.device-frame {
+  width: 100%;
+  max-width: 400px;
+  height: 850px;
+  background: var(--bg);
+  border-radius: 48px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 35px 90px rgba(0, 0, 0, 0.5), 0 0 0 12px #1E293B, 0 0 0 15px #334155;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.3s var(--ease-out);
+}
+
+.device-frame.full-screen {
+  max-width: 100%;
+  height: 100vh;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* Notch & Status Bar */
+.status-bar {
+  height: 46px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 0 24px 8px;
+  z-index: 200;
+  background: transparent;
+  flex-shrink: 0;
+  user-select: none;
+}
+.status-time {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 800;
+  font-size: 14px;
+  color: var(--text-main);
+}
+.status-icons {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+}
+.notch {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 28px;
+  background: #1E293B;
+  border-radius: 0 0 18px 18px;
+  z-index: 210;
+}
+.notch::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  background: #0F172A;
+  border-radius: 50%;
+}
+
+/* ── SCREENS ── */
+.screen {
+  position: absolute;
+  inset: 0;
+  display: none;
+  flex-direction: column;
+  background: var(--bg);
+  overflow: hidden;
+}
+.screen.active {
+  display: flex;
+  animation: screenSlideIn 0.35s var(--ease-out) both;
+}
+@keyframes screenSlideIn {
+  from { opacity: 0; transform: translateY(12px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 16px 20px 100px;
+  scrollbar-width: none;
+}
+.scroll-area::-webkit-scrollbar { display: none; }
+
+/* ── BOTTOM NAVIGATION ── */
+.bottom-nav {
+  height: 76px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(16px);
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0 8px 12px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 150;
+}
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  flex: 1;
+  transition: all 0.2s var(--spring);
+  color: var(--text-light);
+}
+.nav-icon-wrap {
+  padding: 6px 14px;
+  border-radius: 16px;
+  transition: all 0.25s var(--spring);
+}
+.nav-item.active .nav-icon-wrap {
+  background: var(--orange-light);
+  transform: translateY(-2px);
+}
+.nav-item.active svg {
+  color: var(--orange);
+}
+.nav-item.active span {
+  color: var(--orange);
+  font-weight: 800;
+}
+.nav-item span {
+  font-size: 10px;
+  font-weight: 600;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+.nav-item:active {
+  transform: scale(0.9);
+}
+
+/* ── TYPOGRAPHY & BUTTONS ── */
+h1, h2, h3, h4 { font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: -0.02em; }
+
+.btn {
+  background: linear-gradient(135deg, var(--orange), #FF8C5A);
+  color: white;
+  border: none;
+  border-radius: var(--radius-m);
+  padding: 14px 22px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: var(--shadow-orange);
+  transition: all 0.2s var(--spring);
+  width: 100%;
+}
+.btn:hover { transform: translateY(-2px); box-shadow: 0 14px 35px rgba(255, 107, 53, 0.4); }
+.btn:active { transform: scale(0.96); }
+
+.btn-secondary {
+  background: white;
+  color: var(--text-main);
+  border: 1.5px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+.btn-secondary:hover { background: var(--orange-light); border-color: var(--orange); color: var(--orange); }
+
+.btn-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  background: white;
+  border: 1.5px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s var(--spring);
+}
+.btn-icon:hover { border-color: var(--orange); background: var(--orange-light); color: var(--orange); }
+
+/* ── BRIX MASCOT SVG ENGINE ── */
+.brix-container {
+  position: relative;
+  width: 130px;
+  height: 130px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.brix-svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 10px 20px rgba(255, 107, 53, 0.25));
+  animation: brixFloat 4s ease-in-out infinite;
+}
+@keyframes brixFloat {
+  0%, 100% { transform: translateY(0) rotate(-1deg); }
+  50% { transform: translateY(-8px) rotate(1deg); }
+}
+
+.tentacle {
+  transform-origin: top center;
+  animation: tentacleWave 3s ease-in-out infinite alternate;
+}
+@keyframes tentacleWave {
+  0% { transform: rotate(-4deg); }
+  100% { transform: rotate(6deg); }
+}
+
+/* Wardrobe items on SVG Brix */
+.brix-accessory {
+  position: absolute;
+  pointer-events: none;
+  transition: all 0.3s var(--spring);
+}
+#acc-crown { top: -8px; left: 50%; transform: translateX(-50%); width: 48px; display: none; }
+#acc-glasses { top: 38px; left: 50%; transform: translateX(-50%); width: 56px; display: none; }
+#acc-wizard { top: -20px; left: 50%; transform: translateX(-50%); width: 62px; display: none; }
+#acc-viking { top: -14px; left: 50%; transform: translateX(-50%); width: 66px; display: none; }
+#acc-headphones { top: 22px; left: 50%; transform: translateX(-50%); width: 90px; display: none; }
+
+/* ── 🌟 DOPAMINE STATE RADAR (INNOVATIVE FEATURE) ── */
+.radar-card {
+  background: linear-gradient(135deg, #0F1729 0%, #1E293B 100%);
+  border-radius: var(--radius-l);
+  padding: 20px;
+  color: white;
+  box-shadow: 0 12px 36px rgba(15, 23, 42, 0.3);
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+.radar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.radar-badge {
+  background: rgba(255, 107, 53, 0.2);
+  color: #FF8C5A;
+  border: 1px solid rgba(255, 107, 53, 0.4);
+  padding: 4px 10px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.radar-title { font-size: 17px; font-weight: 800; color: white; margin-bottom: 4px; }
+.radar-sub { font-size: 12px; color: var(--text-light); }
+
+.state-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 14px;
+}
+.state-btn {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1.5px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  padding: 12px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  cursor: pointer;
+  transition: all 0.25s var(--spring);
+  text-align: left;
+}
+.state-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-2px);
+}
+.state-btn.active {
+  background: linear-gradient(135deg, rgba(255, 107, 53, 0.3), rgba(255, 140, 90, 0.15));
+  border-color: var(--orange);
+  box-shadow: 0 4px 16px rgba(255, 107, 53, 0.3);
+}
+.state-emoji { font-size: 22px; }
+.state-name { font-size: 12px; font-weight: 700; color: white; font-family: 'Plus Jakarta Sans', sans-serif; }
+.state-desc { font-size: 10px; color: #94A3B8; }
+
+/* Prescription Box */
+.prescription-box {
+  background: rgba(255, 107, 53, 0.15);
+  border: 1px solid rgba(255, 107, 53, 0.3);
+  border-radius: 16px;
+  padding: 14px;
+  margin-top: 14px;
+  display: none;
+  animation: slideUp 0.3s var(--ease-out) both;
+}
+.prescription-box.active { display: block; }
+.prescription-title { font-size: 12px; font-weight: 800; color: #FF8C5A; margin-bottom: 4px; text-transform: uppercase; }
+.prescription-text { font-size: 13px; color: white; line-height: 1.4; font-weight: 500; }
+.prescription-action {
+  margin-top: 10px;
+  background: var(--orange);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* ── 🎯 SINGLE TASK SHIELD ── */
+.shield-card {
+  background: white;
+  border-radius: var(--radius-l);
+  padding: 24px 20px;
+  box-shadow: var(--shadow-md);
+  border: 2px solid var(--orange-light);
+  margin-bottom: 20px;
+  position: relative;
+}
+.shield-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--orange-light);
+  color: var(--orange);
+  padding: 5px 12px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+.shield-task-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 8px;
+  line-height: 1.3;
+}
+.shield-task-desc {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+.shield-actions {
+  display: flex;
+  gap: 10px;
+}
+
+/* ── 👯 SANAL BODY DOUBLING ── */
+.body-doubling-card {
+  background: linear-gradient(135deg, #1E1B4B 0%, #312E81 100%);
+  border-radius: var(--radius-l);
+  padding: 24px 20px;
+  color: white;
+  text-align: center;
+  box-shadow: 0 16px 40px rgba(49, 46, 129, 0.3);
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+}
+.timer-display {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 48px;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  color: white;
+  margin: 16px 0;
+  text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+.ambient-pills {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.ambient-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 100px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s var(--spring);
+}
+.ambient-btn.active {
+  background: var(--yellow);
+  color: #5B4500;
+  border-color: var(--yellow);
+}
+
+/* ── 🫧 ASMR FIDGET BOARD ── */
+.fidget-board {
+  background: white;
+  border-radius: var(--radius-l);
+  padding: 20px;
+  box-shadow: var(--shadow-md);
+  border: 1.5px solid var(--border);
+  margin-bottom: 20px;
+}
+.bubble-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-top: 14px;
+}
+.bubble {
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--teal), #00ACC1);
+  box-shadow: inset 0 4px 8px rgba(255, 255, 255, 0.4), 0 6px 16px rgba(38, 198, 218, 0.3);
+  cursor: pointer;
+  transition: all 0.15s var(--spring);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 800;
+  font-size: 18px;
+}
+.bubble:active, .bubble.popped {
+  transform: scale(0.85);
+  background: #E0FBFD;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+  opacity: 0.6;
+}
+
+/* ── 🛍️ DOPAMINE SHOP ── */
+.shop-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.shop-card {
+  background: white;
+  border-radius: 20px;
+  padding: 16px;
+  border: 1.5px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+  transition: all 0.2s var(--spring);
+}
+.shop-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.shop-price {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 800;
+  color: var(--orange);
+  font-size: 13px;
+}
+
+/* ── STATS & HEADER BAR ── */
+.header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.user-greeting {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text-main);
+}
+.dp-counter {
+  background: var(--yellow-light);
+  border: 1.5px solid var(--yellow);
+  color: #856404;
+  padding: 6px 14px;
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 4px 12px rgba(255, 210, 63, 0.2);
+}
+
+/* Modal Popup */
+.modal-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(8px);
+  z-index: 300;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal-overlay.active { display: flex; animation: fadeIn 0.25s ease-out; }
+.modal-card {
+  background: white;
+  border-radius: var(--radius-l);
+  padding: 24px;
+  width: 100%;
+  max-width: 340px;
+  box-shadow: var(--shadow-lg);
+  animation: popIn 0.3s var(--spring);
+}
+@keyframes popIn { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+/* Animations */
+@keyframes slideUp { from { transform: translateY(14px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+@keyframes pulseGlow { 0%, 100% { box-shadow: 0 0 0 0 rgba(255,107,53,0.4); } 50% { box-shadow: 0 0 0 10px rgba(255,107,53,0); } }
+</style>
+</head>
+<body>
+
+<div class="app-container">
+  <!-- Device Frame Mockup -->
+  <div class="device-frame" id="deviceFrame">
+    <!-- Top Notch -->
+    <div class="notch"></div>
+    
+    <!-- Status Bar -->
+    <div class="status-bar">
+      <div class="status-time" id="statusClock">09:41</div>
+      <div class="status-icons">⚡ 100%</div>
+    </div>
+
+    <!-- 📱 SCREEN 1: ONBOARDING -->
+    <div class="screen active" id="scr-onboarding">
+      <div class="scroll-area" style="display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding: 40px 24px;">
+        <!-- Brix Mascot -->
+        <div class="brix-container" style="margin-bottom:24px;">
+          <svg class="brix-svg" viewBox="0 0 120 120">
+            <!-- Body -->
+            <ellipse cx="60" cy="55" rx="42" ry="38" fill="#FF6B35"/>
+            <!-- Highlights -->
+            <ellipse cx="48" cy="38" rx="14" ry="8" fill="#FF8C5A" transform="rotate(-15 48 38)"/>
+            <!-- Eyes -->
+            <circle cx="46" cy="50" r="8" fill="#0F1729"/>
+            <circle cx="74" cy="50" r="8" fill="#0F1729"/>
+            <circle cx="44" cy="48" r="3" fill="white"/>
+            <circle cx="72" cy="48" r="3" fill="white"/>
+            <!-- Cheeks -->
+            <circle cx="36" cy="58" r="5" fill="#F472B6" opacity="0.6"/>
+            <circle cx="84" cy="58" r="5" fill="#F472B6" opacity="0.6"/>
+            <!-- Smile -->
+            <path d="M 52 62 Q 60 70 68 62" stroke="#0F1729" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+            <!-- Tentacles -->
+            <path class="tentacle" d="M 28 80 Q 20 100 32 105 Q 40 102 38 88" fill="#FF6B35"/>
+            <path class="tentacle" d="M 44 86 Q 42 110 52 112 Q 60 108 54 88" fill="#FF6B35"/>
+            <path class="tentacle" d="M 66 88 Q 62 108 72 112 Q 80 108 76 86" fill="#FF6B35"/>
+            <path class="tentacle" d="M 84 80 Q 98 100 88 105 Q 80 100 80 84" fill="#FF6B35"/>
+          </svg>
+        </div>
+
+        <div style="background:var(--orange-light); color:var(--orange); padding:6px 16px; border-radius:100px; font-weight:800; font-size:12px; margin-bottom:12px;">
+          🐙 Briqo 3.0 ADHD Companion
+        </div>
+        <h1 style="font-size:26px; font-weight:900; color:var(--text-main); margin-bottom:12px; line-height:1.2;">
+          Zihninle Savaşma,<br><span style="color:var(--orange);">Onunla İş Birliği Yap</span>
+        </h1>
+        <p style="font-size:14px; color:var(--text-muted); line-height:1.6; margin-bottom:28px;">
+          Brix ile tanış! ADHD zihnine göre adapte olan kişisel odak koçun ve nörolojik yardımcın.
+        </p>
+
+        <div style="width:100%; display:flex; flex-direction:column; gap:12px;">
+          <button class="btn" onclick="startApp()">
+            🚀 Briqo'yu Başlat
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 📱 SCREEN 2: HOME & DOPAMINE RADAR -->
+    <div class="screen" id="scr-home">
+      <div class="scroll-area">
+        <!-- Top Bar -->
+        <div class="header-row">
+          <div>
+            <div style="font-size:12px; color:var(--text-muted); font-weight:600;">Merhaba! 👋</div>
+            <div class="user-greeting">ADHD Dostum</div>
+          </div>
+          <div class="dp-counter">
+            ⭐ <span id="dpBalance">150</span> DP
+          </div>
+        </div>
+
+        <!-- Brix Active Hero Card -->
+        <div style="background:white; border-radius:var(--radius-l); padding:18px; box-shadow:var(--shadow-sm); border:1.5px solid var(--border); display:flex; align-items:center; gap:16px; margin-bottom:20px; position:relative;">
+          <div class="brix-container" style="width:85px; height:85px; flex-shrink:0;">
+            <svg class="brix-svg" viewBox="0 0 120 120">
+              <ellipse cx="60" cy="55" rx="42" ry="38" fill="#FF6B35"/>
+              <ellipse cx="48" cy="38" rx="14" ry="8" fill="#FF8C5A" transform="rotate(-15 48 38)"/>
+              <circle cx="46" cy="50" r="8" fill="#0F1729"/>
+              <circle cx="74" cy="50" r="8" fill="#0F1729"/>
+              <circle cx="44" cy="48" r="3" fill="white"/>
+              <circle cx="72" cy="48" r="3" fill="white"/>
+              <circle cx="36" cy="58" r="5" fill="#F472B6" opacity="0.6"/>
+              <circle cx="84" cy="58" r="5" fill="#F472B6" opacity="0.6"/>
+              <path d="M 52 62 Q 60 70 68 62" stroke="#0F1729" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+              <path class="tentacle" d="M 28 80 Q 20 100 32 105 Q 40 102 38 88" fill="#FF6B35"/>
+              <path class="tentacle" d="M 44 86 Q 42 110 52 112 Q 60 108 54 88" fill="#FF6B35"/>
+              <path class="tentacle" d="M 66 88 Q 62 108 72 112 Q 80 108 76 86" fill="#FF6B35"/>
+              <path class="tentacle" d="M 84 80 Q 98 100 88 105 Q 80 100 80 84" fill="#FF6B35"/>
+            </svg>
+            <!-- Accessories -->
+            <div class="brix-accessory" id="acc-crown">👑</div>
+            <div class="brix-accessory" id="acc-glasses">🕶️</div>
+            <div class="brix-accessory" id="acc-wizard">🧙‍♂️</div>
+            <div class="brix-accessory" id="acc-viking">🪓</div>
+            <div class="brix-accessory" id="acc-headphones">🎧</div>
+          </div>
+          <div>
+            <div style="font-size:12px; font-weight:800; color:var(--orange); text-transform:uppercase; margin-bottom:4px;">Brix Diyor Ki:</div>
+            <div id="brixSpeech" style="font-size:13px; font-weight:600; color:var(--text-main); line-height:1.4;">
+              "Sıfır suçluluk! Bugün zihnin nasıl hissediyorsa ona göre hareket edelim."
+            </div>
+          </div>
+        </div>
+
+        <!-- 🌟 INNOVATIVE FEATURE: DOPAMINE STATE RADAR -->
+        <div class="radar-card">
+          <div class="radar-header">
+            <div>
+              <div class="radar-title">🧠 Dopamin Durum Radarı</div>
+              <div class="radar-sub">Şu an beynin hangi modda?</div>
+            </div>
+            <div class="radar-badge">Zihinsel Reçete</div>
+          </div>
+
+          <div class="state-grid">
+            <div class="state-btn" onclick="selectBrainState('doom')">
+              <span class="state-emoji">🧊</span>
+              <span class="state-name">Doomscrolling</span>
+              <span class="state-desc">Kilitlenmiş & Hareketsiz</span>
+            </div>
+            <div class="state-btn" onclick="selectBrainState('anxious')">
+              <span class="state-emoji">🤯</span>
+              <span class="state-name">Aşırı Yüklü</span>
+              <span class="state-desc">Panik & Kalabalık Zihin</span>
+            </div>
+            <div class="state-btn" onclick="selectBrainState('distracted')">
+              <span class="state-emoji">🌀</span>
+              <span class="state-name">Dağınık Zihin</span>
+              <span class="state-desc">Daldan Dala Atlayan</span>
+            </div>
+            <div class="state-btn" onclick="selectBrainState('hyper')">
+              <span class="state-emoji">⚡</span>
+              <span class="state-name">Hiperfokus</span>
+              <span class="state-desc">Aşırı Odaklanmış</span>
+            </div>
+          </div>
+
+          <!-- Prescription Result Box -->
+          <div class="prescription-box" id="prescriptionBox">
+            <div class="prescription-title" id="prescTitle">Nörolojik Reçetelerin Hazır</div>
+            <div class="prescription-text" id="prescText">Reçete metni burada görünecek.</div>
+            <button class="prescription-action" id="prescActionBtn" onclick="runPrescriptionAction()">Aksiyonu Başlat</button>
+          </div>
+        </div>
+
+        <!-- 🎯 SINGLE TASK SHIELD -->
+        <div class="shield-card">
+          <div class="shield-tag">🛡️ Tek Görev Kalkanı (Anti-Analiz Felci)</div>
+          <div class="shield-task-title" id="activeTaskTitle">5 Dakika Çalışma Masasını Düzenle</div>
+          <div class="shield-task-desc" id="activeTaskDesc">Listenin kalanını gizledik. Sadece bu mikro göreve odaklan!</div>
+          <div class="shield-actions">
+            <button class="btn" style="flex:2;" onclick="completeTask()">
+              ✅ Yapıyorum! (+30 DP)
+            </button>
+            <button class="btn btn-secondary" style="flex:1;" onclick="splitTaskWithAI()">
+              🪄 AI ile Böl
+            </button>
+          </div>
+        </div>
+
+        <!-- DOPAMINE QUICK WHEEL -->
+        <div style="background:linear-gradient(135deg, #FFFBEB, #FEF3C7); border-radius:var(--radius-l); padding:18px; border:1.5px solid #FCD34D; display:flex; align-items:center; justify-content:space-between; margin-bottom:20px;">
+          <div>
+            <div style="font-size:14px; font-weight:800; color:#78350F;">🎰 Sürpriz Dopamin Çarkıfeleği</div>
+            <div style="font-size:12px; color:#92400E; margin-top:2px;">Kararsız mısın? Sana 2 dakikalık eğlenceli görev verelim.</div>
+          </div>
+          <button class="btn" style="width:auto; padding:10px 16px; background:#F59E0B; font-size:13px;" onclick="spinDopamineWheel()">
+            Çarkı Döndür
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- 📱 SCREEN 3: SANAL BODY DOUBLING & TIMER -->
+    <div class="screen" id="scr-focus">
+      <div class="scroll-area">
+        <h2 style="font-size:22px; font-weight:900; margin-bottom:4px;">👯 Sanal Body-Doubling</h2>
+        <p style="font-size:13px; color:var(--text-muted); margin-bottom:20px;">Brix kulaklığını taktı, seninle birlikte çalışıyor!</p>
+
+        <!-- Body Doubling Main Card -->
+        <div class="body-doubling-card">
+          <!-- Brix Working SVG -->
+          <div class="brix-container" style="width:110px; height:110px;">
+            <svg class="brix-svg" viewBox="0 0 120 120">
+              <ellipse cx="60" cy="55" rx="42" ry="38" fill="#FF6B35"/>
+              <ellipse cx="48" cy="38" rx="14" ry="8" fill="#FF8C5A" transform="rotate(-15 48 38)"/>
+              <!-- Focus eyes -->
+              <ellipse cx="46" cy="52" rx="7" ry="4" fill="#0F1729"/>
+              <ellipse cx="74" cy="52" rx="7" ry="4" fill="#0F1729"/>
+              <!-- Headphones -->
+              <path d="M 22 50 C 22 20, 98 20, 98 50" stroke="#0F1729" stroke-width="8" fill="none" stroke-linecap="round"/>
+              <rect x="18" y="44" width="12" height="20" rx="6" fill="#A855F7"/>
+              <rect x="90" y="44" width="12" height="20" rx="6" fill="#A855F7"/>
+              <path class="tentacle" d="M 28 80 Q 20 100 32 105 Q 40 102 38 88" fill="#FF6B35"/>
+              <path class="tentacle" d="M 44 86 Q 42 110 52 112 Q 60 108 54 88" fill="#FF6B35"/>
+              <path class="tentacle" d="M 66 88 Q 62 108 72 112 Q 80 108 76 86" fill="#FF6B35"/>
+              <path class="tentacle" d="M 84 80 Q 98 100 88 105 Q 80 100 80 84" fill="#FF6B35"/>
+            </svg>
+          </div>
+
+          <div class="timer-display" id="timerDisplay">25:00</div>
+
+          <!-- Ambient Sounds -->
+          <div class="ambient-pills">
+            <button class="ambient-btn active" onclick="toggleAmbient('lofi')">🎵 Lofi Beats</button>
+            <button class="ambient-btn" onclick="toggleAmbient('rain')">🌧️ Yağmur ASMR</button>
+            <button class="ambient-btn" onclick="toggleAmbient('cafe')">☕ Kafe Sesi</button>
+          </div>
+
+          <div style="display:flex; gap:10px; margin-top:14px;">
+            <button class="btn" id="timerToggleBtn" onclick="toggleTimer()" style="background:var(--yellow); color:#5B4500;">
+              ▶️ Odaklanmayı Başlat
+            </button>
+            <button class="btn btn-secondary" onclick="resetTimer()" style="width:auto; padding:12px 18px;">
+              🔄
+            </button>
+          </div>
+        </div>
+
+        <!-- Hydration & Break Guard -->
+        <div style="background:white; border-radius:var(--radius-m); padding:16px; border:1.5px solid var(--border); display:flex; align-items:center; gap:14px;">
+          <div style="font-size:28px;">💧</div>
+          <div>
+            <div style="font-size:13px; font-weight:800; color:var(--text-main);">Hiperfokus Su Koruyucusu</div>
+            <div style="font-size:12px; color:var(--text-muted);">Çalışırken su içmeyi unutma! Brix seni nazikçe uyaracak.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 📱 SCREEN 4: ASMR FIDGET & RS Sığınak -->
+    <div class="screen" id="scr-fidget">
+      <div class="scroll-area">
+        <h2 style="font-size:22px; font-weight:900; margin-bottom:4px;">🫧 ASMR Fidget & Sığınak</h2>
+        <p style="font-size:13px; color:var(--text-muted); margin-bottom:20px;">Anlık motor stresi azalt, baloncukları patlat!</p>
+
+        <!-- Bubble Pop Fidget Board -->
+        <div class="fidget-board">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div style="font-weight:800; font-size:14px;">ASMR Bubble Pop</div>
+            <div style="font-size:12px; color:var(--orange); font-weight:800;" id="popCounter">Patlatılan: 0</div>
+          </div>
+          <div class="bubble-grid" id="bubbleGrid">
+            <!-- Dynamically generated bubbles -->
+          </div>
+        </div>
+
+        <!-- RSD & Emotional First Aid -->
+        <div style="background:linear-gradient(135deg, #FCE7F3, #F472B6); border-radius:var(--radius-l); padding:20px; color:#831843;">
+          <div style="font-size:16px; font-weight:800; margin-bottom:6px;">🩹 RSD & Duygusal İlk Yardım</div>
+          <p style="font-size:12px; line-height:1.5; margin-bottom:14px; color:#9D174D;">
+            Aşırı yüklenmiş veya kırılmış mı hissediyorsun? Brix ile 4-7-8 ritmik nefes egzersizi yapalım.
+          </p>
+          <button class="btn" style="background:#DB2777; color:white;" onclick="startBreathingExercise()">
+            🫁 4-7-8 Nefes Balonunu Aç
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 📱 SCREEN 5: DOPAMINE SHOP & WARDROBE -->
+    <div class="screen" id="scr-shop">
+      <div class="scroll-area">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px;">
+          <div>
+            <h2 style="font-size:22px; font-weight:900;">🛍️ Dopamin Dükkanı</h2>
+            <p style="font-size:12px; color:var(--text-muted);">DP puanlarınla Brix'e aksesuarlar al!</p>
+          </div>
+          <div class="dp-counter">
+            ⭐ <span id="shopDpBalance">150</span> DP
+          </div>
+        </div>
+
+        <div class="shop-grid">
+          <div class="shop-card">
+            <div style="font-size:36px;">👑</div>
+            <div style="font-weight:800; font-size:14px;">Kral Tacı</div>
+            <div class="shop-price">50 DP</div>
+            <button class="btn" style="padding:8px 12px; font-size:12px;" onclick="buyAccessory('crown', 50)">Satın Al / Kuşan</button>
+          </div>
+
+          <div class="shop-card">
+            <div style="font-size:36px;">🕶️</div>
+            <div style="font-weight:800; font-size:14px;">Güneş Gözlüğü</div>
+            <div class="shop-price">40 DP</div>
+            <button class="btn" style="padding:8px 12px; font-size:12px;" onclick="buyAccessory('glasses', 40)">Satın Al / Kuşan</button>
+          </div>
+
+          <div class="shop-card">
+            <div style="font-size:36px;">🧙‍♂️</div>
+            <div style="font-weight:800; font-size:14px;">Büyücü Şapkası</div>
+            <div class="shop-price">60 DP</div>
+            <button class="btn" style="padding:8px 12px; font-size:12px;" onclick="buyAccessory('wizard', 60)">Satın Al / Kuşan</button>
+          </div>
+
+          <div class="shop-card">
+            <div style="font-size:36px;">🪓</div>
+            <div style="font-weight:800; font-size:14px;">Viking Miğferi</div>
+            <div class="shop-price">75 DP</div>
+            <button class="btn" style="padding:8px 12px; font-size:12px;" onclick="buyAccessory('viking', 75)">Satın Al / Kuşan</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 🌐 BOTTOM NAVIGATION BAR -->
+    <div class="bottom-nav" id="bottomNav">
+      <div class="nav-item active" onclick="switchNav('home')">
+        <div class="nav-icon-wrap">
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+        </div>
+        <span>Ana Sayfa</span>
+      </div>
+
+      <div class="nav-item" onclick="switchNav('focus')">
+        <div class="nav-icon-wrap">
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        </div>
+        <span>Body-Double</span>
+      </div>
+
+      <div class="nav-item" onclick="switchNav('fidget')">
+        <div class="nav-icon-wrap">
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+        <span>ASMR Fidget</span>
+      </div>
+
+      <div class="nav-item" onclick="switchNav('shop')">
+        <div class="nav-icon-wrap">
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+        </div>
+        <span>Dükkan</span>
+      </div>
+    </div>
+
+  </div> <!-- /device-frame -->
+</div>
+
+<!-- Modal Dialog -->
+<div class="modal-overlay" id="genericModal">
+  <div class="modal-card">
+    <h3 id="modalTitle" style="font-size:18px; font-weight:800; margin-bottom:8px;">Modal Başlığı</h3>
+    <p id="modalBody" style="font-size:13px; color:var(--text-muted); line-height:1.5; margin-bottom:16px;">Modal içeriği burada.</p>
+    <button class="btn" onclick="closeModal()">Tamamdır</button>
+  </div>
+</div>
+
+<script>
+/* ── APP STATE ── */
+let state = {
+  dp: 150,
+  currentBrainState: null,
+  activeTaskIndex: 0,
+  equippedAccessories: [],
+  popCount: 0,
+  timerSeconds: 1500,
+  timerRunning: false,
+  timerInterval: null
+};
+
+const tasks = [
+  { title: "5 Dakika Çalışma Masasını Düzenle", desc: "Sadece masadaki boş bardağı kaldır ve kalemleri topla!" },
+  { title: "Büyük Bir Bardak Soğuk Su İç", desc: "Hiperfokus anında vücudunu dehidre bırakma." },
+  { title: "E-postalarına 2 Dakikalık Hızlı Göz At", desc: "Sadece en acil 1 maile cevap ver, kalanını ertele!" },
+  { title: "1 Dakika Boyunca En Sevdiğin Şarkıda Dans Et", desc: "Dopamin seviyeni sağlıklı yoldan yükselt!" }
+];
+
+/* ── INITIALIZATION ── */
+document.addEventListener('DOMContentLoaded', () => {
+  loadState();
+  updateClock();
+  setInterval(updateClock, 1000);
+  renderBubbles();
+});
+
+function updateClock() {
+  const now = new Date();
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  document.getElementById('statusClock').textContent = `${hours}:${minutes}`;
+}
+
+function startApp() {
+  document.getElementById('scr-onboarding').classList.remove('active');
+  document.getElementById('scr-home').classList.add('active');
+}
+
+function switchNav(target) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  
+  document.getElementById(`scr-${target}`).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+/* 🌟 INNOVATIVE FEATURE: DOPAMINE STATE RADAR 🌟 */
+function selectBrainState(brainState) {
+  state.currentBrainState = brainState;
+  document.querySelectorAll('.state-btn').forEach(b => b.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  
+  const box = document.getElementById('prescriptionBox');
+  const title = document.getElementById('prescTitle');
+  const text = document.getElementById('prescText');
+  const btn = document.getElementById('prescActionBtn');
+  
+  box.classList.add('active');
+  
+  if (brainState === 'doom') {
+    title.textContent = '🧊 Doomscrolling Reset Reçetesi';
+    text.textContent = 'Ayağa kalk, 3 kez zıpla veya elini soğuk suyla yıka! Beynindeki motor felci 10 saniyede kırıyoruz.';
+    btn.textContent = '⚡ 10sn Reset Sıfırlamasını Yap';
+  } else if (brainState === 'anxious') {
+    title.textContent = '🤯 Aşırı Yüklenme & Panik Reçetesi';
+    text.textContent = 'Tek Görev Kalkanı aktifleşti! Listenin kalanını gizledik. Sadece 1 mikro göreve odaklanacağız.';
+    btn.textContent = '🛡️ Tek Görev Kalkanına Git';
+  } else if (brainState === 'distracted') {
+    title.textContent = '🌀 Dağınık Zihin Reçetesi';
+    text.textContent = 'Sana 2 dakikalık eğlenceli sürpriz bir dopamin mikro-görevi veriyoruz.';
+    btn.textContent = '🎰 Çarkıfeleğe Git';
+  } else if (brainState === 'hyper') {
+    title.textContent = '⚡ Hiperfokus & Mola Reçetesi';
+    text.textContent = '25 dakikadır aralıksız çalışıyorsun. Bir bardak su içip 2 dakika esneme vakti!';
+    btn.textContent = '💧 Su & Mola Sayacını Aç';
+  }
+}
+
+function runPrescriptionAction() {
+  if (state.currentBrainState === 'doom') {
+    showModal("⚡ 10 Saniyelik Reset!", "Ayağa kalkıp 3 kez zıpladın veya elini soğuk suyla yıkadın. Harikasın! +20 DP Kazandın.");
+    addDP(20);
+  } else if (state.currentBrainState === 'anxious') {
+    window.scrollTo({ top: 300, behavior: 'smooth' });
+  } else if (state.currentBrainState === 'distracted') {
+    spinDopamineWheel();
+  } else if (state.currentBrainState === 'hyper') {
+    switchNav('focus');
+  }
+}
+
+/* ── SINGLE TASK SHIELD ── */
+function completeTask() {
+  addDP(30);
+  showModal("🎉 Harika İş!", "Mikro görevi tamamladın! +30 Dopamin Puanı (DP) kazandın.");
+  state.activeTaskIndex = (state.activeTaskIndex + 1) % tasks.length;
+  updateShieldTask();
+}
+
+function splitTaskWithAI() {
+  showModal("🪄 AI Task Slicer", "Görev 3 mikro adıma bölündü:\n1. Masadaki bardağı kaldır (45sn)\n2. Dağınık kağıtları hizala (1dk)\n3. Kalemliği yerine koy (30sn)");
+}
+
+function updateShieldTask() {
+  const current = tasks[state.activeTaskIndex];
+  document.getElementById('activeTaskTitle').textContent = current.title;
+  document.getElementById('activeTaskDesc').textContent = current.desc;
+}
+
+function spinDopamineWheel() {
+  const options = [
+    "1 Bardak Soğuk Su İç! (+15 DP)",
+    "En sevdiğin şarkıda 45 saniye dans et! (+20 DP)",
+    "Pencereyi aç ve 3 derin nefes al! (+15 DP)",
+    "Gözlerini kapatıp 30 saniye dinlendir! (+15 DP)"
+  ];
+  const picked = options[Math.floor(Math.random() * options.length)];
+  showModal("🎰 Sürpriz Dopamin Görevin!", picked);
+  addDP(15);
+}
+
+/* ── BODY DOUBLING TIMER ── */
+function toggleTimer() {
+  const btn = document.getElementById('timerToggleBtn');
+  if (state.timerRunning) {
+    clearInterval(state.timerInterval);
+    state.timerRunning = false;
+    btn.textContent = '▶️ Odaklanmayı Başlat';
+  } else {
+    state.timerRunning = true;
+    btn.textContent = '⏸️ Duraklat';
+    state.timerInterval = setInterval(() => {
+      if (state.timerSeconds > 0) {
+        state.timerSeconds--;
+        renderTimer();
+      } else {
+        clearInterval(state.timerInterval);
+        state.timerRunning = false;
+        btn.textContent = '▶️ Odaklanmayı Başlat';
+        showModal("🏆 Hiperfokus Seansı Bitti!", "25 dakikalık sanal body-doubling tamamlandı. +50 DP Kazandın!");
+        addDP(50);
+      }
+    }, 1000);
+  }
+}
+
+function resetTimer() {
+  clearInterval(state.timerInterval);
+  state.timerRunning = false;
+  state.timerSeconds = 1500;
+  renderTimer();
+  document.getElementById('timerToggleBtn').textContent = '▶️ Odaklanmayı Başlat';
+}
+
+function renderTimer() {
+  const mins = String(Math.floor(state.timerSeconds / 60)).padStart(2, '0');
+  const secs = String(state.timerSeconds % 60).padStart(2, '0');
+  document.getElementById('timerDisplay').textContent = `${mins}:${secs}`;
+}
+
+function toggleAmbient(type) {
+  document.querySelectorAll('.ambient-btn').forEach(b => b.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+}
+
+/* ── ASMR FIDGET BUBBLES ── */
+function renderBubbles() {
+  const grid = document.getElementById('bubbleGrid');
+  grid.innerHTML = '';
+  for (let i = 0; i < 12; i++) {
+    const bubble = document.createElement('div');
+    bubble.className = 'bubble';
+    bubble.innerHTML = '🫧';
+    bubble.onclick = (e) => popBubble(e.currentTarget);
+    grid.appendChild(bubble);
+  }
+}
+
+function popBubble(el) {
+  if (!el.classList.contains('popped')) {
+    el.classList.add('popped');
+    state.popCount++;
+    document.getElementById('popCounter').textContent = `Patlatılan: ${state.popCount}`;
+    playPopSound();
+    if (state.popCount % 12 === 0) {
+      addDP(10);
+      setTimeout(renderBubbles, 500);
+    }
+  }
+}
+
+function playPopSound() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(600, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(150, ctx.currentTime + 0.08);
+    gain.gain.setValueAtTime(0.3, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.08);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.09);
+  } catch(e){}
+}
+
+function startBreathingExercise() {
+  showModal("🫁 4-7-8 Nefes Egzersizi", "4 saniye nefes al... 7 saniye tut... 8 saniye yavaşça ver. Zihnin güvende!");
+}
+
+/* ── SHOP & ACCESSORIES ── */
+function buyAccessory(accName, price) {
+  if (state.dp >= price) {
+    if (!state.equippedAccessories.includes(accName)) {
+      state.dp -= price;
+      state.equippedAccessories.push(accName);
+      updateDPDisplay();
+      equipAccessoryOnSVG(accName);
+      showModal("🎉 Tebrikler!", `${accName.toUpperCase()} satın alındı ve Brix üzerine kuşandırıldı!`);
+      saveState();
+    } else {
+      equipAccessoryOnSVG(accName);
+      showModal("👑 Kuşandırıldı", `${accName.toUpperCase()} Brix üzerine kuşandırıldı!`);
+    }
+  } else {
+    showModal("⚠️ Yetersiz DP", "Yeterli Dopamin Puanın yok. Görev tamamlayarak puan kazanabilirsin!");
+  }
+}
+
+function equipAccessoryOnSVG(accName) {
+  const el = document.getElementById(`acc-${accName}`);
+  if (el) {
+    el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+  }
+}
+
+/* ── HELPERS & PERSISTENCE ── */
+function addDP(amount) {
+  state.dp += amount;
+  updateDPDisplay();
+  saveState();
+}
+
+function updateDPDisplay() {
+  document.getElementById('dpBalance').textContent = state.dp;
+  document.getElementById('shopDpBalance').textContent = state.dp;
+}
+
+function showModal(title, body) {
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalBody').innerText = body;
+  document.getElementById('genericModal').classList.add('active');
+}
+
+function closeModal() {
+  document.getElementById('genericModal').classList.remove('active');
+}
+
+function saveState() {
+  try {
+    localStorage.setItem('briqo_v3_state', JSON.stringify(state));
+  } catch(e){}
+}
+
+function loadState() {
+  try {
+    const saved = localStorage.getItem('briqo_v3_state');
+    if (saved) {
+      state = Object.assign(state, JSON.parse(saved));
+      updateDPDisplay();
+    }
+  } catch(e){}
+}
+</script>
+
+</body>
+</html>
