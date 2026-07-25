@@ -1,0 +1,34 @@
+name: 🍏 App Store Automated Deployment Pipeline
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy-ios:
+    runs-on: macos-latest
+    steps:
+      - name: 📁 Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: 📦 Install Dependencies
+        run: |
+          npm install
+          npx cap sync ios
+
+      - name: 🔑 Setup Apple Certificates & Fastlane
+        env:
+          APP_STORE_CONNECT_API_KEY: ${{ secrets.APP_STORE_CONNECT_API_KEY }}
+          APPLE_DEVELOPER_KEY_ID: ${{ secrets.APPLE_DEVELOPER_KEY_ID }}
+          APPLE_DEVELOPER_ISSUER_ID: ${{ secrets.APPLE_DEVELOPER_ISSUER_ID }}
+        run: |
+          cd ios
+          gem install fastlane
+          fastlane build_and_upload_app_store

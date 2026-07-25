@@ -1,0 +1,22 @@
+default_platform(:ios)
+
+platform :ios do
+  desc "Build and upload Briqo 3.5 to App Store Connect"
+  lane :build_and_upload_app_store do
+    setup_ci if is_ci
+
+    build_app(
+      workspace: "App/App.xcworkspace",
+      scheme: "App",
+      export_method: "app-store"
+    )
+
+    upload_to_app_store(
+      force: true,
+      skip_screenshots: false,
+      skip_metadata: false,
+      submit_for_review: true,
+      automatic_release: true
+    )
+  end
+end
