@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover"/>
-<title>Briqo 3.0 — Beynini Sevenler İçin (ADHD Companion)</title>
+<title>Briqo 3.5 — Beynini Sevenler İçin (Cozy Room & ADHD Companion)</title>
 <link rel="manifest" href="manifest.json"/>
 <meta name="theme-color" content="#FF6B35"/>
 <!-- iOS PWA Support -->
@@ -97,14 +97,7 @@ body {
   transition: all 0.3s var(--ease-out);
 }
 
-.device-frame.full-screen {
-  max-width: 100%;
-  height: 100vh;
-  border-radius: 0;
-  box-shadow: none;
-}
-
-/* Notch & Status Bar */
+/* Status Bar */
 .status-bar {
   height: 46px;
   display: flex;
@@ -187,7 +180,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-around;
-  padding: 0 8px 12px;
+  padding: 0 4px 12px;
   position: absolute;
   bottom: 0;
   left: 0;
@@ -198,14 +191,14 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 3px;
   cursor: pointer;
   flex: 1;
   transition: all 0.2s var(--spring);
   color: var(--text-light);
 }
 .nav-icon-wrap {
-  padding: 6px 14px;
+  padding: 5px 12px;
   border-radius: 16px;
   transition: all 0.25s var(--spring);
 }
@@ -221,13 +214,11 @@ body {
   font-weight: 800;
 }
 .nav-item span {
-  font-size: 10px;
+  font-size: 9.5px;
   font-weight: 600;
   font-family: 'Plus Jakarta Sans', sans-serif;
 }
-.nav-item:active {
-  transform: scale(0.9);
-}
+.nav-item:active { transform: scale(0.9); }
 
 /* ── TYPOGRAPHY & BUTTONS ── */
 h1, h2, h3, h4 { font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: -0.02em; }
@@ -261,25 +252,11 @@ h1, h2, h3, h4 { font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: -
 }
 .btn-secondary:hover { background: var(--orange-light); border-color: var(--orange); color: var(--orange); }
 
-.btn-icon {
-  width: 42px;
-  height: 42px;
-  border-radius: 14px;
-  background: white;
-  border: 1.5px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s var(--spring);
-}
-.btn-icon:hover { border-color: var(--orange); background: var(--orange-light); color: var(--orange); }
-
 /* ── BRIX MASCOT SVG ENGINE ── */
 .brix-container {
   position: relative;
-  width: 130px;
-  height: 130px;
+  width: 120px;
+  height: 120px;
   margin: 0 auto;
   display: flex;
   align-items: center;
@@ -310,14 +287,71 @@ h1, h2, h3, h4 { font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: -
   position: absolute;
   pointer-events: none;
   transition: all 0.3s var(--spring);
+  font-size: 32px;
 }
-#acc-crown { top: -8px; left: 50%; transform: translateX(-50%); width: 48px; display: none; }
-#acc-glasses { top: 38px; left: 50%; transform: translateX(-50%); width: 56px; display: none; }
-#acc-wizard { top: -20px; left: 50%; transform: translateX(-50%); width: 62px; display: none; }
-#acc-viking { top: -14px; left: 50%; transform: translateX(-50%); width: 66px; display: none; }
-#acc-headphones { top: 22px; left: 50%; transform: translateX(-50%); width: 90px; display: none; }
+#acc-crown { top: -8px; left: 50%; transform: translateX(-50%); display: none; }
+#acc-glasses { top: 34px; left: 50%; transform: translateX(-50%); display: none; }
+#acc-wizard { top: -18px; left: 50%; transform: translateX(-50%); display: none; }
+#acc-viking { top: -12px; left: 50%; transform: translateX(-50%); display: none; }
+#acc-headphones { top: 20px; left: 50%; transform: translateX(-50%); display: none; }
 
-/* ── 🌟 DOPAMINE STATE RADAR (INNOVATIVE FEATURE) ── */
+/* ── 🏡 COZY ROOM STYLING ── */
+.cozy-room-view {
+  background: linear-gradient(180deg, #FDE68A 0%, #FEF3C7 50%, #F59E0B 100%);
+  border-radius: var(--radius-l);
+  height: 280px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 16px 40px rgba(245, 158, 11, 0.25);
+  border: 3px solid #FCD34D;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 16px;
+}
+.room-wall {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 180px;
+  background: linear-gradient(180deg, #FFFBEB 0%, #FEF3C7 100%);
+}
+.room-window {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 70px;
+  height: 90px;
+  background: linear-gradient(180deg, #38BDF8 0%, #BAE6FD 100%);
+  border: 4px solid #FFFFFF;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.room-floor {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100px;
+  background: #D97706;
+  border-top: 4px solid #B45309;
+}
+/* Furniture Items on Floor */
+.room-furniture {
+  position: absolute;
+  font-size: 38px;
+  transition: all 0.3s var(--spring);
+  filter: drop-shadow(0 6px 12px rgba(0,0,0,0.15));
+}
+#item-rug { bottom: 10px; left: 50%; transform: translateX(-50%); font-size: 70px; display: none; }
+#item-plant { bottom: 25px; left: 20px; display: none; }
+#item-cat { bottom: 20px; right: 25px; display: none; }
+#item-neon { top: 25px; left: 25px; font-size: 28px; display: none; }
+#item-coffee { bottom: 60px; right: 100px; font-size: 26px; display: none; }
+
+/* 🌟 DOPAMINE STATE RADAR */
 .radar-card {
   background: linear-gradient(135deg, #0F1729 0%, #1E293B 100%);
   border-radius: var(--radius-l);
@@ -368,10 +402,7 @@ h1, h2, h3, h4 { font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: -
   transition: all 0.25s var(--spring);
   text-align: left;
 }
-.state-btn:hover {
-  background: rgba(255, 255, 255, 0.12);
-  transform: translateY(-2px);
-}
+.state-btn:hover { background: rgba(255, 255, 255, 0.12); transform: translateY(-2px); }
 .state-btn.active {
   background: linear-gradient(135deg, rgba(255, 107, 53, 0.3), rgba(255, 140, 90, 0.15));
   border-color: var(--orange);
@@ -406,7 +437,7 @@ h1, h2, h3, h4 { font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: -
   cursor: pointer;
 }
 
-/* ── 🎯 SINGLE TASK SHIELD ── */
+/* 🎯 SINGLE TASK SHIELD */
 .shield-card {
   background: white;
   border-radius: var(--radius-l);
@@ -441,12 +472,9 @@ h1, h2, h3, h4 { font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: -
   margin-bottom: 20px;
   line-height: 1.5;
 }
-.shield-actions {
-  display: flex;
-  gap: 10px;
-}
+.shield-actions { display: flex; gap: 10px; }
 
-/* ── 👯 SANAL BODY DOUBLING ── */
+/* 👯 SANAL BODY DOUBLING */
 .body-doubling-card {
   background: linear-gradient(135deg, #1E1B4B 0%, #312E81 100%);
   border-radius: var(--radius-l);
@@ -467,12 +495,7 @@ h1, h2, h3, h4 { font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: -
   margin: 16px 0;
   text-shadow: 0 4px 20px rgba(0,0,0,0.3);
 }
-.ambient-pills {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  margin-bottom: 16px;
-}
+.ambient-pills { display: flex; justify-content: center; gap: 8px; margin-bottom: 16px; }
 .ambient-btn {
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
@@ -484,13 +507,9 @@ h1, h2, h3, h4 { font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: -
   cursor: pointer;
   transition: all 0.2s var(--spring);
 }
-.ambient-btn.active {
-  background: var(--yellow);
-  color: #5B4500;
-  border-color: var(--yellow);
-}
+.ambient-btn.active { background: var(--yellow); color: #5B4500; border-color: var(--yellow); }
 
-/* ── 🫧 ASMR FIDGET BOARD ── */
+/* 🫧 ASMR FIDGET BOARD */
 .fidget-board {
   background: white;
   border-radius: var(--radius-l);
@@ -526,12 +545,8 @@ h1, h2, h3, h4 { font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: -
   opacity: 0.6;
 }
 
-/* ── 🛍️ DOPAMINE SHOP ── */
-.shop-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
+/* 🛍️ SHOP GRID */
+.shop-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .shop-card {
   background: white;
   border-radius: 20px;
@@ -546,25 +561,11 @@ h1, h2, h3, h4 { font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: -
   transition: all 0.2s var(--spring);
 }
 .shop-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
-.shop-price {
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-weight: 800;
-  color: var(--orange);
-  font-size: 13px;
-}
+.shop-price { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 800; color: var(--orange); font-size: 13px; }
 
-/* ── STATS & HEADER BAR ── */
-.header-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 16px;
-}
-.user-greeting {
-  font-size: 20px;
-  font-weight: 800;
-  color: var(--text-main);
-}
+/* HEADER & MODAL */
+.header-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.user-greeting { font-size: 20px; font-weight: 800; color: var(--text-main); }
 .dp-counter {
   background: var(--yellow-light);
   border: 1.5px solid var(--yellow);
@@ -579,7 +580,6 @@ h1, h2, h3, h4 { font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: -
   box-shadow: 0 4px 12px rgba(255, 210, 63, 0.2);
 }
 
-/* Modal Popup */
 .modal-overlay {
   position: absolute;
   inset: 0;
@@ -602,21 +602,14 @@ h1, h2, h3, h4 { font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: -
   animation: popIn 0.3s var(--spring);
 }
 @keyframes popIn { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-
-/* Animations */
 @keyframes slideUp { from { transform: translateY(14px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-@keyframes pulseGlow { 0%, 100% { box-shadow: 0 0 0 0 rgba(255,107,53,0.4); } 50% { box-shadow: 0 0 0 10px rgba(255,107,53,0); } }
 </style>
 </head>
 <body>
 
 <div class="app-container">
-  <!-- Device Frame Mockup -->
   <div class="device-frame" id="deviceFrame">
-    <!-- Top Notch -->
     <div class="notch"></div>
-    
-    <!-- Status Bar -->
     <div class="status-bar">
       <div class="status-time" id="statusClock">09:41</div>
       <div class="status-icons">⚡ 100%</div>
@@ -625,24 +618,17 @@ h1, h2, h3, h4 { font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: -
     <!-- 📱 SCREEN 1: ONBOARDING -->
     <div class="screen active" id="scr-onboarding">
       <div class="scroll-area" style="display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding: 40px 24px;">
-        <!-- Brix Mascot -->
         <div class="brix-container" style="margin-bottom:24px;">
           <svg class="brix-svg" viewBox="0 0 120 120">
-            <!-- Body -->
             <ellipse cx="60" cy="55" rx="42" ry="38" fill="#FF6B35"/>
-            <!-- Highlights -->
             <ellipse cx="48" cy="38" rx="14" ry="8" fill="#FF8C5A" transform="rotate(-15 48 38)"/>
-            <!-- Eyes -->
             <circle cx="46" cy="50" r="8" fill="#0F1729"/>
             <circle cx="74" cy="50" r="8" fill="#0F1729"/>
             <circle cx="44" cy="48" r="3" fill="white"/>
             <circle cx="72" cy="48" r="3" fill="white"/>
-            <!-- Cheeks -->
             <circle cx="36" cy="58" r="5" fill="#F472B6" opacity="0.6"/>
             <circle cx="84" cy="58" r="5" fill="#F472B6" opacity="0.6"/>
-            <!-- Smile -->
             <path d="M 52 62 Q 60 70 68 62" stroke="#0F1729" stroke-width="3.5" fill="none" stroke-linecap="round"/>
-            <!-- Tentacles -->
             <path class="tentacle" d="M 28 80 Q 20 100 32 105 Q 40 102 38 88" fill="#FF6B35"/>
             <path class="tentacle" d="M 44 86 Q 42 110 52 112 Q 60 108 54 88" fill="#FF6B35"/>
             <path class="tentacle" d="M 66 88 Q 62 108 72 112 Q 80 108 76 86" fill="#FF6B35"/>
@@ -651,40 +637,33 @@ h1, h2, h3, h4 { font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: -
         </div>
 
         <div style="background:var(--orange-light); color:var(--orange); padding:6px 16px; border-radius:100px; font-weight:800; font-size:12px; margin-bottom:12px;">
-          🐙 Briqo 3.0 ADHD Companion
+          🐙 Briqo 3.5 — Cozy ADHD Companion
         </div>
         <h1 style="font-size:26px; font-weight:900; color:var(--text-main); margin-bottom:12px; line-height:1.2;">
           Zihninle Savaşma,<br><span style="color:var(--orange);">Onunla İş Birliği Yap</span>
         </h1>
         <p style="font-size:14px; color:var(--text-muted); line-height:1.6; margin-bottom:28px;">
-          Brix ile tanış! ADHD zihnine göre adapte olan kişisel odak koçun ve nörolojik yardımcın.
+          Brix ve Cozy Odası ile tanış! Görev tamamladıkça Brix'in odasını dekore et, dopamin seviyeni sağlıklı yönet.
         </p>
 
-        <div style="width:100%; display:flex; flex-direction:column; gap:12px;">
-          <button class="btn" onclick="startApp()">
-            🚀 Briqo'yu Başlat
-          </button>
-        </div>
+        <button class="btn" onclick="startApp()">🚀 Briqo'yu Başlat</button>
       </div>
     </div>
 
     <!-- 📱 SCREEN 2: HOME & DOPAMINE RADAR -->
     <div class="screen" id="scr-home">
       <div class="scroll-area">
-        <!-- Top Bar -->
         <div class="header-row">
           <div>
             <div style="font-size:12px; color:var(--text-muted); font-weight:600;">Merhaba! 👋</div>
             <div class="user-greeting">ADHD Dostum</div>
           </div>
-          <div class="dp-counter">
-            ⭐ <span id="dpBalance">150</span> DP
-          </div>
+          <div class="dp-counter">⭐ <span id="dpBalance">150</span> DP</div>
         </div>
 
-        <!-- Brix Active Hero Card -->
-        <div style="background:white; border-radius:var(--radius-l); padding:18px; box-shadow:var(--shadow-sm); border:1.5px solid var(--border); display:flex; align-items:center; gap:16px; margin-bottom:20px; position:relative;">
-          <div class="brix-container" style="width:85px; height:85px; flex-shrink:0;">
+        <!-- Brix Speech Card -->
+        <div style="background:white; border-radius:var(--radius-l); padding:16px; box-shadow:var(--shadow-sm); border:1.5px solid var(--border); display:flex; align-items:center; gap:14px; margin-bottom:20px;">
+          <div class="brix-container" style="width:75px; height:75px; flex-shrink:0;">
             <svg class="brix-svg" viewBox="0 0 120 120">
               <ellipse cx="60" cy="55" rx="42" ry="38" fill="#FF6B35"/>
               <ellipse cx="48" cy="38" rx="14" ry="8" fill="#FF8C5A" transform="rotate(-15 48 38)"/>
@@ -700,22 +679,16 @@ h1, h2, h3, h4 { font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: -
               <path class="tentacle" d="M 66 88 Q 62 108 72 112 Q 80 108 76 86" fill="#FF6B35"/>
               <path class="tentacle" d="M 84 80 Q 98 100 88 105 Q 80 100 80 84" fill="#FF6B35"/>
             </svg>
-            <!-- Accessories -->
-            <div class="brix-accessory" id="acc-crown">👑</div>
-            <div class="brix-accessory" id="acc-glasses">🕶️</div>
-            <div class="brix-accessory" id="acc-wizard">🧙‍♂️</div>
-            <div class="brix-accessory" id="acc-viking">🪓</div>
-            <div class="brix-accessory" id="acc-headphones">🎧</div>
           </div>
           <div>
-            <div style="font-size:12px; font-weight:800; color:var(--orange); text-transform:uppercase; margin-bottom:4px;">Brix Diyor Ki:</div>
+            <div style="font-size:11px; font-weight:800; color:var(--orange); text-transform:uppercase; margin-bottom:2px;">Brix Diyor Ki:</div>
             <div id="brixSpeech" style="font-size:13px; font-weight:600; color:var(--text-main); line-height:1.4;">
               "Sıfır suçluluk! Bugün zihnin nasıl hissediyorsa ona göre hareket edelim."
             </div>
           </div>
         </div>
 
-        <!-- 🌟 INNOVATIVE FEATURE: DOPAMINE STATE RADAR -->
+        <!-- 🌟 DOPAMINE STATE RADAR -->
         <div class="radar-card">
           <div class="radar-header">
             <div>
@@ -748,7 +721,6 @@ h1, h2, h3, h4 { font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: -
             </div>
           </div>
 
-          <!-- Prescription Result Box -->
           <div class="prescription-box" id="prescriptionBox">
             <div class="prescription-title" id="prescTitle">Nörolojik Reçetelerin Hazır</div>
             <div class="prescription-text" id="prescText">Reçete metni burada görünecek.</div>
@@ -762,46 +734,108 @@ h1, h2, h3, h4 { font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: -
           <div class="shield-task-title" id="activeTaskTitle">5 Dakika Çalışma Masasını Düzenle</div>
           <div class="shield-task-desc" id="activeTaskDesc">Listenin kalanını gizledik. Sadece bu mikro göreve odaklan!</div>
           <div class="shield-actions">
-            <button class="btn" style="flex:2;" onclick="completeTask()">
-              ✅ Yapıyorum! (+30 DP)
-            </button>
-            <button class="btn btn-secondary" style="flex:1;" onclick="splitTaskWithAI()">
-              🪄 AI ile Böl
-            </button>
+            <button class="btn" style="flex:2;" onclick="completeTask()">✅ Yapıyorum! (+30 DP)</button>
+            <button class="btn btn-secondary" style="flex:1;" onclick="splitTaskWithAI()">🪄 AI Böl</button>
           </div>
-        </div>
-
-        <!-- DOPAMINE QUICK WHEEL -->
-        <div style="background:linear-gradient(135deg, #FFFBEB, #FEF3C7); border-radius:var(--radius-l); padding:18px; border:1.5px solid #FCD34D; display:flex; align-items:center; justify-content:space-between; margin-bottom:20px;">
-          <div>
-            <div style="font-size:14px; font-weight:800; color:#78350F;">🎰 Sürpriz Dopamin Çarkıfeleği</div>
-            <div style="font-size:12px; color:#92400E; margin-top:2px;">Kararsız mısın? Sana 2 dakikalık eğlenceli görev verelim.</div>
-          </div>
-          <button class="btn" style="width:auto; padding:10px 16px; background:#F59E0B; font-size:13px;" onclick="spinDopamineWheel()">
-            Çarkı Döndür
-          </button>
         </div>
 
       </div>
     </div>
 
-    <!-- 📱 SCREEN 3: SANAL BODY DOUBLING & TIMER -->
+    <!-- 📱 SCREEN 3: 🏡 BRIX COZY ROOM BUILDER -->
+    <div class="screen" id="scr-room">
+      <div class="scroll-area">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
+          <div>
+            <h2 style="font-size:22px; font-weight:900;">🏡 Brix’in Cozy Odası</h2>
+            <p style="font-size:12px; color:var(--text-muted);">Görev yaptıkça odayı mobilyalarla doldur!</p>
+          </div>
+          <div class="dp-counter">⭐ <span id="roomDpBalance">150</span> DP</div>
+        </div>
+
+        <!-- LIVE COZY ROOM VIEW -->
+        <div class="cozy-room-view">
+          <div class="room-wall"></div>
+          <div class="room-window"></div>
+          <div class="room-floor"></div>
+
+          <!-- Placed Room Items -->
+          <div class="room-furniture" id="item-rug">🛋️</div>
+          <div class="room-furniture" id="item-plant">🪴</div>
+          <div class="room-furniture" id="item-cat">🐱</div>
+          <div class="room-furniture" id="item-neon">⚡</div>
+          <div class="room-furniture" id="item-coffee">☕</div>
+
+          <!-- Brix in Room -->
+          <div class="brix-container" style="width:100px; height:100px; z-index:10; position:relative; margin-bottom:10px;">
+            <svg class="brix-svg" viewBox="0 0 120 120">
+              <ellipse cx="60" cy="55" rx="42" ry="38" fill="#FF6B35"/>
+              <ellipse cx="48" cy="38" rx="14" ry="8" fill="#FF8C5A" transform="rotate(-15 48 38)"/>
+              <circle cx="46" cy="50" r="8" fill="#0F1729"/>
+              <circle cx="74" cy="50" r="8" fill="#0F1729"/>
+              <circle cx="44" cy="48" r="3" fill="white"/>
+              <circle cx="72" cy="48" r="3" fill="white"/>
+              <circle cx="36" cy="58" r="5" fill="#F472B6" opacity="0.6"/>
+              <circle cx="84" cy="58" r="5" fill="#F472B6" opacity="0.6"/>
+              <path d="M 52 62 Q 60 70 68 62" stroke="#0F1729" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+              <path class="tentacle" d="M 28 80 Q 20 100 32 105 Q 40 102 38 88" fill="#FF6B35"/>
+              <path class="tentacle" d="M 44 86 Q 42 110 52 112 Q 60 108 54 88" fill="#FF6B35"/>
+              <path class="tentacle" d="M 66 88 Q 62 108 72 112 Q 80 108 76 86" fill="#FF6B35"/>
+              <path class="tentacle" d="M 84 80 Q 98 100 88 105 Q 80 100 80 84" fill="#FF6B35"/>
+            </svg>
+            <div class="brix-accessory" id="room-acc-crown">👑</div>
+            <div class="brix-accessory" id="room-acc-glasses">🕶️</div>
+            <div class="brix-accessory" id="room-acc-wizard">🧙‍♂️</div>
+          </div>
+        </div>
+
+        <!-- ROOM DECOR DECK -->
+        <h3 style="font-size:16px; font-weight:800; margin-bottom:12px;">🪑 Oda Dekorasyon Mağazası</h3>
+        <div class="shop-grid">
+          <div class="shop-card">
+            <div style="font-size:32px;">🛋️</div>
+            <div style="font-weight:800; font-size:13px;">Cozy Halı & Koltuk</div>
+            <div class="shop-price">40 DP</div>
+            <button class="btn" style="padding:8px 12px; font-size:12px;" onclick="buyRoomItem('rug', 40)">Odaya Koy</button>
+          </div>
+
+          <div class="shop-card">
+            <div style="font-size:32px;">🪴</div>
+            <div style="font-weight:800; font-size:13px;">Monstera Bitkisi</div>
+            <div class="shop-price">30 DP</div>
+            <button class="btn" style="padding:8px 12px; font-size:12px;" onclick="buyRoomItem('plant', 30)">Odaya Koy</button>
+          </div>
+
+          <div class="shop-card">
+            <div style="font-size:32px;">🐱</div>
+            <div style="font-weight:800; font-size:13px;">Uykucu Kedi</div>
+            <div class="shop-price">50 DP</div>
+            <button class="btn" style="padding:8px 12px; font-size:12px;" onclick="buyRoomItem('cat', 50)">Odaya Koy</button>
+          </div>
+
+          <div class="shop-card">
+            <div style="font-size:32px;">☕</div>
+            <div style="font-weight:800; font-size:13px;">Kahve Köşesi</div>
+            <div class="shop-price">45 DP</div>
+            <button class="btn" style="padding:8px 12px; font-size:12px;" onclick="buyRoomItem('coffee', 45)">Odaya Koy</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 📱 SCREEN 4: SANAL BODY DOUBLING & TIMER -->
     <div class="screen" id="scr-focus">
       <div class="scroll-area">
         <h2 style="font-size:22px; font-weight:900; margin-bottom:4px;">👯 Sanal Body-Doubling</h2>
         <p style="font-size:13px; color:var(--text-muted); margin-bottom:20px;">Brix kulaklığını taktı, seninle birlikte çalışıyor!</p>
 
-        <!-- Body Doubling Main Card -->
         <div class="body-doubling-card">
-          <!-- Brix Working SVG -->
           <div class="brix-container" style="width:110px; height:110px;">
             <svg class="brix-svg" viewBox="0 0 120 120">
               <ellipse cx="60" cy="55" rx="42" ry="38" fill="#FF6B35"/>
               <ellipse cx="48" cy="38" rx="14" ry="8" fill="#FF8C5A" transform="rotate(-15 48 38)"/>
-              <!-- Focus eyes -->
               <ellipse cx="46" cy="52" rx="7" ry="4" fill="#0F1729"/>
               <ellipse cx="74" cy="52" rx="7" ry="4" fill="#0F1729"/>
-              <!-- Headphones -->
               <path d="M 22 50 C 22 20, 98 20, 98 50" stroke="#0F1729" stroke-width="8" fill="none" stroke-linecap="round"/>
               <rect x="18" y="44" width="12" height="20" rx="6" fill="#A855F7"/>
               <rect x="90" y="44" width="12" height="20" rx="6" fill="#A855F7"/>
@@ -814,7 +848,6 @@ h1, h2, h3, h4 { font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: -
 
           <div class="timer-display" id="timerDisplay">25:00</div>
 
-          <!-- Ambient Sounds -->
           <div class="ambient-pills">
             <button class="ambient-btn active" onclick="toggleAmbient('lofi')">🎵 Lofi Beats</button>
             <button class="ambient-btn" onclick="toggleAmbient('rain')">🌧️ Yağmur ASMR</button>
@@ -822,67 +855,46 @@ h1, h2, h3, h4 { font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: -
           </div>
 
           <div style="display:flex; gap:10px; margin-top:14px;">
-            <button class="btn" id="timerToggleBtn" onclick="toggleTimer()" style="background:var(--yellow); color:#5B4500;">
-              ▶️ Odaklanmayı Başlat
-            </button>
-            <button class="btn btn-secondary" onclick="resetTimer()" style="width:auto; padding:12px 18px;">
-              🔄
-            </button>
-          </div>
-        </div>
-
-        <!-- Hydration & Break Guard -->
-        <div style="background:white; border-radius:var(--radius-m); padding:16px; border:1.5px solid var(--border); display:flex; align-items:center; gap:14px;">
-          <div style="font-size:28px;">💧</div>
-          <div>
-            <div style="font-size:13px; font-weight:800; color:var(--text-main);">Hiperfokus Su Koruyucusu</div>
-            <div style="font-size:12px; color:var(--text-muted);">Çalışırken su içmeyi unutma! Brix seni nazikçe uyaracak.</div>
+            <button class="btn" id="timerToggleBtn" onclick="toggleTimer()" style="background:var(--yellow); color:#5B4500;">▶️ Odaklanmayı Başlat</button>
+            <button class="btn btn-secondary" onclick="resetTimer()" style="width:auto; padding:12px 18px;">🔄</button>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- 📱 SCREEN 4: ASMR FIDGET & RS Sığınak -->
+    <!-- 📱 SCREEN 5: ASMR FIDGET BOARD -->
     <div class="screen" id="scr-fidget">
       <div class="scroll-area">
         <h2 style="font-size:22px; font-weight:900; margin-bottom:4px;">🫧 ASMR Fidget & Sığınak</h2>
         <p style="font-size:13px; color:var(--text-muted); margin-bottom:20px;">Anlık motor stresi azalt, baloncukları patlat!</p>
 
-        <!-- Bubble Pop Fidget Board -->
         <div class="fidget-board">
           <div style="display:flex; justify-content:space-between; align-items:center;">
             <div style="font-weight:800; font-size:14px;">ASMR Bubble Pop</div>
             <div style="font-size:12px; color:var(--orange); font-weight:800;" id="popCounter">Patlatılan: 0</div>
           </div>
-          <div class="bubble-grid" id="bubbleGrid">
-            <!-- Dynamically generated bubbles -->
-          </div>
+          <div class="bubble-grid" id="bubbleGrid"></div>
         </div>
 
-        <!-- RSD & Emotional First Aid -->
         <div style="background:linear-gradient(135deg, #FCE7F3, #F472B6); border-radius:var(--radius-l); padding:20px; color:#831843;">
           <div style="font-size:16px; font-weight:800; margin-bottom:6px;">🩹 RSD & Duygusal İlk Yardım</div>
           <p style="font-size:12px; line-height:1.5; margin-bottom:14px; color:#9D174D;">
             Aşırı yüklenmiş veya kırılmış mı hissediyorsun? Brix ile 4-7-8 ritmik nefes egzersizi yapalım.
           </p>
-          <button class="btn" style="background:#DB2777; color:white;" onclick="startBreathingExercise()">
-            🫁 4-7-8 Nefes Balonunu Aç
-          </button>
+          <button class="btn" style="background:#DB2777; color:white;" onclick="startBreathingExercise()">🫁 4-7-8 Nefes Balonunu Aç</button>
         </div>
       </div>
     </div>
 
-    <!-- 📱 SCREEN 5: DOPAMINE SHOP & WARDROBE -->
+    <!-- 📱 SCREEN 6: DOPAMINE SHOP -->
     <div class="screen" id="scr-shop">
       <div class="scroll-area">
         <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:16px;">
           <div>
-            <h2 style="font-size:22px; font-weight:900;">🛍️ Dopamin Dükkanı</h2>
+            <h2 style="font-size:22px; font-weight:900;">🛍️ Brix Aksesuar Dükkanı</h2>
             <p style="font-size:12px; color:var(--text-muted);">DP puanlarınla Brix'e aksesuarlar al!</p>
           </div>
-          <div class="dp-counter">
-            ⭐ <span id="shopDpBalance">150</span> DP
-          </div>
+          <div class="dp-counter">⭐ <span id="shopDpBalance">150</span> DP</div>
         </div>
 
         <div class="shop-grid">
@@ -921,34 +933,41 @@ h1, h2, h3, h4 { font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: -
     <div class="bottom-nav" id="bottomNav">
       <div class="nav-item active" onclick="switchNav('home')">
         <div class="nav-icon-wrap">
-          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
         </div>
         <span>Ana Sayfa</span>
       </div>
 
+      <div class="nav-item" onclick="switchNav('room')">
+        <div class="nav-icon-wrap">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5m0 0h4m-4 0v-4a1 1 0 011-1h2a1 1 0 011 1v4"/></svg>
+        </div>
+        <span>Cozy Oda</span>
+      </div>
+
       <div class="nav-item" onclick="switchNav('focus')">
         <div class="nav-icon-wrap">
-          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
         </div>
         <span>Body-Double</span>
       </div>
 
       <div class="nav-item" onclick="switchNav('fidget')">
         <div class="nav-icon-wrap">
-          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
         </div>
         <span>ASMR Fidget</span>
       </div>
 
       <div class="nav-item" onclick="switchNav('shop')">
         <div class="nav-icon-wrap">
-          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
         </div>
         <span>Dükkan</span>
       </div>
     </div>
 
-  </div> <!-- /device-frame -->
+  </div>
 </div>
 
 <!-- Modal Dialog -->
@@ -961,12 +980,12 @@ h1, h2, h3, h4 { font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: -
 </div>
 
 <script>
-/* ── APP STATE ── */
 let state = {
   dp: 150,
   currentBrainState: null,
   activeTaskIndex: 0,
   equippedAccessories: [],
+  unlockedRoomItems: [],
   popCount: 0,
   timerSeconds: 1500,
   timerRunning: false,
@@ -980,7 +999,6 @@ const tasks = [
   { title: "1 Dakika Boyunca En Sevdiğin Şarkıda Dans Et", desc: "Dopamin seviyeni sağlıklı yoldan yükselt!" }
 ];
 
-/* ── INITIALIZATION ── */
 document.addEventListener('DOMContentLoaded', () => {
   loadState();
   updateClock();
@@ -1008,7 +1026,7 @@ function switchNav(target) {
   event.currentTarget.classList.add('active');
 }
 
-/* 🌟 INNOVATIVE FEATURE: DOPAMINE STATE RADAR 🌟 */
+/* DOPAMINE STATE RADAR */
 function selectBrainState(brainState) {
   state.currentBrainState = brainState;
   document.querySelectorAll('.state-btn').forEach(b => b.classList.remove('active'));
@@ -1032,7 +1050,7 @@ function selectBrainState(brainState) {
   } else if (brainState === 'distracted') {
     title.textContent = '🌀 Dağınık Zihin Reçetesi';
     text.textContent = 'Sana 2 dakikalık eğlenceli sürpriz bir dopamin mikro-görevi veriyoruz.';
-    btn.textContent = '🎰 Çarkıfeleğe Git';
+    btn.textContent = '🎰 Sürpriz Göreve Git';
   } else if (brainState === 'hyper') {
     title.textContent = '⚡ Hiperfokus & Mola Reçetesi';
     text.textContent = '25 dakikadır aralıksız çalışıyorsun. Bir bardak su içip 2 dakika esneme vakti!';
@@ -1047,13 +1065,13 @@ function runPrescriptionAction() {
   } else if (state.currentBrainState === 'anxious') {
     window.scrollTo({ top: 300, behavior: 'smooth' });
   } else if (state.currentBrainState === 'distracted') {
-    spinDopamineWheel();
+    completeTask();
   } else if (state.currentBrainState === 'hyper') {
     switchNav('focus');
   }
 }
 
-/* ── SINGLE TASK SHIELD ── */
+/* SINGLE TASK SHIELD */
 function completeTask() {
   addDP(30);
   showModal("🎉 Harika İş!", "Mikro görevi tamamladın! +30 Dopamin Puanı (DP) kazandın.");
@@ -1071,19 +1089,26 @@ function updateShieldTask() {
   document.getElementById('activeTaskDesc').textContent = current.desc;
 }
 
-function spinDopamineWheel() {
-  const options = [
-    "1 Bardak Soğuk Su İç! (+15 DP)",
-    "En sevdiğin şarkıda 45 saniye dans et! (+20 DP)",
-    "Pencereyi aç ve 3 derin nefes al! (+15 DP)",
-    "Gözlerini kapatıp 30 saniye dinlendir! (+15 DP)"
-  ];
-  const picked = options[Math.floor(Math.random() * options.length)];
-  showModal("🎰 Sürpriz Dopamin Görevin!", picked);
-  addDP(15);
+/* BRIX COZY ROOM BUILDER */
+function buyRoomItem(itemName, price) {
+  if (state.dp >= price) {
+    if (!state.unlockedRoomItems.includes(itemName)) {
+      state.dp -= price;
+      state.unlockedRoomItems.push(itemName);
+      updateDPDisplay();
+      document.getElementById(`item-${itemName}`).style.display = 'block';
+      showModal("🏡 Oda Dekore Edildi!", `${itemName.toUpperCase()} Brix'in odasına yerleştirildi!`);
+      saveState();
+    } else {
+      document.getElementById(`item-${itemName}`).style.display = 'block';
+      showModal("🛋️ Yerleştirildi", `${itemName.toUpperCase()} odada zaten duruyor!`);
+    }
+  } else {
+    showModal("⚠️ Yetersiz DP", "Yeterli Dopamin Puanın yok. Görev tamamlayarak puan kazanabilirsin!");
+  }
 }
 
-/* ── BODY DOUBLING TIMER ── */
+/* BODY DOUBLING TIMER */
 function toggleTimer() {
   const btn = document.getElementById('timerToggleBtn');
   if (state.timerRunning) {
@@ -1127,7 +1152,7 @@ function toggleAmbient(type) {
   event.currentTarget.classList.add('active');
 }
 
-/* ── ASMR FIDGET BUBBLES ── */
+/* ASMR FIDGET BUBBLES */
 function renderBubbles() {
   const grid = document.getElementById('bubbleGrid');
   grid.innerHTML = '';
@@ -1174,7 +1199,7 @@ function startBreathingExercise() {
   showModal("🫁 4-7-8 Nefes Egzersizi", "4 saniye nefes al... 7 saniye tut... 8 saniye yavaşça ver. Zihnin güvende!");
 }
 
-/* ── SHOP & ACCESSORIES ── */
+/* SHOP & ACCESSORIES */
 function buyAccessory(accName, price) {
   if (state.dp >= price) {
     if (!state.equippedAccessories.includes(accName)) {
@@ -1200,7 +1225,7 @@ function equipAccessoryOnSVG(accName) {
   }
 }
 
-/* ── HELPERS & PERSISTENCE ── */
+/* HELPERS & PERSISTENCE */
 function addDP(amount) {
   state.dp += amount;
   updateDPDisplay();
@@ -1209,6 +1234,7 @@ function addDP(amount) {
 
 function updateDPDisplay() {
   document.getElementById('dpBalance').textContent = state.dp;
+  document.getElementById('roomDpBalance').textContent = state.dp;
   document.getElementById('shopDpBalance').textContent = state.dp;
 }
 
@@ -1224,16 +1250,22 @@ function closeModal() {
 
 function saveState() {
   try {
-    localStorage.setItem('briqo_v3_state', JSON.stringify(state));
+    localStorage.setItem('briqo_v35_state', JSON.stringify(state));
   } catch(e){}
 }
 
 function loadState() {
   try {
-    const saved = localStorage.getItem('briqo_v3_state');
+    const saved = localStorage.getItem('briqo_v35_state');
     if (saved) {
       state = Object.assign(state, JSON.parse(saved));
       updateDPDisplay();
+      if (state.unlockedRoomItems) {
+        state.unlockedRoomItems.forEach(item => {
+          const el = document.getElementById(`item-${item}`);
+          if (el) el.style.display = 'block';
+        });
+      }
     }
   } catch(e){}
 }
