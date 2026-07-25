@@ -206,13 +206,8 @@ body {
   background: var(--orange-light);
   transform: translateY(-2px);
 }
-.nav-item.active svg {
-  color: var(--orange);
-}
-.nav-item.active span {
-  color: var(--orange);
-  font-weight: 800;
-}
+.nav-item.active svg { color: var(--orange); }
+.nav-item.active span { color: var(--orange); font-weight: 800; }
 .nav-item span {
   font-size: 9.5px;
   font-weight: 600;
@@ -282,7 +277,6 @@ h1, h2, h3, h4 { font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: -
   100% { transform: rotate(6deg); }
 }
 
-/* Wardrobe items on SVG Brix */
 .brix-accessory {
   position: absolute;
   pointer-events: none;
@@ -310,41 +304,14 @@ h1, h2, h3, h4 { font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: -
   justify-content: flex-end;
   padding: 16px;
 }
-.room-wall {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 180px;
-  background: linear-gradient(180deg, #FFFBEB 0%, #FEF3C7 100%);
-}
+.room-wall { position: absolute; top: 0; left: 0; right: 0; height: 180px; background: linear-gradient(180deg, #FFFBEB 0%, #FEF3C7 100%); }
 .room-window {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  width: 70px;
-  height: 90px;
+  position: absolute; top: 20px; right: 20px; width: 70px; height: 90px;
   background: linear-gradient(180deg, #38BDF8 0%, #BAE6FD 100%);
-  border: 4px solid #FFFFFF;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  border: 4px solid #FFFFFF; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
-.room-floor {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 100px;
-  background: #D97706;
-  border-top: 4px solid #B45309;
-}
-/* Furniture Items on Floor */
-.room-furniture {
-  position: absolute;
-  font-size: 38px;
-  transition: all 0.3s var(--spring);
-  filter: drop-shadow(0 6px 12px rgba(0,0,0,0.15));
-}
+.room-floor { position: absolute; bottom: 0; left: 0; right: 0; height: 100px; background: #D97706; border-top: 4px solid #B45309; }
+.room-furniture { position: absolute; font-size: 38px; transition: all 0.3s var(--spring); filter: drop-shadow(0 6px 12px rgba(0,0,0,0.15)); }
 #item-rug { bottom: 10px; left: 50%; transform: translateX(-50%); font-size: 70px; display: none; }
 #item-plant { bottom: 25px; left: 20px; display: none; }
 #item-cat { bottom: 20px; right: 25px; display: none; }
@@ -355,209 +322,111 @@ h1, h2, h3, h4 { font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: -
 .radar-card {
   background: linear-gradient(135deg, #0F1729 0%, #1E293B 100%);
   border-radius: var(--radius-l);
-  padding: 20px;
-  color: white;
+  padding: 20px; color: white;
   box-shadow: 0 12px 36px rgba(15, 23, 42, 0.3);
-  margin-bottom: 20px;
-  position: relative;
-  overflow: hidden;
+  margin-bottom: 20px; position: relative; overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
-.radar-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 12px;
-}
+.radar-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
 .radar-badge {
-  background: rgba(255, 107, 53, 0.2);
-  color: #FF8C5A;
-  border: 1px solid rgba(255, 107, 53, 0.4);
-  padding: 4px 10px;
-  border-radius: 100px;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
+  background: rgba(255, 107, 53, 0.2); color: #FF8C5A;
+  border: 1px solid rgba(255, 107, 53, 0.4); padding: 4px 10px;
+  border-radius: 100px; font-size: 11px; font-weight: 800;
+  letter-spacing: 0.05em; text-transform: uppercase;
 }
 .radar-title { font-size: 17px; font-weight: 800; color: white; margin-bottom: 4px; }
 .radar-sub { font-size: 12px; color: var(--text-light); }
 
-.state-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-top: 14px;
-}
+.state-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
 .state-btn {
   background: rgba(255, 255, 255, 0.06);
   border: 1.5px solid rgba(255, 255, 255, 0.12);
-  border-radius: 16px;
-  padding: 12px 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 6px;
-  cursor: pointer;
-  transition: all 0.25s var(--spring);
-  text-align: left;
+  border-radius: 16px; padding: 12px 10px;
+  display: flex; flex-direction: column; align-items: flex-start; gap: 6px;
+  cursor: pointer; transition: all 0.25s var(--spring); text-align: left;
 }
 .state-btn:hover { background: rgba(255, 255, 255, 0.12); transform: translateY(-2px); }
 .state-btn.active {
   background: linear-gradient(135deg, rgba(255, 107, 53, 0.3), rgba(255, 140, 90, 0.15));
-  border-color: var(--orange);
-  box-shadow: 0 4px 16px rgba(255, 107, 53, 0.3);
+  border-color: var(--orange); box-shadow: 0 4px 16px rgba(255, 107, 53, 0.3);
 }
 .state-emoji { font-size: 22px; }
 .state-name { font-size: 12px; font-weight: 700; color: white; font-family: 'Plus Jakarta Sans', sans-serif; }
 .state-desc { font-size: 10px; color: #94A3B8; }
 
-/* Prescription Box */
 .prescription-box {
-  background: rgba(255, 107, 53, 0.15);
-  border: 1px solid rgba(255, 107, 53, 0.3);
-  border-radius: 16px;
-  padding: 14px;
-  margin-top: 14px;
-  display: none;
+  background: rgba(255, 107, 53, 0.15); border: 1px solid rgba(255, 107, 53, 0.3);
+  border-radius: 16px; padding: 14px; margin-top: 14px; display: none;
   animation: slideUp 0.3s var(--ease-out) both;
 }
 .prescription-box.active { display: block; }
 .prescription-title { font-size: 12px; font-weight: 800; color: #FF8C5A; margin-bottom: 4px; text-transform: uppercase; }
 .prescription-text { font-size: 13px; color: white; line-height: 1.4; font-weight: 500; }
 .prescription-action {
-  margin-top: 10px;
-  background: var(--orange);
-  color: white;
-  border: none;
-  border-radius: 12px;
-  padding: 8px 14px;
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
+  margin-top: 10px; background: var(--orange); color: white;
+  border: none; border-radius: 12px; padding: 8px 14px;
+  font-size: 12px; font-weight: 700; cursor: pointer;
 }
 
 /* 🎯 SINGLE TASK SHIELD */
 .shield-card {
-  background: white;
-  border-radius: var(--radius-l);
-  padding: 24px 20px;
-  box-shadow: var(--shadow-md);
-  border: 2px solid var(--orange-light);
-  margin-bottom: 20px;
-  position: relative;
+  background: white; border-radius: var(--radius-l); padding: 24px 20px;
+  box-shadow: var(--shadow-md); border: 2px solid var(--orange-light);
+  margin-bottom: 20px; position: relative;
 }
 .shield-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: var(--orange-light);
-  color: var(--orange);
-  padding: 5px 12px;
-  border-radius: 100px;
-  font-size: 11px;
-  font-weight: 800;
-  margin-bottom: 12px;
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--orange-light); color: var(--orange);
+  padding: 5px 12px; border-radius: 100px; font-size: 11px; font-weight: 800; margin-bottom: 12px;
 }
-.shield-task-title {
-  font-size: 20px;
-  font-weight: 800;
-  color: var(--text-main);
-  margin-bottom: 8px;
-  line-height: 1.3;
-}
-.shield-task-desc {
-  font-size: 13px;
-  color: var(--text-muted);
-  margin-bottom: 20px;
-  line-height: 1.5;
-}
+.shield-task-title { font-size: 20px; font-weight: 800; color: var(--text-main); margin-bottom: 8px; line-height: 1.3; }
+.shield-task-desc { font-size: 13px; color: var(--text-muted); margin-bottom: 20px; line-height: 1.5; }
 .shield-actions { display: flex; gap: 10px; }
 
 /* 👯 SANAL BODY DOUBLING */
 .body-doubling-card {
   background: linear-gradient(135deg, #1E1B4B 0%, #312E81 100%);
-  border-radius: var(--radius-l);
-  padding: 24px 20px;
-  color: white;
-  text-align: center;
-  box-shadow: 0 16px 40px rgba(49, 46, 129, 0.3);
-  margin-bottom: 20px;
-  position: relative;
-  overflow: hidden;
+  border-radius: var(--radius-l); padding: 24px 20px; color: white;
+  text-align: center; box-shadow: 0 16px 40px rgba(49, 46, 129, 0.3);
+  margin-bottom: 20px; position: relative; overflow: hidden;
 }
 .timer-display {
-  font-family: 'Plus Jakarta Sans', sans-serif;
-  font-size: 48px;
-  font-weight: 900;
-  letter-spacing: -0.03em;
-  color: white;
-  margin: 16px 0;
+  font-family: 'Plus Jakarta Sans', sans-serif; font-size: 48px;
+  font-weight: 900; letter-spacing: -0.03em; color: white; margin: 16px 0;
   text-shadow: 0 4px 20px rgba(0,0,0,0.3);
 }
 .ambient-pills { display: flex; justify-content: center; gap: 8px; margin-bottom: 16px; }
 .ambient-btn {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: white;
-  padding: 6px 12px;
-  border-radius: 100px;
-  font-size: 11px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.2s var(--spring);
+  background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white; padding: 6px 12px; border-radius: 100px; font-size: 11px; font-weight: 700;
+  cursor: pointer; transition: all 0.2s var(--spring);
 }
 .ambient-btn.active { background: var(--yellow); color: #5B4500; border-color: var(--yellow); }
 
 /* 🫧 ASMR FIDGET BOARD */
 .fidget-board {
-  background: white;
-  border-radius: var(--radius-l);
-  padding: 20px;
-  box-shadow: var(--shadow-md);
-  border: 1.5px solid var(--border);
-  margin-bottom: 20px;
+  background: white; border-radius: var(--radius-l); padding: 20px;
+  box-shadow: var(--shadow-md); border: 1.5px solid var(--border); margin-bottom: 20px;
 }
-.bubble-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
-  margin-top: 14px;
-}
+.bubble-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 14px; }
 .bubble {
-  aspect-ratio: 1;
-  border-radius: 50%;
+  aspect-ratio: 1; border-radius: 50%;
   background: linear-gradient(135deg, var(--teal), #00ACC1);
   box-shadow: inset 0 4px 8px rgba(255, 255, 255, 0.4), 0 6px 16px rgba(38, 198, 218, 0.3);
-  cursor: pointer;
-  transition: all 0.15s var(--spring);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-weight: 800;
-  font-size: 18px;
+  cursor: pointer; transition: all 0.15s var(--spring);
+  display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; font-size: 18px;
 }
 .bubble:active, .bubble.popped {
-  transform: scale(0.85);
-  background: #E0FBFD;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
-  opacity: 0.6;
+  transform: scale(0.85); background: #E0FBFD;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1); opacity: 0.6;
 }
 
 /* 🛍️ SHOP GRID */
 .shop-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .shop-card {
-  background: white;
-  border-radius: 20px;
-  padding: 16px;
-  border: 1.5px solid var(--border);
-  box-shadow: var(--shadow-sm);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 8px;
+  background: white; border-radius: 20px; padding: 16px;
+  border: 1.5px solid var(--border); box-shadow: var(--shadow-sm);
+  display: flex; flex-direction: column; align-items: center; text-align: center; gap: 8px;
   transition: all 0.2s var(--spring);
 }
 .shop-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
@@ -567,39 +436,19 @@ h1, h2, h3, h4 { font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: -
 .header-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
 .user-greeting { font-size: 20px; font-weight: 800; color: var(--text-main); }
 .dp-counter {
-  background: var(--yellow-light);
-  border: 1.5px solid var(--yellow);
-  color: #856404;
-  padding: 6px 14px;
-  border-radius: 100px;
-  font-size: 13px;
-  font-weight: 800;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  box-shadow: 0 4px 12px rgba(255, 210, 63, 0.2);
+  background: var(--yellow-light); border: 1.5px solid var(--yellow); color: #856404;
+  padding: 6px 14px; border-radius: 100px; font-size: 13px; font-weight: 800;
+  display: flex; align-items: center; gap: 6px; box-shadow: 0 4px 12px rgba(255, 210, 63, 0.2);
 }
 
 .modal-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(15, 23, 42, 0.6);
-  backdrop-filter: blur(8px);
-  z-index: 300;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
+  position: absolute; inset: 0; background: rgba(15, 23, 42, 0.6); backdrop-filter: blur(8px);
+  z-index: 300; display: none; align-items: center; justify-content: center; padding: 20px;
 }
 .modal-overlay.active { display: flex; animation: fadeIn 0.25s ease-out; }
 .modal-card {
-  background: white;
-  border-radius: var(--radius-l);
-  padding: 24px;
-  width: 100%;
-  max-width: 340px;
-  box-shadow: var(--shadow-lg);
-  animation: popIn 0.3s var(--spring);
+  background: white; border-radius: var(--radius-l); padding: 24px;
+  width: 100%; max-width: 340px; box-shadow: var(--shadow-lg); animation: popIn 0.3s var(--spring);
 }
 @keyframes popIn { from { transform: scale(0.85); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 @keyframes slideUp { from { transform: translateY(14px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
@@ -659,6 +508,20 @@ h1, h2, h3, h4 { font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: -
             <div class="user-greeting">ADHD Dostum</div>
           </div>
           <div class="dp-counter">⭐ <span id="dpBalance">150</span> DP</div>
+        </div>
+
+        <!-- 🔔 NOTIFICATION & OBJECT PERMANENCE BANNER (#1 MUST HAVE) -->
+        <div style="background:linear-gradient(135deg, #EFF6FF, #DBEAFE); border:1.5px solid #93C5FD; border-radius:var(--radius-m); padding:14px; margin-bottom:20px; display:flex; align-items:center; justify-content:space-between; gap:12px;">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div style="font-size:24px;">🔔</div>
+            <div>
+              <div style="font-size:13px; font-weight:800; color:#1E40AF;">Akıllı Hatırlatıcılar</div>
+              <div style="font-size:11px; color:#1E3A8A;">Su içme & Mola bildirimlerini aç!</div>
+            </div>
+          </div>
+          <button class="btn" style="width:auto; padding:8px 14px; font-size:12px; background:#2563EB;" onclick="requestNotificationPermission()">
+            Aç 🔔
+          </button>
         </div>
 
         <!-- Brix Speech Card -->
@@ -759,14 +622,12 @@ h1, h2, h3, h4 { font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: -
           <div class="room-window"></div>
           <div class="room-floor"></div>
 
-          <!-- Placed Room Items -->
           <div class="room-furniture" id="item-rug">🛋️</div>
           <div class="room-furniture" id="item-plant">🪴</div>
           <div class="room-furniture" id="item-cat">🐱</div>
           <div class="room-furniture" id="item-neon">⚡</div>
           <div class="room-furniture" id="item-coffee">☕</div>
 
-          <!-- Brix in Room -->
           <div class="brix-container" style="width:100px; height:100px; z-index:10; position:relative; margin-bottom:10px;">
             <svg class="brix-svg" viewBox="0 0 120 120">
               <ellipse cx="60" cy="55" rx="42" ry="38" fill="#FF6B35"/>
@@ -789,7 +650,6 @@ h1, h2, h3, h4 { font-family: 'Plus Jakarta Sans', sans-serif; letter-spacing: -
           </div>
         </div>
 
-        <!-- ROOM DECOR DECK -->
         <h3 style="font-size:16px; font-weight:800; margin-bottom:12px;">🪑 Oda Dekorasyon Mağazası</h3>
         <div class="shop-grid">
           <div class="shop-card">
@@ -1024,6 +884,25 @@ function switchNav(target) {
   
   document.getElementById(`scr-${target}`).classList.add('active');
   event.currentTarget.classList.add('active');
+}
+
+/* 🔔 NOTIFICATION SYSTEM (#1 MUST-HAVE FOR ADHD OBJECT PERMANENCE) */
+function requestNotificationPermission() {
+  if ('Notification' in window) {
+    Notification.requestPermission().then(permission => {
+      if (permission === 'granted') {
+        showModal("🔔 Bildirimler Aktif!", "Brix sana gün içinde tatlı su ve mola hatırlatmaları gönderecek.");
+        new Notification("🐙 Brix Selam Söylüyor!", {
+          body: "Bildirimler aktifleşti. Su içmeyi ve nefes almayı unutma!",
+          icon: "icon-192.png"
+        });
+      } else {
+        showModal("ℹ️ İzin Verilmedi", "Dilediğin zaman tarayıcı ayarlarından bildirimleri açabilirsin.");
+      }
+    });
+  } else {
+    showModal("ℹ️ Tarayıcı Desteği", "Cihazın bildirimleri destekliyor. Ana ekrana ekleyerek doğrudan kullanabilirsin!");
+  }
 }
 
 /* DOPAMINE STATE RADAR */
